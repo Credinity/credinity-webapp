@@ -1,0 +1,9 @@
+//Ref : Name of Colors => https://www.color-name.com/hex
+export const Primary = "#0CB3FB";
+export const Secondary = "#000000";
+export const Gainsboro = "#D9D9DE";
+export const TrueBlue = "#0069D0";
+export const Blueberry = "#498FFF";
+export const Diamond = "#BAE6FF";
+export const White = "#FFFFFF";
+export const Black = "#000000";
