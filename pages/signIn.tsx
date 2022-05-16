@@ -12,7 +12,6 @@ import {
 //#endregion
 
 //#region UI Components
-import styles from "../styles/Home.module.css";
 import {
     Grid,
     TextField,
@@ -36,16 +35,12 @@ import {
     Menu,
     MenuItem,
 } from "@mui/material";
-import {
-    VisibilityOff,
-    Visibility,
-    Label,
-    Facebook,
-    FacebookRounded,
-    Google,
-    ArrowDropDown,
-} from "@mui/icons-material";
-import { CredinityLogoImg } from "../public/static/images";
+import { FacebookRounded, Google, ArrowDropDown } from "@mui/icons-material";
+import { CredinityLogoTr } from "@/public/constants/img.constant";
+import PageContainer from "@/components/layout/pageContainer";
+import CredinityTextField from "@/components/input/CredinityTextField";
+import CredinityPillButton from "@/components/input/CredinityPillButton";
+import LanguageChanger from "@/components/input/LanguageChanger";
 //#endregion
 
 //#region Types
@@ -56,71 +51,94 @@ import axios from "axios";
 //#endregion
 
 const LoginPage: NextPage = () => {
-    // const LoginPage: NextPage = () => {
-    //     const session = new SessionModel();
     const [email, setEmail]: [string, Function] = useState("");
     const [password, setPassword]: [string, Function] = useState("");
     const [showPassword, setShowPassword]: [boolean, Function] =
         useState(false);
     const [error, setError]: [string, Function] = useState("");
+    const [requestSuccess, setRequestSuccess]: [boolean, Function] =
+        useState(false);
     const [isLoading, setIsLoading]: [boolean, Function] = useState(false);
-
     const onLoginClicked = async () => {
         setIsLoading(true);
-        axios
-            .post("/api/auth/login", {
-                email,
-                password,
-            })
-            .then((res) => {
-                console.log({ res });
-                window.location.href = "/user/profile";
-            })
-            .catch((err) => {
-                setError(err.response.data.message);
-                setIsLoading(false);
-            });
+        setError("");
+        if (!validateInput()) {
+            setIsLoading(false);
+            return;
+        }
+        setTimeout(() => {
+            setIsLoading(false);
+            if (Math.random() > 0.5) {
+                setError("Cannot submit request. Please try again later.");
+                return;
+            }
+            setRequestSuccess(true);
+        }, 1500);
+
+        // axios
+        //     .post("/api/auth/login", {
+        //         email,
+        //         password,
+        //     })
+        //     .then((res: any) => {
+        //         window.location.href = "/user/profile";
+        //     })
+        //     .catch((err: any) => {
+        //         setError(err.response.data.message);
+        //         setIsLoading(false);
+        //     });
+    };
+
+    const validateInput = () => {
+        if (!email) {
+            setError("Email is required");
+            return false;
+        }
+        if (!password) {
+            setError("Password is required");
+            return false;
+        }
+        return true;
     };
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
+
     return (
-        <TempContainer>
+        <PageContainer pageName="Sign In" loading={requestSuccess}>
             <Grid
                 container
                 direction="column"
-                justifyContent="center"
                 minHeight="100vh"
-                sx={{ px: "40px" }}
+                spacing={0}
+                sx={{ pt: "18vh", px: "40px" }}
             >
-                <Grid item alignSelf="center" sx={{ mt: "40px", mb: "30px" }}>
+                <Grid item alignSelf="center" sx={{ mb: "50px" }}>
                     <Image
-                        src={"/" + CredinityLogoImg}
+                        src={"/../public/img/credinity-tr-logo.png"}
                         alt="credinity logo"
                         width={100}
                         height={100}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        disabled={true}
-                        variant="outlined"
-                        color="secondary"
-                        style={{
-                            textTransform: "none",
-                            width: "100%",
-                            borderRadius: "50px",
-                        }}
-                    >
-                        <FacebookRounded sx={{ mr: 1 }} />
-                        Sign up with Facebook
-                    </Button>
-                </Grid>
-                <Grid item xs={12} sx={{ mt: "15px", mb: "30px" }}>
                     <CredinityPillButton disabled={true}>
-                        <Google sx={{ mr: 1 }} />
-                        Sign up with Google
+                        <FacebookRounded
+                            sx={{ mr: 1 }}
+                            style={{ fontSize: "medium" }}
+                        />
+                        <Typography variant="body2" fontWeight="medium">
+                            Sign in with Facebook
+                        </Typography>
+                    </CredinityPillButton>
+                </Grid>
+                <Grid item xs={12} sx={{ mt: "20px", mb: "30px" }}>
+                    <CredinityPillButton disabled={true}>
+                        <Google sx={{ mr: 1 }} style={{ fontSize: "medium" }} />
+                        <Typography variant="body2" fontWeight="medium">
+                            Sign in with Google
+                        </Typography>
                     </CredinityPillButton>
                 </Grid>
                 <Grid container direction="row" xs={12} alignItems="center">
@@ -128,17 +146,17 @@ const LoginPage: NextPage = () => {
                         <Divider />
                     </Grid>
                     <Grid item xs="auto" sx={{ px: 2 }}>
-                        or
+                        <Typography variant="body2">or</Typography>
                     </Grid>
                     <Grid item xs={true}>
                         <Divider />
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ mb: 1 }}>
                     <CredinityTextField
                         label={"Email"}
                         textFieldProps={{
-                            onChange: (e) => setEmail(e.target.value),
+                            onChange: (e: any) => setEmail(e.target.value),
                             placeholder: "Email",
                             value: email,
                             disabled: isLoading,
@@ -152,12 +170,12 @@ const LoginPage: NextPage = () => {
                             placeholder: "Password",
                             name: "password",
                             type: showPassword ? "text" : "password",
-                            onChange: (e) => setPassword(e.target.value),
+                            onChange: (e: any) => setPassword(e.target.value),
                             value: password,
                             disabled: isLoading,
                         }}
                     />
-                    <FormGroup>
+                    {/* <FormGroup>
                         <FormControlLabel
                             control={
                                 <Checkbox
@@ -168,9 +186,15 @@ const LoginPage: NextPage = () => {
                             }
                             label="Show Password"
                         />
-                    </FormGroup>
+                    </FormGroup> */}
                 </Grid>
-                <Grid item container xs={12} justifyContent="center">
+                <Grid
+                    item
+                    container
+                    xs={12}
+                    justifyContent="center"
+                    sx={{ mt: "10px", mb: "20px" }}
+                >
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
@@ -179,15 +203,23 @@ const LoginPage: NextPage = () => {
                             color="primary"
                             disabled={isLoading}
                             onClick={onLoginClicked}
-                            style={{ width: "100%" }}
+                            style={{
+                                width: "100%",
+                                color: "white",
+                            }}
                         >
-                            Login
+                            <Typography fontWeight="regular">Login</Typography>
                         </Button>
                     )}
                 </Grid>
-                <Grid item xs={12} alignSelf="center" sx={{ mt: "15px" }}>
+                {error ? (
+                    <Grid item xs={12} alignSelf="center" sx={{ mb: "20px" }}>
+                        <Typography color="red">{error}</Typography>
+                    </Grid>
+                ) : null}
+                <Grid item xs={12} alignSelf="center">
                     <Link href="/forgotPassword" color="inherit">
-                        <Typography fontWeight="bold">
+                        <Typography fontWeight="medium">
                             Forgot your password?
                         </Typography>
                     </Link>
@@ -195,143 +227,20 @@ const LoginPage: NextPage = () => {
                 <Grid item xs={12} alignSelf="center" sx={{ mt: "15px" }}>
                     <Typography
                         display="inline"
-                        fontWeight="bold"
+                        fontWeight="medium"
                         sx={{ mr: 1 }}
                     >
                         Don't have an account?
                     </Typography>
-                    <Link href="/signup" color="inherit">
-                        <Typography display="inline" fontWeight="bold">
+                    <Link href="/register" color="inherit">
+                        <Typography display="inline" fontWeight="medium">
                             Sign up
                         </Typography>
                     </Link>
                 </Grid>
             </Grid>
             <LanguageChanger />
-        </TempContainer>
+        </PageContainer>
     );
 };
 export default LoginPage;
-
-const TempContainer: any = (props: any) => {
-    return (
-        <div style={{ height: "100vh" }}>
-            <Head>
-                <title>Login</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            {props.children}
-        </div>
-    );
-};
-
-const CredinityLabel: FunctionComponent<any> = (props: any) => {
-    let baseStyle = { ...props.style, fontWeight: "bold" };
-    return <label {...props} style={baseStyle} />;
-};
-
-const CredinityPillButton: FunctionComponent<any> = (props: any) => {
-    let baseStyle = {
-        ...props.style,
-        textTransform: "none",
-        width: "100%",
-        borderRadius: "50px",
-    };
-    console.log(props);
-    return (
-        <Button
-            variant="outlined"
-            color="secondary"
-            style={baseStyle}
-            {...props}
-        >
-            {props.children}
-        </Button>
-    );
-};
-
-const CredinityTextField: FunctionComponent<any> = ({
-    label,
-    labelProps,
-    textFieldProps,
-}: {
-    label: string;
-    labelProps: any;
-    textFieldProps: TextFieldProps;
-}) => {
-    return (
-        <>
-            {label ? <CredinityLabel>{label}</CredinityLabel> : null}
-            <TextField
-                sx={{ my: "10px" }}
-                variant="outlined"
-                name="email"
-                fullWidth
-                inputProps={{
-                    style: { padding: "5px 20px 5px 20px" },
-                }}
-                {...textFieldProps}
-            />
-        </>
-    );
-};
-
-const LanguageChanger: FunctionComponent<any> = (props: any) => {
-    const [lang, setLang] = useState("EN");
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const handleChangeLang = (newLang: string) => {
-        setLang(newLang);
-        handleClose();
-    };
-
-    const getFullLang = (langAbbrv: string) => {
-        switch (langAbbrv) {
-            case "TH":
-                return "Thai";
-            case "EN":
-            default:
-                return "English";
-        }
-    };
-    return (
-        <Grid
-            container
-            style={{ position: "absolute", bottom: "20px" }}
-            justifyContent="center"
-        >
-            <Grid item xs="auto">
-                <Typography display="inline" fontWeight="bold">
-                    Choose Language:
-                </Typography>
-                <Button
-                    onClick={handleClick}
-                    style={{
-                        textTransform: "none",
-                        color: "black",
-                        fontWeight: "bold",
-                    }}
-                >
-                    {getFullLang(lang)} <ArrowDropDown />
-                </Button>
-                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                    <MenuItem onClick={(e) => handleChangeLang("EN")}>
-                        English
-                    </MenuItem>
-                    <MenuItem
-                        onClick={(e) => handleChangeLang("TH")}
-                        disabled={true}
-                    >
-                        Thai
-                    </MenuItem>
-                </Menu>
-            </Grid>
-        </Grid>
-    );
-};
