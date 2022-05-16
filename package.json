@@ -18,6 +18,7 @@
     "@mui/x-data-grid": "^5.11.0",
     "@react-hook/debounce": "^4.0.0",
     "@reduxjs/toolkit": "^1.8.1",
+    "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
     "cookie": "^0.5.0",
     "formik": "^2.2.9",
@@ -29,7 +30,8 @@
     "react-iframe": "^1.8.0",
     "react-moment": "^1.1.2",
     "react-number-format": "^4.9.3",
-    "react-redux": "^8.0.1"
+    "react-redux": "^8.0.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
