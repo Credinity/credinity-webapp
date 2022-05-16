@@ -7,7 +7,6 @@ const PageContainer: FunctionComponent<any> = (props: any) => {
         <div
             style={{
                 minHeight: "100vh",
-                backgroundColor: "#EEE",
             }}
         >
             <Head>
