@@ -1,4 +1,10 @@
-import { CircularProgress, Typography } from "@mui/material";
+import {
+    Card,
+    CardContent,
+    CircularProgress,
+    Grid,
+    Typography,
+} from "@mui/material";
 import Head from "next/head";
 import { FunctionComponent } from "react";
 
@@ -13,7 +19,9 @@ const PageContainer: FunctionComponent<any> = (props: any) => {
                 <title>{props.pageName}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            {props.loading ? <CreadinityLoader /> : null}
+            {props.loading ? (
+                <CreadinityLoader loadingMessage={props.loadingMessage} />
+            ) : null}
             {props.children}
         </div>
     );
@@ -25,7 +33,11 @@ const CreadinityLoader: FunctionComponent<any> = ({
     loadingMessage: string;
 }) => {
     return (
-        <div
+        <Grid
+            container
+            justifyContent="center"
+            alignContent="center"
+            alignItems="center"
             style={{
                 zIndex: 999,
                 position: "fixed",
@@ -34,16 +46,33 @@ const CreadinityLoader: FunctionComponent<any> = ({
                 right: 0,
                 bottom: 0,
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "rgba(0, 0, 0, 0.50)",
+                backgroundColor: "rgba(50, 50, 50, 0.50)",
             }}
         >
-            <CircularProgress />
-            <Typography variant="h6" style={{ marginTop: "10px" }}>
-                {loadingMessage ?? "Loading..."}
-            </Typography>
-        </div>
+            <Card>
+                <CardContent sx={{ p: 3 }}>
+                    <Grid
+                        container
+                        justifyContent="center"
+                        alignContent="center"
+                        alignItems="center"
+                    >
+                        <Grid item xs="auto" alignSelf="center">
+                            <CircularProgress />
+                        </Grid>
+                        <Grid item xs={12} alignSelf="center">
+                            <Typography
+                                variant="h6"
+                                align="center"
+                                style={{ marginTop: "10px" }}
+                            >
+                                {loadingMessage ?? "Loading..."}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </Card>
+        </Grid>
     );
 };
 export default PageContainer;
