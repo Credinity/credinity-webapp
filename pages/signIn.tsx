@@ -66,27 +66,39 @@ const LoginPage: NextPage = () => {
             setIsLoading(false);
             return;
         }
-        setTimeout(() => {
-            setIsLoading(false);
-            if (Math.random() > 0.5) {
-                setError("Cannot submit request. Please try again later.");
-                return;
-            }
-            setRequestSuccess(true);
-        }, 1500);
+        // setTimeout(() => {
+        //     setIsLoading(false);
+        //     if (Math.random() > 0.5) {
+        //         setError("Cannot submit request. Please try again later.");
+        //         return;
+        //     }
+        //     setRequestSuccess(true);
+        // }, 1500);
 
-        // axios
-        //     .post("/api/auth/login", {
-        //         email,
-        //         password,
-        //     })
-        //     .then((res: any) => {
-        //         window.location.href = "/user/profile";
-        //     })
-        //     .catch((err: any) => {
-        //         setError(err.response.data.message);
-        //         setIsLoading(false);
-        //     });
+        axios
+            .post("/api/auth/login", {
+                email,
+                password,
+            })
+            .then((res: any) => {
+                console.log("res.data", res.data);
+                if (res.data.isSuccess == false) {
+                    let errorMessage =
+                        res.data.errors[0]?.message ??
+                        "Unknown error, Please try again.";
+                    setError(errorMessage);
+                    setIsLoading(false);
+                    return;
+                }
+
+                setRequestSuccess(true);
+                setIsLoading(false);
+                return;
+            })
+            .catch((err: any) => {
+                setError(err.response.data.message);
+                setIsLoading(false);
+            });
     };
 
     const validateInput = () => {
@@ -106,7 +118,11 @@ const LoginPage: NextPage = () => {
     };
 
     return (
-        <PageContainer pageName="Sign In" loading={requestSuccess}>
+        <PageContainer
+            pageName="Sign In"
+            loading={requestSuccess}
+            loadingMessage="Redirecting..."
+        >
             <Grid
                 container
                 direction="column"
@@ -141,7 +157,13 @@ const LoginPage: NextPage = () => {
                         </Typography>
                     </CredinityPillButton>
                 </Grid>
-                <Grid container direction="row" xs={12} alignItems="center">
+                <Grid
+                    container
+                    direction="row"
+                    item
+                    xs={12}
+                    alignItems="center"
+                >
                     <Grid item xs={true}>
                         <Divider />
                     </Grid>
