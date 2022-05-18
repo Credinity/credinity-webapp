@@ -48,9 +48,11 @@ import LanguageChanger from "@/components/input/LanguageChanger";
 
 //#region service
 import axios from "axios";
+import { useRouter } from "next/router";
 //#endregion
 
 const LoginPage: NextPage = () => {
+    const router = useRouter();
     const [email, setEmail]: [string, Function] = useState("");
     const [password, setPassword]: [string, Function] = useState("");
     const [showPassword, setShowPassword]: [boolean, Function] =
@@ -66,14 +68,6 @@ const LoginPage: NextPage = () => {
             setIsLoading(false);
             return;
         }
-        // setTimeout(() => {
-        //     setIsLoading(false);
-        //     if (Math.random() > 0.5) {
-        //         setError("Cannot submit request. Please try again later.");
-        //         return;
-        //     }
-        //     setRequestSuccess(true);
-        // }, 1500);
 
         axios
             .post("/api/auth/login", {
@@ -93,6 +87,7 @@ const LoginPage: NextPage = () => {
 
                 setRequestSuccess(true);
                 setIsLoading(false);
+                router.push("/profile");
                 return;
             })
             .catch((err: any) => {

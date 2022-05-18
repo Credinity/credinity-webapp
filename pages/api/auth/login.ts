@@ -1,13 +1,15 @@
 import Axios from "axios";
+import { apiHandler } from "helpers/api/apiHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";
 
-export default async function loginRoute(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
-    const { email, password } = await req.body;
+export default apiHandler(loginRoute);
 
+async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method !== "POST")
+        return res.status(405).end(`Method ${req.method} Not Allowed`);
+
+    const { email, password } = await req.body;
     try {
         var apiRequest = {
             requestId: uuidv4(),

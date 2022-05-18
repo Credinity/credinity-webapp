@@ -22,7 +22,11 @@ const PageContainer: FunctionComponent<any> = (props: any) => {
             {props.loading ? (
                 <CreadinityLoader loadingMessage={props.loadingMessage} />
             ) : null}
-            {props.children}
+            <Grid container justifyContent="center">
+                <Grid item xs={12} md={4} lg={3} xl={2}>
+                    {props.children}
+                </Grid>
+            </Grid>
         </div>
     );
 };

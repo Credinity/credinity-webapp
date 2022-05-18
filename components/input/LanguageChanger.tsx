@@ -34,8 +34,14 @@ const LanguageChanger: FunctionComponent<any> = (props: any) => {
     return (
         <Grid
             container
-            style={{ position: "absolute", bottom: "40px" }}
+            style={{
+                position: "absolute",
+                bottom: "30px",
+                left: 0,
+            }}
             justifyContent="center"
+            alignContent="center"
+            alignItems="center"
         >
             <Grid item xs="auto">
                 <Typography display="inline" fontWeight="medium">
