@@ -1,46 +1,20 @@
 //#region Required
-import type { InferGetServerSidePropsType, NextPage } from "next";
-import Head from "next/head";
+import type { NextPage } from "next";
 import Image from "next/image";
-import {
-  FunctionComponent,
-  MouseEventHandler,
-  ReactComponentElement,
-  ReactElement,
-  useState,
-} from "react";
+import { useState } from "react";
 //#endregion
 
 //#region UI Components
 import {
   Grid,
-  TextField,
   Link,
   Button,
-  Card,
-  CardContent,
   Typography,
-  FormControl,
-  InputLabel,
-  Input,
-  InputAdornment,
-  IconButton,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
   CircularProgress,
-  Container,
-  Divider,
-  TextFieldProps,
-  Menu,
-  MenuItem,
 } from "@mui/material";
-import { FacebookRounded, Google, ArrowDropDown } from "@mui/icons-material";
 import { CredinityLogoTr } from "@/public/constants/img.constant";
 import PageContainer from "@/components/layout/pageContainer";
 import CredinityTextField from "@/components/input/CredinityTextField";
-import CredinityPillButton from "@/components/input/CredinityPillButton";
-import LanguageChanger from "@/components/input/LanguageChanger";
 //#endregion
 
 //#region Types
@@ -48,9 +22,10 @@ import LanguageChanger from "@/components/input/LanguageChanger";
 
 //#region service
 import axios from "axios";
+import Router from "next/router";
 //#endregion
 
-const LoginPage: NextPage = () => {
+const SignUpPage: NextPage = () => {
   const [email, setEmail]: [string, Function] = useState("");
   const [password, setPassword]: [string, Function] = useState("");
   const [confirmPassword, setConfirmPassword]: [string, Function] =
@@ -84,6 +59,7 @@ const LoginPage: NextPage = () => {
         }
         setRequestSuccess(true);
         setIsLoading(false);
+        Router.push("/verifyemail");
         return;
       })
       .catch((err: any) => {
@@ -99,6 +75,14 @@ const LoginPage: NextPage = () => {
     }
     if (!password) {
       setError("Password is required");
+      return false;
+    }
+    if (!confirmPassword) {
+      setError("Confirm Password is required");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      setError("Mismatch Password");
       return false;
     }
     return true;
@@ -224,4 +208,4 @@ const LoginPage: NextPage = () => {
     </PageContainer>
   );
 };
-export default LoginPage;
+export default SignUpPage;
