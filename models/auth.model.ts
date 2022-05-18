@@ -1,19 +1,11 @@
-import { UserData } from "@/models/user.model";
+import { BaseApiResponse } from "./base.model";
 
-export interface SignIn {
-  result: string;
+export interface SignUpReq {
+  requestId: string;
+  email: string;
+  password: string;
+}
+
+export interface SignUpRes extends BaseApiResponse {
   token: string;
-  error?: string;
-  user: UserData;
-}
-
-export interface SignUp {
-  result: string;
-  error?: string;
-}
-
-export interface GetSession {
-  result: string;
-  error?: string;
-  user?: UserData;
 }

@@ -26,12 +26,12 @@ export default function RegisterPage({}: Props) {
       <Form onSubmit={handleSubmit}>
         <Field
           component={TextField}
-          name="username"
-          id="username"
+          name="email"
+          id="email"
           margin="normal"
           required
           fullWidth
-          label="Username"
+          label="Email"
           autoComplete="email"
           autoFocus
         />
@@ -49,14 +49,6 @@ export default function RegisterPage({}: Props) {
 
         <Button type="submit" fullWidth variant="contained" color="primary">
           Register
-        </Button>
-        <Button
-          fullWidth
-          size="small"
-          color="primary"
-          onClick={() => Router.push("/")}
-        >
-          Cancel
         </Button>
       </Form>
     );
@@ -81,14 +73,15 @@ export default function RegisterPage({}: Props) {
           />
           <CardContent>
             <Formik
-              initialValues={{ username: "", password: "" }}
+              initialValues={{ requestId: "", email: "", password: "" }}
               onSubmit={async (values) => {
-                //alert(JSON.stringify(values));
+                alert(JSON.stringify(values));
                 const response = await dispatch(signUpAsync(values));
                 if (response.meta.requestStatus === "rejected") {
                   alert("Register failed");
                 } else {
-                  Router.push("/signflow/verifyemail");
+                  alert(`res=> ${JSON.stringify(response)}`);
+                  Router.push("/verifyemail");
                 }
               }}
             >

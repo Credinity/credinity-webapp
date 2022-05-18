@@ -1,42 +1,34 @@
 // Implement from Redux toolkit
 // Slices => Reducer + Action(ตัวเปลี่ยนแปลงค่า)
 //เปลี่ยนแปลงค่า state/ เชื่อมต่อ server
-import { UserData } from "@/models/user.model";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
-import * as serverService from "@/services/serverService";
+import * as serverService from "@/services/authService";
+import { SignUpReq } from "@/models/auth.model";
 
-interface SingleProp {
-  data: string;
-}
+// interface SingleProp {
+//   data: string;
+// }
 
 interface UserState {
-  username: string;
-  accessToken: string;
-  error?: string;
+  email: string;
+  code: string;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
-  user?: UserData;
-}
-
-interface SignUpAction {
-  username: string;
-  password: string;
 }
 
 const initialState: UserState = {
-  username: "",
-  accessToken: "",
+  email: "",
+  code: "",
   isAuthenticated: false,
   isAuthenticating: true,
-  user: undefined,
 };
 
 //Async sign up
 export const signUpAsync = createAsyncThunk(
   "user/signup", //action label show on redux devtool
-  async (credential: SignUpAction) => {
+  async (credential: SignUpReq) => {
     //ยิงไป server
     const response = await serverService.signUp(credential);
     return response;
@@ -53,22 +45,22 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     //เปลี่ยนแปลงค่า
-    resetUsername: (state, action: PayloadAction<SingleProp>) => {
-      state.username = action.payload.data;
-    },
+    // resetUsername: (state, action: PayloadAction<SingleProp>) => {
+    //   state.username = action.payload.data;
+    // },
   },
   extraReducers: (builder) => {
     //Action เปลี่ยนแปลงค่าแบบ Asnyc
     //fullfilled = complete/ rejected/ pending = processing
 
     builder.addCase(signUpAsync.fulfilled, (state, action) => {
-      state.username = action.payload.result;
+      state.code = action.payload.token;
     });
   },
 });
 
 //export resetUsername
-export const { resetUsername } = userSlice.actions;
+// export const { resetUsername } = userSlice.actions;
 
 // export common user selector
 export const userSelector = (store: RootState) => store.user;
