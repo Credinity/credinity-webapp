@@ -1,5 +1,9 @@
 //#region Required
-import type { InferGetServerSidePropsType, NextPage } from "next";
+import type {
+    GetServerSideProps,
+    InferGetServerSidePropsType,
+    NextPage,
+} from "next";
 import Head from "next/head";
 import Image from "next/image";
 import {
@@ -49,9 +53,10 @@ import LanguageChanger from "@/components/input/LanguageChanger";
 //#region service
 import axios from "axios";
 import { useRouter } from "next/router";
+import jsonwebtoken from "jsonwebtoken";
 //#endregion
 
-const LoginPage: NextPage = () => {
+const SignInPage: NextPage = () => {
     const router = useRouter();
     const [email, setEmail]: [string, Function] = useState("");
     const [password, setPassword]: [string, Function] = useState("");
@@ -84,10 +89,12 @@ const LoginPage: NextPage = () => {
                     setIsLoading(false);
                     return;
                 }
-
+                document.cookie = `authorization=${
+                    res.data.userToken
+                };max-age:${60 * 60 * 24 * 7}`;
                 setRequestSuccess(true);
                 setIsLoading(false);
-                router.push("/profile");
+                router.push("/user/profile");
                 return;
             })
             .catch((err: any) => {
@@ -260,4 +267,17 @@ const LoginPage: NextPage = () => {
         </PageContainer>
     );
 };
-export default LoginPage;
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+    var jwt = jsonwebtoken.decode(req.cookies.authorization);
+    console.log("signIn", { authorization: req.cookies.authorization, jwt });
+    if (jwt) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false,
+            },
+        };
+    }
+    return { props: {} };
+};
+export default SignInPage;
