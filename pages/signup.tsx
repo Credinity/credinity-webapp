@@ -2,6 +2,9 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useState } from "react";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 //#endregion
 
 //#region UI Components
@@ -11,6 +14,7 @@ import {
   Button,
   Typography,
   CircularProgress,
+  FormControl,
 } from "@mui/material";
 import { CredinityLogoTr } from "@/public/constants/img.constant";
 import PageContainer from "@/components/layout/pageContainer";
@@ -31,6 +35,7 @@ const SignUpPage: NextPage = () => {
   const [confirmPassword, setConfirmPassword]: [string, Function] =
     useState("");
   const [phoneNo, setPhoneNo]: [string, Function] = useState("");
+  const [confirmOtp, setConfirmOtp]: [string, Function] = useState("");
   const [error, setError]: [string, Function] = useState("");
   const [requestSuccess, setRequestSuccess]: [boolean, Function] =
     useState(false);
@@ -149,18 +154,45 @@ const SignUpPage: NextPage = () => {
           />
         </Grid>
 
-        <Grid item xs={12} sx={{ mb: 1 }}>
-          <CredinityTextField
-            label={"Phone Number"}
-            textFieldProps={{
-              placeholder: "Phone number",
-              name: "phoneNumber",
-              type: "number",
-              onChange: (e: any) => setPhoneNo(e.target.value),
-              value: phoneNo,
-              disabled: isLoading,
-            }}
-          />
+        <Grid container spacing={1}>
+          <Grid item xs={8} sx={{ mb: 1 }}>
+            <CredinityTextField
+              label={"Phone Number"}
+              textFieldProps={{
+                placeholder: "Phone number",
+                name: "phoneNumber",
+                type: "number",
+                onChange: (e: any) => setPhoneNo(e.target.value),
+                value: phoneNo,
+                disabled: isLoading,
+              }}
+            />
+          </Grid>
+
+          <Grid
+            item
+            container
+            xs={4}
+            justifyContent="flex-end"
+            sx={{ mt: "28px", mb: "10px" }}
+          >
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={isLoading}
+                onClick={onLoginClicked}
+                style={{
+                  width: "100%",
+                  color: "white",
+                }}
+              >
+                <Typography variant="body2">Request OTP</Typography>
+              </Button>
+            )}
+          </Grid>
         </Grid>
 
         {error ? (
@@ -168,6 +200,45 @@ const SignUpPage: NextPage = () => {
             <Typography color="red">{error}</Typography>
           </Grid>
         ) : null}
+
+        <Grid item xs={12} sx={{ mb: 1 }}>
+          <CredinityTextField
+            label={"Confirm OTP"}
+            textFieldProps={{
+              placeholder: "Confirm OTP",
+              name: "confirmOtp",
+              type: "number",
+              onChange: (e: any) => setConfirmOtp(e.target.value),
+              value: confirmOtp,
+              disabled: isLoading,
+            }}
+          />
+        </Grid>
+
+        <Grid container xs={12} sx={{ my: 1.5 }}>
+          <Grid xs={1.3}>
+            <Checkbox />
+          </Grid>
+
+          <Grid xs={8.7}>
+            <Typography display="inline" sx={{ mr: 1 }}>
+              I agree to Credinity's
+            </Typography>
+            <Link href="/login" color="primary">
+              <Typography display="inline" color="primary">
+                Service Agreement
+              </Typography>
+            </Link>
+            <Typography display="inline" sx={{ mx: 1 }}>
+              and
+            </Typography>
+            <Link href="/login" color="primary">
+              <Typography display="inline" color="primary">
+                Privacy policy
+              </Typography>
+            </Link>
+          </Grid>
+        </Grid>
 
         <Grid
           item
