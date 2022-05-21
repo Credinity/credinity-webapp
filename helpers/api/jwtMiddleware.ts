@@ -15,7 +15,8 @@ function jwtMiddleware(req: NextApiRequest, res: NextApiResponse) {
         path: [
             "/api/auth/login",
             "/api/auth/register",
-            "/api/auth/forgotPassword",
+            "/api/auth/validateResetPasswordKey",
+            "/api/auth/resetPassword",
         ],
     });
 

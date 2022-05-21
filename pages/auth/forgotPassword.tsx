@@ -59,9 +59,7 @@ import PageContainer from "@/components/layout/pageContainer";
 import CredinityTextField from "@/components/input/CredinityTextField";
 //#endregion
 
-const LoginPage: NextPage = () => {
-    // const LoginPage: NextPage = () => {
-    //     const session = new SessionModel();
+const ForgotPasswordPage: NextPage = () => {
     const [email, setEmail]: [string, Function] = useState("");
     const [showPassword, setShowPassword]: [boolean, Function] =
         useState(false);
@@ -105,6 +103,14 @@ const LoginPage: NextPage = () => {
                 minHeight="100vh"
                 sx={{ px: "40px" }}
             >
+                <Grid item alignSelf="center" sx={{ mb: 0 }}>
+                    <Image
+                        src={"/../public/img/credinity-tr-logo.png"}
+                        alt="credinity logo"
+                        width={100}
+                        height={100}
+                    />
+                </Grid>
                 <Grid item>
                     <Typography
                         variant="h1"
@@ -112,13 +118,23 @@ const LoginPage: NextPage = () => {
                         fontSize="1.4rem"
                         fontWeight="medium"
                     >
-                        Reset Password
+                        Forgot Password
                     </Typography>
                 </Grid>
                 <Grid item sx={{ mt: 1, px: 1 }}>
-                    <Typography variant="body2" align="center" color="#9A9A9A">
-                        Enter your registered email address with credinity and
-                        we will email you a link to reset your password
+                    <Typography
+                        variant="body1"
+                        align="center"
+                        fontWeight="bold"
+                    >
+                        Please enter the email
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        align="center"
+                        fontWeight="bold"
+                    >
+                        you use to sign in to Credinity.
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 1 }}>
@@ -156,7 +172,7 @@ const LoginPage: NextPage = () => {
                             onClick={onResetPasswordClicked}
                             style={{ width: "100%" }}
                         >
-                            Login
+                            <Typography color="#FFFFFF">CONTINUE</Typography>
                         </Button>
                     )}
                 </Grid>
@@ -165,4 +181,4 @@ const LoginPage: NextPage = () => {
         </PageContainer>
     );
 };
-export default LoginPage;
+export default ForgotPasswordPage;

@@ -242,7 +242,7 @@ const SignInPage: NextPage = () => {
                     </Grid>
                 ) : null}
                 <Grid item xs={12} alignSelf="center">
-                    <Link href="/forgotPassword" color="inherit">
+                    <Link href="/auth/forgotPassword" color="inherit">
                         <Typography fontWeight="medium">
                             Forgot your password?
                         </Typography>
