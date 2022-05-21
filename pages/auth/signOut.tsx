@@ -16,7 +16,7 @@ import jsonwebtoken from "jsonwebtoken";
 import Cookies from "universal-cookie";
 //#endregion
 
-const signOutPage: NextPage = () => {
+const SignOutPage: NextPage = () => {
     const router = useRouter();
     const cookies = new Cookies();
     const [loading, setLoading]: [boolean, Function] = useState(true);
@@ -31,6 +31,7 @@ const signOutPage: NextPage = () => {
             router.push("/auth/signIn");
         }, 1000);
     };
+
     return (
         <PageContainer
             pageName="Sign In"
@@ -56,4 +57,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     cookies.remove("authorization");
     return { props: {} };
 };
-export default signOutPage;
+export default SignOutPage;

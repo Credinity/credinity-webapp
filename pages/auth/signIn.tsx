@@ -254,7 +254,7 @@ const SignInPage: NextPage = () => {
                         fontWeight="medium"
                         sx={{ mr: 1 }}
                     >
-                        Don't have an account?
+                        Don&apos;t have an account?
                     </Typography>
                     <Link href="/register" color="inherit">
                         <Typography display="inline" fontWeight="medium">

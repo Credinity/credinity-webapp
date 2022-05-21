@@ -222,7 +222,7 @@ const SignUpPage: NextPage = () => {
 
           <Grid xs={8.7}>
             <Typography display="inline" sx={{ mr: 1 }}>
-              I agree to Credinity's
+              I agree to Credinity&apos;s
             </Typography>
             <Link href="/login" color="primary">
               <Typography display="inline" color="primary">
