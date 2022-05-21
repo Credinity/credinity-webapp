@@ -1,6 +1,6 @@
 import {
     userSelector,
-    resetUsername,
+    // resetUsername,
     signUpAsync,
 } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
@@ -16,10 +16,10 @@ export default function Index({}: Props) {
     const dispatch = useAppDispatch();
     return (
         <>
-            <div>Index {user.username}</div>
+            {/* <div>Index {user.username}</div>
             <button onClick={() => dispatch(resetUsername({ data: "555" }))}>
                 Reset
-            </button>
+            </button> 
 
             <button
                 onClick={() =>
@@ -29,7 +29,7 @@ export default function Index({}: Props) {
                 }
             >
                 signUpAsync
-            </button>
+            </button> */}
 
             <Link href="/auth/signIn">
                 <Button>Sign In</Button>
