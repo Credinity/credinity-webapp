@@ -1,4 +1,3 @@
-import { CredinityLogoTr } from "@/public/constants/img.constant";
 import Document, {
   Html,
   Head,
@@ -19,7 +18,10 @@ class CredinityDoc extends Document {
       <Html>
         <Head>
           <meta charSet="utf-8" />
-          <link rel="shortcut icon" href={CredinityLogoTr} />
+          <link
+            rel="shortcut icon"
+            href="/../public/img/credinity-tr-logo.png"
+          />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

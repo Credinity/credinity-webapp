@@ -1,9 +1,0 @@
-//Tr => Transparent background
-//Wh => White  background
-//Txt => text under logo
-export const CredinityLogoTxtTr = "/../public/img/credinity-tr-logo-txt.png";
-export const CredinityLogoTr = "/../public/img/credinity-tr-logo.png";
-export const CredinityTxtTr = "../img/credinity-tr-txt.png";
-export const CredinityLogoTxtWh = "/../public/img/credinity-wh-logo-txt.png";
-export const CredinityLogoWh = "/../public/img/credinity-wh-logo.png";
-export const CredinityTxtWh = "/../public/img/credinity-wh-txt.png";

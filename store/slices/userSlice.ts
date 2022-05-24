@@ -31,6 +31,7 @@ export const signUpAsync = createAsyncThunk(
   async (credential: SignUpReq) => {
     //ยิงไป server
     const response = await serverService.signUp(credential);
+    console.log("response===>" + JSON.stringify(response));
     return response;
     //mock
     // const p1 = new Promise((res) =>
@@ -54,7 +55,8 @@ const userSlice = createSlice({
     //fullfilled = complete/ rejected/ pending = processing
 
     builder.addCase(signUpAsync.fulfilled, (state, action) => {
-      state.code = action.payload.token;
+      console.log("payload=>" + action.payload);
+      //state.code = action.payload.token;
     });
   },
 });

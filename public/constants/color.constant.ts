@@ -7,3 +7,4 @@ export const Blueberry = "#498FFF";
 export const Diamond = "#BAE6FF";
 export const White = "#FFFFFF";
 export const Black = "#000000";
+export const Ladybug = "#E71809";

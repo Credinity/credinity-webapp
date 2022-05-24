@@ -8,10 +8,7 @@ import witreLog from "@/utils/logUtils";
 export const signUp = async (req: SignUpReq): Promise<SignUpRes> => {
   req.requestId = uuidv4();
   witreLog(`signUp: ${JSON.stringify(req)}`);
-  const { data: response } = await pageApi.post<SignUpRes>(
-    "/auth/register",
-    req
-  );
+  const { data: response } = await pageApi.post<SignUpRes>("/auth/signup", req);
   witreLog(JSON.stringify(response));
   return response;
 };
