@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
@@ -18,7 +18,7 @@ import {
   validateSignUp,
 } from "@/store/slices/userSlice";
 import { useSelector } from "react-redux";
-import witreLog from "@/utils/logUtils";
+import writeLog from "@/utils/logUtils";
 
 const initialValues: SignUpFormProps = {
   email: "",
@@ -244,12 +244,10 @@ export default function SignUpPage() {
         >
           <Typography display="inline" fontWeight="medium" sx={{ mr: 1 }}>
             Already have an account?
-          </Typography>
-          <Link href="" color="primary">
-            <Typography display="inline" color="primary" fontWeight="medium">
+            <Link href="" color="primary">
               Sign in
-            </Typography>
-          </Link>
+            </Link>
+          </Typography>
         </Grid>
       </Form>
     );
@@ -277,15 +275,11 @@ export default function SignUpPage() {
               if (submitAction === "signUpAction") {
                 dispatch(setSignUpProcessing(true));
                 dispatch(validateSignUp(values));
-                if (user.isSignUpFormCorrect) {
-                  const req: SignUpReq = {
-                    email: values.email,
-                    password: values.password,
-                  };
-                  //call dispatch
-                  const res = await dispatch(signUpAsync(req));
-                  witreLog(`signup page =>${JSON.stringify(res)}`);
-                }
+
+                //call dispatch
+                const res = await dispatch(signUpAsync(values));
+                if (res) writeLog(`signup page =>${JSON.stringify(res)}`);
+
                 dispatch(setSignUpProcessing(false));
               } else if (submitAction === "otpAction") {
                 dispatch(setOtpProcessing(true));

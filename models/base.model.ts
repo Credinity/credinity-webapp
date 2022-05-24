@@ -8,5 +8,5 @@ export interface BaseApiResponse {
   successMessage: null;
   requestId: string;
   isSuccess: boolean;
-  errors?: Error[];
+  errors: Error[];
 }
