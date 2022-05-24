@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
-import { Box, Checkbox, CircularProgress, Grid, Link } from "@mui/material";
+import { Checkbox, CircularProgress, Grid, Link } from "@mui/material";
 import { Gainsboro, Ladybug } from "@/public/constants/color.constant";
 import FormikTextField from "@/components/input/FormikTextField";
 import Image from "next/image";
@@ -18,6 +18,7 @@ import {
   validateSignUp,
 } from "@/store/slices/userSlice";
 import { useSelector } from "react-redux";
+import witreLog from "@/utils/logUtils";
 
 const initialValues: SignUpFormProps = {
   email: "",
@@ -28,7 +29,7 @@ const initialValues: SignUpFormProps = {
   isAgreeCond: false,
 };
 
-export default function register() {
+export default function SignUpPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const user = useSelector(userSelector);
@@ -283,7 +284,7 @@ export default function register() {
                   };
                   //call dispatch
                   const res = await dispatch(signUpAsync(req));
-                  console.log(`signup page =>${JSON.stringify(res)}`);
+                  witreLog(`signup page =>${JSON.stringify(res)}`);
                 }
                 dispatch(setSignUpProcessing(false));
               } else if (submitAction === "otpAction") {
