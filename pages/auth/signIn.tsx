@@ -40,7 +40,6 @@ import {
     MenuItem,
 } from "@mui/material";
 import { FacebookRounded, Google, ArrowDropDown } from "@mui/icons-material";
-import { CredinityLogoTr } from "@/public/constants/img.constant";
 import PageContainer from "@/components/layout/pageContainer";
 import CredinityTextField from "@/components/input/CredinityTextField";
 import CredinityPillButton from "@/components/input/CredinityPillButton";
