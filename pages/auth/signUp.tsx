@@ -1,28 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
 import { Box, Checkbox, CircularProgress, Grid, Link } from "@mui/material";
-import { Ladybug } from "@/public/constants/color.constant";
+import { Gainsboro, Ladybug } from "@/public/constants/color.constant";
 import FormikTextField from "@/components/input/FormikTextField";
 import Image from "next/image";
 import PageContainer from "@/components/layout/pageContainer";
-import { validEmail, validPassword } from "helpers/client/regexValidation";
 import { useAppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
-import { SignUpReq } from "@/models/auth.model";
-import { signUpAsync } from "@/store/slices/userSlice";
+import { SignUpFormProps, SignUpReq } from "@/models/auth.model";
+import {
+  setOtpProcessing,
+  setSignUpProcessing,
+  signUpAsync,
+  userSelector,
+  validateSignUp,
+} from "@/store/slices/userSlice";
+import { useSelector } from "react-redux";
 
-interface SignUpProps {
-  email: string;
-  password: string;
-  confirmPass: string;
-  phoneNo: string;
-  confirmOtp: string;
-  isAgreeCond: boolean;
-}
-
-const initialValues: SignUpProps = {
+const initialValues: SignUpFormProps = {
   email: "",
   password: "",
   confirmPass: "",
@@ -34,12 +31,7 @@ const initialValues: SignUpProps = {
 export default function register() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [requestSuccess, setRequestSuccess]: [boolean, Function] =
-    useState(false);
-  const [error, setError]: [string, Function] = useState("");
-  const [isSingUpReq, setIsSingUpReq]: [boolean, Function] = useState(false);
-  const [isOtpReq, setIsOtpReq]: [boolean, Function] = useState(false);
-  const [isLoading, setIsLoading]: [boolean, Function] = useState(false);
+  const user = useSelector(userSelector);
   let submitAction: string | undefined = undefined;
 
   const registerForm = ({
@@ -49,7 +41,7 @@ export default function register() {
     dirty,
     handleSubmit,
     handleChange,
-  }: FormikProps<SignUpProps>) => {
+  }: FormikProps<SignUpFormProps>) => {
     return (
       <Form onSubmit={handleSubmit}>
         <Typography fontWeight="medium" sx={{ mb: 1 }}>
@@ -64,7 +56,7 @@ export default function register() {
           fullWidth
           autoFocus
           sx={{ mb: 1 }}
-          disabled={isLoading}
+          disabled={user.isDisableInput}
           onChange={handleChange}
           value={values.email}
         />
@@ -80,7 +72,7 @@ export default function register() {
           fullWidth
           autoFocus
           sx={{ mb: 1 }}
-          disabled={isLoading}
+          disabled={user.isDisableInput}
           onChange={handleChange}
           value={values.password}
         />
@@ -97,7 +89,7 @@ export default function register() {
           fullWidth
           autoFocus
           sx={{ mb: 1 }}
-          disabled={isLoading}
+          disabled={user.isDisableInput}
           onChange={handleChange}
           value={values.confirmPass}
         />
@@ -119,7 +111,8 @@ export default function register() {
               onChange={handleChange}
               value={values.phoneNo}
               disabled={true}
-              //disabled={isLoading}
+              //todo : OTP Flow
+              //disabled={user.isDisableInput}
             />
           </Grid>
           <Grid
@@ -129,7 +122,7 @@ export default function register() {
             justifyContent="	flex-start"
             sx={{ mt: 4.7, mb: 2.3 }}
           >
-            {isOtpReq ? (
+            {user.isOtpProcessing ? (
               <CircularProgress />
             ) : (
               <Button
@@ -167,7 +160,7 @@ export default function register() {
           //disabled={isLoading}
         />
 
-        {error ? (
+        {user.error ? (
           <Grid
             item
             xs={12}
@@ -177,7 +170,7 @@ export default function register() {
             sx={{ mb: 2 }}
           >
             <Typography variant="h4" color={Ladybug}>
-              {error}
+              {user.error}
             </Typography>
           </Grid>
         ) : null}
@@ -191,21 +184,15 @@ export default function register() {
             alignItems="center"
             display="flex"
           >
-            <Box
+            <Checkbox
+              id="isAgreeCond"
+              name="isAgreeCond"
               sx={{
-                backgroundColor:
-                  isSingUpReq && values.isAgreeCond == false
-                    ? Ladybug
-                    : "transparent",
+                color: user.isRedCheckBox ? Ladybug : Gainsboro,
               }}
-            >
-              <Checkbox
-                id="isAgreeCond"
-                name="isAgreeCond"
-                checked={values.isAgreeCond}
-                onChange={handleChange}
-              />
-            </Box>
+              checked={values.isAgreeCond}
+              onChange={handleChange}
+            />
           </Grid>
           <Grid
             item
@@ -236,7 +223,7 @@ export default function register() {
         </Grid>
 
         <Grid item container xs={12} justifyContent="center" sx={{ mb: 2 }}>
-          {isSingUpReq ? (
+          {user.isSignUpProcessing ? (
             <CircularProgress />
           ) : (
             <Button
@@ -244,6 +231,7 @@ export default function register() {
               variant="contained"
               color="primary"
               fullWidth
+              disabled={user.isSignUpProcessing}
               onClick={() => {
                 submitAction = "signUpAction";
                 handleSubmit();
@@ -274,31 +262,10 @@ export default function register() {
     );
   };
 
-  const validateInput = (values: SignUpProps) => {
-    if (!values.email) {
-      setError("Email is required");
-      return false;
-    }
-    if (!validEmail.test(values.email)) {
-      setError("Email is wrong format");
-      return false;
-    }
-    if (values.password !== values.confirmPass) {
-      setError("Mismatch password");
-      return false;
-    }
-    if (!validPassword.test(values.password)) {
-      setError("Password is wrong format (min 8, max 24)");
-      return false;
-    }
-
-    return true;
-  };
-
   return (
     <PageContainer
       pageName="Sign Up"
-      loading={requestSuccess}
+      loading={user.isRequestSuccess}
       loadingMessage="Redirecting..."
     >
       <Grid container direction="column" minHeight="100vh" spacing={0}>
@@ -315,28 +282,25 @@ export default function register() {
             initialValues={initialValues!}
             onSubmit={async (values) => {
               if (submitAction === "signUpAction") {
-                alert(JSON.stringify(values));
-                setIsSingUpReq(true);
-                setIsLoading(true);
-                if (validateInput(values)) {
+                dispatch(setSignUpProcessing(true));
+                dispatch(validateSignUp(values));
+                if (user.isSignUpFormCorrect) {
                   const req: SignUpReq = {
                     email: values.email,
                     password: values.password,
                   };
                   //call dispatch
                   const res = await dispatch(signUpAsync(req));
-                  console.log(JSON.stringify(res));
+                  console.log(`signup page =>${JSON.stringify(res)}`);
                 }
-                setIsSingUpReq(false);
+                dispatch(setSignUpProcessing(false));
               } else if (submitAction === "otpAction") {
+                dispatch(setOtpProcessing(true));
                 //todo OTP Service
-                setIsOtpReq(true);
-                setIsLoading(true);
-                setIsOtpReq(false);
+                dispatch(setOtpProcessing(false));
               } else {
                 console.log("something wrong");
               }
-              setIsLoading(false);
             }}
           >
             {(signUpProps) => registerForm(signUpProps)}

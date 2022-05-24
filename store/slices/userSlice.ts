@@ -5,33 +5,63 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
 import * as serverService from "@/services/authService";
-import { SignUpReq } from "@/models/auth.model";
-
-// interface SingleProp {
-//   data: string;
-// }
+import { SignUpFormProps, SignUpReq } from "@/models/auth.model";
+import { validEmail, validPassword } from "helpers/client/regexValidation";
+import { stat } from "fs";
 
 interface UserState {
-  email: string;
-  code: string;
-  isAuthenticated: boolean;
-  isAuthenticating: boolean;
+  error: string;
+  isRequestSuccess: boolean;
+  isSignUpProcessing: boolean;
+  isOtpProcessing: boolean;
+  isDisableInput: boolean;
+  isSignUpFormCorrect: boolean;
+  isRedCheckBox: boolean;
 }
 
 const initialState: UserState = {
-  email: "",
-  code: "",
-  isAuthenticated: false,
-  isAuthenticating: true,
+  error: "",
+  isRequestSuccess: false,
+  isSignUpProcessing: false,
+  isOtpProcessing: false,
+  isDisableInput: false,
+  isSignUpFormCorrect: false,
+  isRedCheckBox: false,
 };
+
+function SignUpValidation(state: UserState, values: SignUpFormProps) {
+  state.error = "";
+  if (!values.email) {
+    state.error = "Email is required";
+    return false;
+  }
+  if (!validEmail.test(values.email)) {
+    state.error = "Email is wrong format";
+    return false;
+  }
+  if (values.password !== values.confirmPass) {
+    state.error = "Mismatch password";
+    return false;
+  }
+  if (!validPassword.test(values.password)) {
+    state.error = "Password is wrong format (min 8, max 24)";
+    return false;
+  }
+  if (values.isAgreeCond == false) {
+    state.isRedCheckBox = true;
+    return false;
+  } else {
+    state.isRedCheckBox = false;
+  }
+  return true;
+}
 
 //Async sign up
 export const signUpAsync = createAsyncThunk(
   "user/signup", //action label show on redux devtool
-  async (credential: SignUpReq) => {
+  async (req: SignUpReq) => {
     //ยิงไป server
-    const response = await serverService.signUp(credential);
-    console.log("response===>" + JSON.stringify(response));
+    const response = await serverService.signUp(req);
     return response;
     //mock
     // const p1 = new Promise((res) =>
@@ -46,27 +76,41 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     //เปลี่ยนแปลงค่า
-    // resetUsername: (state, action: PayloadAction<SingleProp>) => {
-    //   state.username = action.payload.data;
-    // },
+    setRequestSuccess: (state, action: PayloadAction<boolean>) => {
+      state.isRequestSuccess = action.payload;
+    },
+    setSignUpProcessing: (state, action: PayloadAction<boolean>) => {
+      state.isSignUpProcessing = action.payload;
+      state.isDisableInput = action.payload;
+    },
+    setOtpProcessing: (state, action: PayloadAction<boolean>) => {
+      state.isOtpProcessing = action.payload;
+      state.isDisableInput = action.payload;
+    },
+    setErrorMsg: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+    validateSignUp: (state, action: PayloadAction<SignUpFormProps>) => {
+      state.isSignUpFormCorrect = SignUpValidation(state, action.payload);
+    },
   },
   extraReducers: (builder) => {
     //Action เปลี่ยนแปลงค่าแบบ Asnyc
     //fullfilled = complete/ rejected/ pending = processing
-
-    builder.addCase(signUpAsync.fulfilled, (state, action) => {
-      console.log("payload=>" + action.payload);
-      //state.code = action.payload.token;
-    });
+    builder.addCase(signUpAsync.fulfilled, (state, action) => {});
   },
 });
 
-//export resetUsername
-// export const { resetUsername } = userSlice.actions;
+//export action
+export const {
+  setRequestSuccess,
+  setSignUpProcessing,
+  setOtpProcessing,
+  setErrorMsg,
+  validateSignUp,
+} = userSlice.actions;
 
-// export common user selector
+// export selector
 export const userSelector = (store: RootState) => store.user;
-export const isAuthenticatedSelector = (store: RootState): boolean =>
-  store.user.isAuthenticated;
 
 export default userSlice.reducer;
