@@ -8,17 +8,17 @@ const { serverRuntimeConfig } = getConfig();
 export { jwtMiddleware };
 
 function jwtMiddleware(req: NextApiRequest, res: NextApiResponse) {
-    const middleware = expressjwt({
-        secret: "disIsJwtSecretNaja",
-        algorithms: ["HS256"],
-    }).unless({
-        path: [
-            "/api/auth/login",
-            "/api/auth/register",
-            "/api/auth/validateResetPasswordKey",
-            "/api/auth/resetPassword",
-        ],
-    });
+  const middleware = expressjwt({
+    secret: "disIsJwtSecretNaja",
+    algorithms: ["HS256"],
+  }).unless({
+    path: [
+      "/api/auth/login",
+      "/api/auth/signup",
+      "/api/auth/validateResetPasswordKey",
+      "/api/auth/resetPassword",
+    ],
+  });
 
-    return util.promisify(middleware)(req, res);
+  return util.promisify(middleware)(req, res);
 }

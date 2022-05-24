@@ -201,24 +201,16 @@ export default function register() {
             alignItems="center"
             display="flex"
           >
-            <Box>
-              <Typography display="inline" sx={{ mr: 1 }}>
-                I agree to Credinity&apos;s
-              </Typography>
-              <Link href="" color="primary">
-                <Typography display="inline" color="primary">
-                  Service Agreement
-                </Typography>
+            <Typography display="inline" sx={{ mr: 1 }}>
+              I agree to Credinity&apos;s{" "}
+              <Link display="inline" href="" color="primary">
+                Service Agreement
               </Link>
-              <Typography display="inline" sx={{ mx: 1 }}>
-                and
-              </Typography>
-              <Link href="" color="primary">
-                <Typography display="inline" color="primary">
-                  Privacy policy
-                </Typography>
+              &nbsp; and &nbsp;
+              <Link display="inline" href="" color="primary">
+                Privacy policy
               </Link>
-            </Box>
+            </Typography>
           </Grid>
         </Grid>
 

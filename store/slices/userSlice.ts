@@ -7,7 +7,6 @@ import { RootState } from "@/store/store";
 import * as serverService from "@/services/authService";
 import { SignUpFormProps, SignUpReq } from "@/models/auth.model";
 import { validEmail, validPassword } from "helpers/client/regexValidation";
-import { stat } from "fs";
 
 interface UserState {
   error: string;
