@@ -5,10 +5,11 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
 import * as serverService from "@/services/authService";
-import { SignUpFormProps, SignUpReq } from "@/models/auth.model";
+import { SignUpFormProps, SignUpReq, SignUpRes } from "@/models/auth.model";
 import { validEmail, validPassword } from "helpers/client/regexValidation";
 import writeLog from "@/utils/logUtils";
 import Router from "next/router";
+import { Error as resError } from "@/models/base.model";
 
 interface UserState {
   error: string;
@@ -30,48 +31,34 @@ const initialState: UserState = {
   isRedCheckBox: false,
 };
 
-function SignUpValidation(values: SignUpFormProps, state?: UserState): boolean {
+function SignUpValidation(values: SignUpFormProps): string {
+  var result = "";
   if (!values.email) {
-    if (state != undefined) state.error = "Email is required";
-    return false;
-  }
-  if (!validEmail.test(values.email)) {
-    if (state != undefined) state.error = "Email is wrong format";
-    return false;
-  }
-  if (!values.password) {
-    if (state != undefined) state.error = "Password is required";
-    return false;
-  }
-  if (!values.confirmPass) {
-    if (state != undefined) state.error = "Confirm Password is required";
-    return false;
-  }
-  if (values.password !== values.confirmPass) {
-    if (state != undefined) state.error = "Mismatch password";
-    return false;
-  }
-  if (!validPassword.test(values.password)) {
-    if (state != undefined)
-      state.error = "Password is wrong format (min 8, max 24)";
-    return false;
-  }
-  if (values.isAgreeCond == false) {
-    if (state != undefined) state.error = "";
-    if (state != undefined) state.isRedCheckBox = true;
-    return false;
+    result = "Email is required";
+  } else if (!validEmail.test(values.email)) {
+    result = "Email is wrong format";
+  } else if (!values.password) {
+    result = "Password is required";
+  } else if (!values.confirmPass) {
+    result = "Confirm Password is required";
+  } else if (values.password !== values.confirmPass) {
+    result = "Mismatch password";
+  } else if (!validPassword.test(values.password)) {
+    result = "Password is wrong format (min 8, max 24)";
+  } else if (values.isAgreeCond == false) {
+    result = "CheckboxFail";
   } else {
-    if (state != undefined) state.isRedCheckBox = false;
+    result = "Correct";
   }
-  if (state != undefined) state.error = "";
-  return true;
+  return result;
 }
 
 //Async sign up
 export const signUpAsync = createAsyncThunk(
   "user/signup", //action label show on redux devtool
   async (values: SignUpFormProps) => {
-    if (SignUpValidation(values, undefined)) {
+    var _result = SignUpValidation(values);
+    if (_result == "Correct") {
       //ยิงไป server
       const req: SignUpReq = {
         email: values.email,
@@ -80,7 +67,17 @@ export const signUpAsync = createAsyncThunk(
       const response = await serverService.signUp(req);
       return response;
     } else {
-      return null;
+      const error: resError = {
+        message: _result,
+      };
+      var errors = new Array(error);
+      const res: SignUpRes = {
+        isSuccess: false,
+        errors,
+        successMessage: null,
+        requestId: "",
+      };
+      return res;
     }
   }
 );
@@ -104,9 +101,6 @@ const userSlice = createSlice({
     setErrorMsg: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
-    validateSignUp: (state, action: PayloadAction<SignUpFormProps>) => {
-      state.isFormCorrect = SignUpValidation(action.payload, state);
-    },
   },
   extraReducers: (builder) => {
     //Action เปลี่ยนแปลงค่าแบบ Asnyc
@@ -121,7 +115,14 @@ const userSlice = createSlice({
       if (res?.isSuccess) {
         Router.push("/auth/verifyemail");
       } else if (res?.isSuccess == false) {
-        state.error = res?.errors[0]?.message ?? "";
+        var _msg = res?.errors[0]?.message ?? "";
+        if (_msg == "CheckboxFail") {
+          state.error = "";
+          state.isRedCheckBox = true;
+        } else {
+          state.isRedCheckBox = false;
+          state.error = _msg;
+        }
       }
     });
   },
@@ -133,7 +134,6 @@ export const {
   setSignUpProcessing,
   setOtpProcessing,
   setErrorMsg,
-  validateSignUp,
 } = userSlice.actions;
 
 // export selector

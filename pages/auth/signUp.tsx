@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
@@ -8,14 +8,12 @@ import FormikTextField from "@/components/input/FormikTextField";
 import Image from "next/image";
 import PageContainer from "@/components/layout/pageContainer";
 import { useAppDispatch } from "@/store/store";
-import { useRouter } from "next/router";
-import { SignUpFormProps, SignUpReq } from "@/models/auth.model";
+import { SignUpFormProps } from "@/models/auth.model";
 import {
   setOtpProcessing,
   setSignUpProcessing,
   signUpAsync,
   userSelector,
-  validateSignUp,
 } from "@/store/slices/userSlice";
 import { useSelector } from "react-redux";
 import writeLog from "@/utils/logUtils";
@@ -31,7 +29,6 @@ const initialValues: SignUpFormProps = {
 
 export default function SignUpPage() {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const user = useSelector(userSelector);
   let submitAction: string | undefined = undefined;
 
@@ -274,19 +271,15 @@ export default function SignUpPage() {
             onSubmit={async (values) => {
               if (submitAction === "signUpAction") {
                 dispatch(setSignUpProcessing(true));
-                dispatch(validateSignUp(values));
-
-                //call dispatch
                 const res = await dispatch(signUpAsync(values));
                 if (res) writeLog(`signup page =>${JSON.stringify(res)}`);
-
                 dispatch(setSignUpProcessing(false));
               } else if (submitAction === "otpAction") {
                 dispatch(setOtpProcessing(true));
                 //todo OTP Service
                 dispatch(setOtpProcessing(false));
               } else {
-                console.log("something wrong");
+                writeLog("something wrong");
               }
             }}
           >
