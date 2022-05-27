@@ -26,7 +26,15 @@ const HeaderBar = styled("div")(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
-
+const menuArray = [
+  { key: "LOG IN", value: "/auth/signIn" },
+  { key: "REGISTER", value: "/auth/signUp" },
+  { key: "INVESTOR", value: "" },
+  { key: "LOAN", value: "" },
+  { key: "NEWS", value: "" },
+  { key: "ABOUT US", value: "" },
+  { key: "PROFILE", value: "" },
+];
 export default function DrawerMenu() {
   //const user = useSelector(userSelector);
   //const dispatch = useAppDispatch();
@@ -101,35 +109,19 @@ export default function DrawerMenu() {
 
         <Box minWidth="100vw" minHeight="100%">
           <List sx={{ mt: 4, ml: 1 }}>
-            <ListItemButton
-              sx={{ mb: 1 }}
-              onClick={() => routePage("/auth/signIn")}
-            >
-              <Typography variant="h3">LOG IN</Typography>
-            </ListItemButton>
-            <ListItemButton
-              sx={{ mb: 1 }}
-              onClick={() => routePage("/auth/signUp")}
-            >
-              <Typography variant="h3">REGISTER</Typography>
-            </ListItemButton>
-            <ListItemButton sx={{ mb: 1 }}>
-              <Typography variant="h3">INVESTOR</Typography>
-            </ListItemButton>
-            <ListItemButton sx={{ mb: 1 }}>
-              <Typography variant="h3">LOAN</Typography>
-            </ListItemButton>
-            <ListItemButton sx={{ mb: 1 }}>
-              <Typography variant="h3">NEWS</Typography>
-            </ListItemButton>
-            <ListItemButton sx={{ mb: 1 }}>
-              <Typography variant="h3">ABOUT US</Typography>
-            </ListItemButton>
-            <ListItemButton sx={{ mb: 1 }}>
-              <Typography variant="h3">PROFILE</Typography>
-            </ListItemButton>
+            {menuArray.map(({ key, value }, index) => (
+              <ListItemButton
+                key={index}
+                sx={{ mb: 1 }}
+                onClick={() => {
+                  value ? routePage(value) : null;
+                }}
+              >
+                <Typography variant="h2">{key}</Typography>
+              </ListItemButton>
+            ))}
           </List>
-          <Box sx={{ flexGrow: 1, height: "30%" }} />
+          <Box sx={{ flexGrow: 1, height: "15%" }} />
           <CredinityFooter />
         </Box>
       </SwipeableDrawer>
