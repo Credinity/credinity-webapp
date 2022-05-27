@@ -17,7 +17,6 @@ interface UserState {
   isSignUpProcessing: boolean;
   isOtpProcessing: boolean;
   isDisableInput: boolean;
-  isFormCorrect: boolean;
   isRedCheckBox: boolean;
 }
 
@@ -27,7 +26,6 @@ const initialState: UserState = {
   isSignUpProcessing: false,
   isOtpProcessing: false,
   isDisableInput: false,
-  isFormCorrect: false,
   isRedCheckBox: false,
 };
 
@@ -113,6 +111,7 @@ const userSlice = createSlice({
       );
       var res = action.payload;
       if (res?.isSuccess) {
+        state.isRequestSuccess = true;
         Router.push("/auth/verifyemail");
       } else if (res?.isSuccess == false) {
         var _msg = res?.errors[0]?.message ?? "";

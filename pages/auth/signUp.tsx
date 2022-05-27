@@ -240,7 +240,7 @@ export default function SignUpPage() {
           display="flex"
         >
           <Typography display="inline" fontWeight="medium" sx={{ mr: 1 }}>
-            Already have an account?
+            Already have an account? &nbsp;
             <Link href="" color="primary">
               Sign in
             </Link>
