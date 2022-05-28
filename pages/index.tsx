@@ -2,7 +2,8 @@ import CredinityFooter from "@/components/display/CredinityFooter";
 import AppBarHeader from "@/components/layout/AppBarHeader";
 import PageContainer from "@/components/layout/pageContainer";
 import { White } from "@/public/constants/color.constant";
-import { userSelector } from "@/store/slices/userSlice";
+import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
+import { useAppDispatch } from "@/store/store";
 import {
   Box,
   Button,
@@ -13,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -23,6 +25,54 @@ export default function Index({}: Props) {
   const [isReadMore, setIsReadMore]: [boolean, Function] = useState(false);
   const [isSignIn, setSignIn]: [boolean, Function] = useState(false);
   const [isSignUp, setSignUp]: [boolean, Function] = useState(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const routePage = (path: string) => {
+    dispatch(setRequestSuccess(true));
+    router.push(path);
+    dispatch(setRequestSuccess(false));
+  };
+  const moreCards = () => {
+    return (
+      <>
+        {/* todo: change to list map cards from services */}
+        <Grid item xs={12} sx={{ paddingY: 1 }}>
+          {/* <Image
+        src=""
+        alt=""
+        width={1900}
+        height={1600}
+      /> */}
+
+          <Paper
+            elevation={3}
+            sx={{
+              minWidth: "80vw",
+              minHeight: "55vh",
+              backgroundColor: "aqua",
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          {/* <Image
+         src=""
+         alt=""
+         width={1900}
+         height={1600}
+       /> */}
+
+          <Paper
+            elevation={3}
+            sx={{
+              minWidth: "80vw",
+              minHeight: "55vh",
+              backgroundColor: "pink",
+            }}
+          />
+        </Grid>
+      </>
+    );
+  };
   return (
     <PageContainer
       pageName="Index"
@@ -37,11 +87,7 @@ export default function Index({}: Props) {
           </Typography>
         </Grid>
         <Grid item xs={12} sx={{ paddingY: 2 }}>
-          {isReadMore ? (
-            <Stack alignItems="center">
-              <CircularProgress />
-            </Stack>
-          ) : (
+          {isReadMore ? null : (
             <Button
               type="button"
               variant="contained"
@@ -77,6 +123,7 @@ export default function Index({}: Props) {
             }}
           />
         </Grid>
+        {isReadMore ? moreCards() : null}
         <Grid item xs={12} sx={{ paddingY: 2 }}>
           {isSignIn ? (
             <Stack alignItems="center">
@@ -93,6 +140,8 @@ export default function Index({}: Props) {
               fullWidth
               onClick={() => {
                 setSignIn(true);
+                routePage("/auth/signIn");
+                setSignIn(false);
               }}
             >
               <Typography variant="h3">Sign In</Typography>
@@ -115,6 +164,8 @@ export default function Index({}: Props) {
               fullWidth
               onClick={() => {
                 setSignUp(true);
+                routePage("/auth/signUp");
+                setSignUp(false);
               }}
             >
               <Typography variant="h3">Register</Typography>
