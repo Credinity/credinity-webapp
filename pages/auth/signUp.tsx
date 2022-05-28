@@ -213,7 +213,7 @@ export default function SignUpPage() {
         </Grid>
 
         <Grid item container xs={12} justifyContent="center" sx={{ mb: 2 }}>
-          {user.isSignUpProcessing ? (
+          {user.isProcessing ? (
             <CircularProgress />
           ) : (
             <Button
@@ -221,7 +221,7 @@ export default function SignUpPage() {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={user.isSignUpProcessing}
+              disabled={user.isProcessing}
               onClick={() => {
                 submitAction = "signUpAction";
                 handleSubmit();

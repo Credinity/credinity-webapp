@@ -9,19 +9,17 @@ import Image from "next/image";
 
 export default function AppBarHeader() {
   return (
-    <Grid>
-      <AppBar position="static" elevation={0} sx={{ backgroundColor: White }}>
-        <Toolbar>
-          <Image
-            alt="logo"
-            src="/img/credinity-tr-logo.png"
-            width={40}
-            height={40}
-          />
-          <Box sx={{ flexGrow: 1 }} />
-          <DrawerMenu />
-        </Toolbar>
-      </AppBar>
-    </Grid>
+    <AppBar position="static" elevation={0} sx={{ backgroundColor: White }}>
+      <Toolbar>
+        <Image
+          alt="logo"
+          src="/img/credinity-tr-logo.png"
+          width={40}
+          height={40}
+        />
+        <Box sx={{ flexGrow: 1 }} />
+        <DrawerMenu />
+      </Toolbar>
+    </AppBar>
   );
 }

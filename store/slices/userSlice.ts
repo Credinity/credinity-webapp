@@ -6,7 +6,10 @@ import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
 import * as serverService from "@/services/authService";
 import { SignUpFormProps, SignUpReq, SignUpRes } from "@/models/auth.model";
-import { validEmail, validPassword } from "helpers/client/regexValidation";
+import {
+  validateEmail,
+  validatePassword,
+} from "helpers/client/regexValidation";
 import writeLog from "@/utils/logUtils";
 import Router from "next/router";
 import { Error as resError } from "@/models/base.model";
@@ -14,7 +17,7 @@ import { Error as resError } from "@/models/base.model";
 interface UserState {
   error: string;
   isRequestSuccess: boolean;
-  isSignUpProcessing: boolean;
+  isProcessing: boolean;
   isOtpProcessing: boolean;
   isDisableInput: boolean;
   isRedCheckBox: boolean;
@@ -23,7 +26,7 @@ interface UserState {
 const initialState: UserState = {
   error: "",
   isRequestSuccess: false,
-  isSignUpProcessing: false,
+  isProcessing: false,
   isOtpProcessing: false,
   isDisableInput: false,
   isRedCheckBox: false,
@@ -33,7 +36,7 @@ function SignUpValidation(values: SignUpFormProps): string {
   var result = "";
   if (!values.email) {
     result = "Email is required";
-  } else if (!validEmail.test(values.email)) {
+  } else if (!validateEmail(values.email)) {
     result = "Email is wrong format";
   } else if (!values.password) {
     result = "Password is required";
@@ -41,7 +44,7 @@ function SignUpValidation(values: SignUpFormProps): string {
     result = "Confirm Password is required";
   } else if (values.password !== values.confirmPass) {
     result = "Mismatch password";
-  } else if (!validPassword.test(values.password)) {
+  } else if (!validatePassword.test(values.password)) {
     result = "Password is wrong format (min 8, max 24)";
   } else if (values.isAgreeCond == false) {
     result = "CheckboxFail";
@@ -89,7 +92,7 @@ const userSlice = createSlice({
       state.isRequestSuccess = action.payload;
     },
     setSignUpProcessing: (state, action: PayloadAction<boolean>) => {
-      state.isSignUpProcessing = action.payload;
+      state.isProcessing = action.payload;
       state.isDisableInput = action.payload;
     },
     setOtpProcessing: (state, action: PayloadAction<boolean>) => {
