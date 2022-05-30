@@ -6,7 +6,6 @@ import { Checkbox, CircularProgress, Grid, Link } from "@mui/material";
 import { Gainsboro, Ladybug } from "@/public/constants/color.constant";
 import FormikTextField from "@/components/input/FormikTextField";
 import Image from "next/image";
-import PageContainer from "@/components/layout/pageContainer";
 import { useAppDispatch } from "@/store/store";
 import { SignUpFormProps } from "@/models/auth.model";
 import {
@@ -17,6 +16,7 @@ import {
 } from "@/store/slices/userSlice";
 import { useSelector } from "react-redux";
 import writeLog from "@/utils/logUtils";
+import PageContainer from "@/components/layout/PageContainer";
 
 const initialValues: SignUpFormProps = {
   email: "",
@@ -52,7 +52,6 @@ export default function SignUpPage() {
           autoComplete="email"
           required
           fullWidth
-          autoFocus
           sx={{ mb: 1 }}
           disabled={user.isDisableInput}
           onChange={handleChange}
@@ -68,7 +67,6 @@ export default function SignUpPage() {
           placeholder="Password"
           required
           fullWidth
-          autoFocus
           sx={{ mb: 1 }}
           disabled={user.isDisableInput}
           onChange={handleChange}
@@ -85,7 +83,6 @@ export default function SignUpPage() {
           placeholder="Confirm Password"
           required
           fullWidth
-          autoFocus
           sx={{ mb: 1 }}
           disabled={user.isDisableInput}
           onChange={handleChange}
@@ -104,7 +101,6 @@ export default function SignUpPage() {
               placeholder="XXX-XXX-XXXX"
               required
               fullWidth
-              autoFocus
               sx={{ mb: 1 }}
               onChange={handleChange}
               value={values.phoneNo}
@@ -150,7 +146,6 @@ export default function SignUpPage() {
           placeholder="Confirm OTP"
           required
           fullWidth
-          autoFocus
           sx={{ mb: 1 }}
           onChange={handleChange}
           value={values.confirmOtp}
@@ -176,10 +171,9 @@ export default function SignUpPage() {
         <Grid container sx={{ ml: 5, my: 1.3 }} alignItems="center">
           <Grid
             item
-            xs={1}
-            sx={{ mr: 1 }}
+            xs={0.5}
+            sx={{ mr: 1.2 }}
             justifyContent="center"
-            alignItems="center"
             display="flex"
           >
             <Checkbox
@@ -194,7 +188,7 @@ export default function SignUpPage() {
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={10}
             justifyContent="center"
             alignItems="center"
             display="flex"

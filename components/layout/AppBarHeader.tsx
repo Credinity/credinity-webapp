@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import DrawerMenu from "../display/DrawerMenu";
 import { White } from "@/public/constants/color.constant";
-import { Grid } from "@mui/material";
 import Image from "next/image";
 
 export default function AppBarHeader() {

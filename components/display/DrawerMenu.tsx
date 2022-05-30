@@ -10,7 +10,7 @@ import CredinityFooter from "./CredinityFooter";
 import { White } from "@/public/constants/color.constant";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 // import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
 // import { useSelector } from "react-redux";
 // import { useAppDispatch } from "@/store/store";
@@ -22,7 +22,7 @@ const HeaderBar = styled("div")(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "center",
   minHeight: "8vh",
-  minWidth: "100vw",
+  minWidth: "100%",
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -122,6 +122,7 @@ export default function DrawerMenu() {
             ))}
           </List>
           <Box sx={{ flexGrow: 1, height: "15%" }} />
+
           <CredinityFooter />
         </Box>
       </SwipeableDrawer>

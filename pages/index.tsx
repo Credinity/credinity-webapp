@@ -1,11 +1,10 @@
 import CredinityFooter from "@/components/display/CredinityFooter";
 import AppBarHeader from "@/components/layout/AppBarHeader";
-import PageContainer from "@/components/layout/pageContainer";
+import PageContainer from "@/components/layout/PageContainer";
 import { White } from "@/public/constants/color.constant";
 import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import {
-  Box,
   Button,
   CircularProgress,
   Grid,
@@ -13,7 +12,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -36,7 +34,7 @@ export default function Index({}: Props) {
     return (
       <>
         {/* todo: change to list map cards from services */}
-        <Grid item xs={12} sx={{ paddingY: 1 }}>
+        <Grid item container sx={{ paddingY: 1 }}>
           {/* <Image
         src=""
         alt=""
@@ -47,13 +45,13 @@ export default function Index({}: Props) {
           <Paper
             elevation={3}
             sx={{
-              minWidth: "80vw",
+              minWidth: "100%",
               minHeight: "55vh",
               backgroundColor: "aqua",
             }}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item container>
           {/* <Image
          src=""
          alt=""
@@ -64,7 +62,7 @@ export default function Index({}: Props) {
           <Paper
             elevation={3}
             sx={{
-              minWidth: "80vw",
+              minWidth: "100%",
               minHeight: "55vh",
               backgroundColor: "pink",
             }}
@@ -80,13 +78,31 @@ export default function Index({}: Props) {
       loadingMessage="Redirecting..."
     >
       <AppBarHeader />
-      <Grid container direction="column" sx={{ paddingX: 3, maxWidth: "xs" }}>
-        <Grid item xs={12} sx={{ mt: 1 }}>
+      <Grid
+        container
+        direction="column"
+        gridTemplateColumns="auto"
+        sx={{ px: "40px" }}
+      >
+        <Grid
+          item
+          container
+          justifyItems="center"
+          alignItems="center"
+          sx={{ mt: 1 }}
+        >
           <Typography variant="h3" textAlign="center">
             Credinity, a P2P lending and investment service platform
           </Typography>
         </Grid>
-        <Grid item xs={12} sx={{ paddingY: 2 }}>
+
+        <Grid
+          item
+          container
+          justifyItems="center"
+          alignItems="center"
+          sx={{ paddingY: 2 }}
+        >
           {isReadMore ? null : (
             <Button
               type="button"
@@ -96,8 +112,8 @@ export default function Index({}: Props) {
                 border: "1px solid #808080",
                 color: "black",
                 boxShadow: "none",
+                width: "100%",
               }}
-              fullWidth
               onClick={() => {
                 setIsReadMore(true);
               }}
@@ -106,7 +122,7 @@ export default function Index({}: Props) {
             </Button>
           )}
         </Grid>
-        <Grid item xs={12}>
+        <Grid item container justifyItems="center" alignItems="center">
           {/* <Image
             src=""
             alt=""
@@ -117,14 +133,14 @@ export default function Index({}: Props) {
           <Paper
             elevation={3}
             sx={{
-              minWidth: "80vw",
+              minWidth: "100%",
               minHeight: "55vh",
               backgroundColor: "lightgray",
             }}
           />
         </Grid>
         {isReadMore ? moreCards() : null}
-        <Grid item xs={12} sx={{ paddingY: 2 }}>
+        <Grid item container sx={{ paddingY: 2 }}>
           {isSignIn ? (
             <Stack alignItems="center">
               <CircularProgress />
@@ -148,7 +164,7 @@ export default function Index({}: Props) {
             </Button>
           )}
         </Grid>
-        <Grid item xs={12} sx={{ paddingY: 1 }}>
+        <Grid item container sx={{ paddingY: 1 }}>
           {isSignUp ? (
             <Stack alignItems="center">
               <CircularProgress />
