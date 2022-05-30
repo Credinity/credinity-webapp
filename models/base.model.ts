@@ -1,13 +1,12 @@
-import { List } from "reselect/es/types";
-
-interface error {
-  code: string;
-  target: string;
-  massage: string;
+export interface Error {
+  code?: string;
+  target?: any;
+  message?: string;
 }
 
 export interface BaseApiResponse {
+  successMessage: null;
   requestId: string;
-  isSuccess: string;
-  errors: List<error>;
+  isSuccess: boolean;
+  errors: Error[];
 }
