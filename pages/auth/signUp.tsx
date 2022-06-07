@@ -194,11 +194,11 @@ export default function SignUpPage() {
             display="flex"
           >
             <Typography display="inline" sx={{ mr: 1 }}>
-              I agree to Credinity&apos;s{" "}
-              <Link display="inline" href="" color="primary">
+              I agree to Credinity&apos;s
+              {/* <Link display="inline" href="" color="primary">
                 Service Agreement
-              </Link>
-              &nbsp; and &nbsp;
+              </Link> */}
+              &nbsp;
               <Link display="inline" href="" color="primary">
                 Privacy policy
               </Link>
