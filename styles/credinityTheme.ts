@@ -10,27 +10,35 @@ export const theme = createTheme({
     fontWeightBold: 700,
     h1: {
       fontSize: "48px",
+      lineHeight: 1,
     },
     h2: {
       fontSize: "38px",
+      lineHeight: 1,
     },
     h3: {
       fontSize: "24px",
+      lineHeight: 1.2,
     },
     h4: {
       fontSize: "16px",
+      lineHeight: 1.7,
     },
     h5: {
       fontSize: "14px",
+      lineHeight: 1.7,
     },
     body1: {
       fontSize: "14px",
+      lineHeight: 1.7,
     },
     body2: {
       fontSize: "12px",
+      lineHeight: 1.7,
     },
     caption: {
       fontSize: "14px",
+      lineHeight: 1.7,
     },
   },
   spacing: 8,
