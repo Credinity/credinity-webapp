@@ -11,10 +11,7 @@ import { White } from "@/public/constants/color.constant";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
-// import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
-// import { useSelector } from "react-redux";
-// import { useAppDispatch } from "@/store/store";
-//import PageContainer from "../layout/pageContainer";
+import { MenuArrItem } from "@/models/page.model";
 
 const anchor = "right";
 const HeaderBar = styled("div")(({ theme }) => ({
@@ -26,16 +23,11 @@ const HeaderBar = styled("div")(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
-const menuArray = [
-  { key: "LOG IN", value: "/auth/signIn" },
-  { key: "REGISTER", value: "/auth/signUp" },
-  { key: "INVESTOR", value: "" },
-  { key: "LOAN", value: "" },
-  { key: "NEWS", value: "" },
-  { key: "ABOUT US", value: "" },
-  { key: "PROFILE", value: "" },
-];
-export default function DrawerMenu() {
+
+type Props = {
+  menuList: MenuArrItem[];
+};
+export default function DrawerMenu({ menuList }: Props) {
   //const user = useSelector(userSelector);
   //const dispatch = useAppDispatch();
   const router = useRouter();
@@ -109,15 +101,15 @@ export default function DrawerMenu() {
 
         <Box minWidth="100vw" minHeight="100%">
           <List sx={{ mt: 4, ml: 1 }}>
-            {menuArray.map(({ key, value }, index) => (
+            {menuList.map(({ name, path }, index) => (
               <ListItemButton
                 key={index}
                 sx={{ mb: 1 }}
                 onClick={() => {
-                  value ? routePage(value) : null;
+                  path ? routePage(path) : null;
                 }}
               >
-                <Typography variant="h2">{key}</Typography>
+                <Typography variant="h2">{name}</Typography>
               </ListItemButton>
             ))}
           </List>

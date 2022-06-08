@@ -71,13 +71,22 @@ export default function Index({}: Props) {
       </>
     );
   };
+  const menuArray = [
+    { name: "LOG IN", path: "/auth/signIn" },
+    { name: "REGISTER", path: "/auth/signUp" },
+    { name: "INVESTOR", path: "" },
+    { name: "LOAN", path: "" },
+    { name: "NEWS", path: "" },
+    { name: "ABOUT US", path: "" },
+    { name: "PROFILE", path: "" },
+  ];
   return (
     <PageContainer
       pageName="Index"
       loading={user.isRequestSuccess}
       loadingMessage="Redirecting..."
     >
-      <AppBarHeader />
+      <AppBarHeader menuList={menuArray} />
       <Grid
         container
         direction="column"

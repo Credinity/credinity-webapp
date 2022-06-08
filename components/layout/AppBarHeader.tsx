@@ -5,8 +5,13 @@ import Toolbar from "@mui/material/Toolbar";
 import DrawerMenu from "../display/DrawerMenu";
 import { White } from "@/public/constants/color.constant";
 import Image from "next/image";
+import { MenuArrItem } from "@/models/page.model";
 
-export default function AppBarHeader() {
+type Props = {
+  menuList: MenuArrItem[];
+};
+
+export default function AppBarHeader({ menuList }: Props) {
   return (
     <AppBar position="static" elevation={0} sx={{ backgroundColor: White }}>
       <Toolbar>
@@ -17,7 +22,7 @@ export default function AppBarHeader() {
           height={40}
         />
         <Box sx={{ flexGrow: 1 }} />
-        <DrawerMenu />
+        <DrawerMenu menuList={menuList} />
       </Toolbar>
     </AppBar>
   );
