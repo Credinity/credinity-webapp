@@ -105,7 +105,7 @@ const SignInPage: NextPage = () => {
       >
         <Grid item alignSelf="center" sx={{ mb: "50px" }}>
           <Image
-            src={"/../public/img/credinity-tr-logo.png"}
+            src="/img/credinity-tr-logo.png"
             alt="credinity logo"
             width={100}
             height={100}

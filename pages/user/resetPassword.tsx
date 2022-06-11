@@ -162,7 +162,7 @@ const ResetPasswordPage: NextPage<{
       >
         <Grid item alignSelf="center" sx={{ mb: 0 }}>
           <Image
-            src={"/../public/img/credinity-tr-logo.png"}
+            src="/img/credinity-tr-logo.png"
             alt="credinity logo"
             width={100}
             height={100}
