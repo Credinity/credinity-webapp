@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 
-interface UserState {
+interface PageState {
   error: string;
   isRequestSuccess: boolean;
   isProcessing: boolean;
+  isOpenPrivacyConterm: boolean;
 }
 
-const initialState: UserState = {
+const initialState: PageState = {
   error: "",
   isRequestSuccess: false,
   isProcessing: false,
+  isOpenPrivacyConterm: false,
 };
 
 const pageSlice = createSlice({
@@ -26,12 +28,19 @@ const pageSlice = createSlice({
     setErrorMsg: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
+    setIsOpenPrivacyConterm: (state, action: PayloadAction<boolean>) => {
+      state.isOpenPrivacyConterm = action.payload;
+    },
   },
 });
 
 //export action
-export const { setRequestSuccess, setIsProcessing, setErrorMsg } =
-  pageSlice.actions;
+export const {
+  setRequestSuccess,
+  setIsProcessing,
+  setErrorMsg,
+  setIsOpenPrivacyConterm,
+} = pageSlice.actions;
 
 // export selector
 export const pageSelector = (store: RootState) => store.page;
