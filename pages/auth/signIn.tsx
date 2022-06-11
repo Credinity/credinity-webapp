@@ -52,7 +52,7 @@ const SignInPage: NextPage = () => {
         password,
       })
       .then((res: any) => {
-        console.log("res.data", res.data);
+        console.log("login:", res);
         if (res.data.isSuccess == false) {
           let errorMessage =
             res.data.errors[0]?.message ?? "Unknown error, Please try again.";
@@ -69,6 +69,7 @@ const SignInPage: NextPage = () => {
         return;
       })
       .catch((err: any) => {
+        console.error('login:',err)
         setError(err.response.data.message);
         setIsLoading(false);
       });
