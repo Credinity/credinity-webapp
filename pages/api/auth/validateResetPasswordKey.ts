@@ -1,3 +1,4 @@
+import { ApiCaller } from "@/services/apiCaller";
 import Axios from "axios";
 import { apiHandler } from "helpers/api/apiHandler";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -19,19 +20,16 @@ async function validateResetPasswordKey(
             key,
         };
 
-        console.log("[REQUEST] validateResetPasswordKey", apiRequest);
-        Axios.post(
-            process.env.BASE_SERVICE_API + "/auth/validateResetPasswordKey",
-            apiRequest
-        )
+        ApiCaller({
+            method: "POST",
+            url: "/auth/validateResetPasswordKey",
+            req: apiRequest,
+        })
             .then((apiResponse: any) => {
                 let { data } = apiResponse;
-                console.log("[RESPONSE] validateResetPasswordKey", data);
                 res.json(data);
             })
             .catch((err: any) => {
-                console.log("[RESPONSE] validateResetPasswordKey", err);
-                console.log(err);
                 res.status(500).json(err);
             });
     } catch (error) {
