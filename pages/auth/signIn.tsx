@@ -70,7 +70,7 @@ const SignInPage: NextPage = () => {
       })
       .catch((err: any) => {
         console.error('login:',err)
-        setError(err.response.data.message);
+        setError(err.message);
         setIsLoading(false);
       });
   };
