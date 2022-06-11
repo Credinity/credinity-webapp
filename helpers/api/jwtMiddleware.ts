@@ -1,9 +1,9 @@
 import { expressjwt } from "express-jwt";
 const util = require("util");
 import { NextApiRequest, NextApiResponse } from "next";
-import getConfig from "next/config";
+// import getConfig from "next/config";
 
-const { serverRuntimeConfig } = getConfig();
+// const { serverRuntimeConfig } = getConfig();
 
 export { jwtMiddleware };
 
