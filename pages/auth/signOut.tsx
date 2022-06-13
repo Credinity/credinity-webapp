@@ -27,7 +27,7 @@ const SignOutPage: NextPage = () => {
 
   const revokeJwt = () => {
     setTimeout(() => {
-      cookies.remove("authorization");
+      cookies.remove("authorization", { path: "/" });
       router.push("/auth/signIn");
     }, 1000);
   };

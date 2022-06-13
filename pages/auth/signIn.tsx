@@ -27,6 +27,7 @@ import PageContainer from "@/components/layout/PageContainer";
 import axios from "axios";
 import { useRouter } from "next/router";
 import jsonwebtoken from "jsonwebtoken";
+import Cookies from "universal-cookie";
 //#endregion
 
 const SignInPage: NextPage = () => {
@@ -60,9 +61,12 @@ const SignInPage: NextPage = () => {
           setIsLoading(false);
           return;
         }
-        document.cookie = `authorization=${res.data.userToken};max-age:${
-          60 * 60 * 24 * 7
-        }`;
+        const cookies = new Cookies();
+        cookies.set("authorization", res.data.userToken, {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+          sameSite: "strict",
+        });
         setRequestSuccess(true);
         setIsLoading(false);
         router.push("/user/profile");
