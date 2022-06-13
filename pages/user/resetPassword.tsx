@@ -266,15 +266,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   res,
   query,
 }) => {
-  var jwt = jsonwebtoken.decode(req.cookies.authorization);
-  if (jwt) {
-    return {
-      redirect: {
-        destination: "/profile",
-        permanent: false,
-      },
-    };
-  }
   var { key } = query;
   var requestObj = {
     key: key,
