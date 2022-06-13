@@ -95,7 +95,7 @@ export default function SignUpPage() {
           value={values.confirmPass}
         />
 
-        <Grid container spacing={1}>
+        {/* <Grid container spacing={1}>
           <Grid item xs={7} sx={{ mb: 1 }}>
             <Typography fontWeight="medium" sx={{ my: 1 }}>
               Phone Number
@@ -157,7 +157,7 @@ export default function SignUpPage() {
           value={values.confirmOtp}
           disabled={true}
           //disabled={isLoading}
-        />
+        /> */}
 
         {user.error ? (
           <Grid
