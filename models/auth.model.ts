@@ -7,12 +7,14 @@ export interface SignUpFormProps {
   phoneNo: string;
   confirmOtp: string;
   isAgreeCond: boolean;
+  privacyPolicyVersion: string;
 }
 
 export interface SignUpReq {
   requestId?: string;
   email: string;
   password: string;
+  privacyPolicyVersion: string;
 }
 
 export interface SignUpRes extends BaseApiResponse {
