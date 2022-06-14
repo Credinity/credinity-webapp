@@ -8,18 +8,19 @@ import { NextApiRequest, NextApiResponse } from "next";
 export { jwtMiddleware };
 
 function jwtMiddleware(req: NextApiRequest, res: NextApiResponse) {
-  const middleware = expressjwt({
-    secret: "disIsJwtSecretNaja",
-    algorithms: ["HS256"],
-  }).unless({
-    path: [
-      "/api/auth/login",
-      "/api/auth/signup",
-      "/api/auth/validateResetPasswordKey",
-      "/api/auth/resetPassword",
-      "/api/termsApi/getPrivacyPolicy",
-    ],
-  });
+    const middleware = expressjwt({
+        secret: "disIsJwtSecretNaja",
+        algorithms: ["HS256"],
+    }).unless({
+        path: [
+            "/api/auth/login",
+            "/api/auth/signup",
+            "/api/auth/sendResetPasswordEmail",
+            "/api/auth/validateResetPasswordKey",
+            "/api/auth/resetPassword",
+            "/api/termsApi/getPrivacyPolicy",
+        ],
+    });
 
-  return util.promisify(middleware)(req, res);
+    return util.promisify(middleware)(req, res);
 }
