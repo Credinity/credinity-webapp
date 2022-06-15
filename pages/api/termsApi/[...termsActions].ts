@@ -18,26 +18,19 @@ const termsRouter = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 async function getPrivacyPolicy(res: NextApiResponse<any>) {
+  var apiRequest = {
+    requestId: uuidv4(),
+  };
   try {
-    const response = await axiosHttps.get(`Terms/GetLatestPrivacyPolicy`);
-    res.json(response.data);
+    const response = await ApiCaller({
+      method: HTTP_METHOD_GET,
+      url: "/Terms/GetLatestPrivacyPolicy",
+      req: apiRequest,
+    });
+    res.json(response);
   } catch (error) {
-    return res.status(500).json({ message: (error as Error).message });
+    res.status(500).json({ message: (error as Error).message });
   }
-
-  // var apiRequest = {
-  //   requestId: uuidv4(),
-  // };
-  // try {
-  //   const res = await ApiCaller({
-  //     method: HTTP_METHOD_GET,
-  //     url: "/Terms/GetLatestPrivacyPolicy",
-  //     req: apiRequest,
-  //   });
-  //   return res;
-  // } catch (error) {
-  //   res.status(500).json({ message: (error as Error).message });
-  // }
 }
 
 export default apiHandler(termsRouter);

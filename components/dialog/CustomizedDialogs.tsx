@@ -34,7 +34,11 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle
+      sx={{ m: 0, p: 2 }}
+      {...other}
+      style={{ fontWeight: "bold", fontSize: 35 }}
+    >
       {children}
       {onClose ? (
         <IconButton
@@ -89,9 +93,7 @@ export default function CustomizedDialogs({ title, htmlDetail }: Props) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          <Typography variant="h3" fontWeight="bold" sx={{ mr: 2 }}>
-            {title}
-          </Typography>
+          {title}
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Typography dangerouslySetInnerHTML={{ __html: htmlDetail }} />

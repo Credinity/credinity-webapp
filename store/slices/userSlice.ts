@@ -63,7 +63,8 @@ function SignUpValidation(values: SignUpFormProps): string {
 export const getPrivacyPolicyAsync = createAsyncThunk(
   "user/getPrivacyPolicy",
   async () => {
-    return await termsCondService.getPrivacyPolicy();
+    const response = await termsCondService.getPrivacyPolicy();
+    return response;
   }
 );
 export const signUpAsync = createAsyncThunk(
