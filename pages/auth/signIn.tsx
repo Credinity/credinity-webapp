@@ -27,6 +27,7 @@ import PageContainer from "@/components/layout/PageContainer";
 import axios from "axios";
 import { useRouter } from "next/router";
 import jsonwebtoken from "jsonwebtoken";
+import Cookies from "universal-cookie";
 //#endregion
 
 const SignInPage: NextPage = () => {
@@ -52,7 +53,7 @@ const SignInPage: NextPage = () => {
         password,
       })
       .then((res: any) => {
-        console.log("res.data", res.data);
+        console.log("login:", res);
         if (res.data.isSuccess == false) {
           let errorMessage =
             res.data.errors[0]?.message ?? "Unknown error, Please try again.";
@@ -60,16 +61,20 @@ const SignInPage: NextPage = () => {
           setIsLoading(false);
           return;
         }
-        document.cookie = `authorization=${res.data.userToken};max-age:${
-          60 * 60 * 24 * 7
-        }`;
+        const cookies = new Cookies();
+        cookies.set("authorization", res.data.userToken, {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+          sameSite: "strict",
+        });
         setRequestSuccess(true);
         setIsLoading(false);
         router.push("/user/profile");
         return;
       })
       .catch((err: any) => {
-        setError(err.response.data.message);
+        console.error('login:',err)
+        setError(err.message);
         setIsLoading(false);
       });
   };
@@ -212,7 +217,7 @@ const SignInPage: NextPage = () => {
           <Typography display="inline" fontWeight="medium" sx={{ mr: 1 }}>
             Don&apos;t have an account?
           </Typography>
-          <Link href="/register" color="inherit">
+          <Link href="/auth/signUp" color="inherit">
             <Typography display="inline" fontWeight="medium">
               Sign up
             </Typography>

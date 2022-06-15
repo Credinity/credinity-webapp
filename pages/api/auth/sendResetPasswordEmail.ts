@@ -2,28 +2,22 @@ import { ApiCaller } from "@/services/apiCaller";
 import Axios from "axios";
 import { apiHandler } from "helpers/api/apiHandler";
 import { NextApiRequest, NextApiResponse } from "next";
-import { v4 as uuidv4 } from "uuid";
 
-export default apiHandler(validateResetPasswordKey);
+export default apiHandler(sendResetPasswordEmail);
 
-async function validateResetPasswordKey(
+async function sendResetPasswordEmail(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     if (req.method !== "POST")
         return res.status(405).end(`Method ${req.method} Not Allowed`);
 
-    const { key } = await req.body;
+    const { email } = await req.body;
     try {
-        var apiRequest = {
-            requestId: uuidv4(),
-            key,
-        };
-
         ApiCaller({
             method: "POST",
-            url: "/auth/validateResetPasswordKey",
-            req: apiRequest,
+            url: "/auth/sendResetPasswordEmail",
+            req: { email },
         })
             .then((apiResponse: any) => {
                 let { data } = apiResponse;

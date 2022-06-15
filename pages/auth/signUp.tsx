@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useAppDispatch } from "@/store/store";
 import { SignUpFormProps } from "@/models/auth.model";
 import {
+  getPrivacyPolicyAsync,
   setOtpProcessing,
   setSignUpProcessing,
   signUpAsync,
@@ -17,6 +18,11 @@ import {
 import { useSelector } from "react-redux";
 import writeLog from "@/utils/logUtils";
 import PageContainer from "@/components/layout/PageContainer";
+import {
+  pageSelector,
+  setIsOpenPrivacyConterm,
+} from "@/store/slices/pageSlice";
+import CustomizedDialogs from "@/components/dialog/CustomizedDialogs";
 
 const initialValues: SignUpFormProps = {
   email: "",
@@ -25,12 +31,17 @@ const initialValues: SignUpFormProps = {
   phoneNo: "",
   confirmOtp: "",
   isAgreeCond: false,
+  privacyPolicyVersion: "",
 };
 
 export default function SignUpPage() {
   const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
   let submitAction: string | undefined = undefined;
+
+  React.useEffect(() => {
+    dispatch(getPrivacyPolicyAsync());
+  }, []);
 
   const registerForm = ({
     values,
@@ -89,8 +100,8 @@ export default function SignUpPage() {
           value={values.confirmPass}
         />
 
-        <Grid container spacing={1}>
-          <Grid item xs={8} sx={{ mb: 1 }}>
+        {/* <Grid container spacing={1}>
+          <Grid item xs={7} sx={{ mb: 1 }}>
             <Typography fontWeight="medium" sx={{ my: 1 }}>
               Phone Number
             </Typography>
@@ -112,7 +123,7 @@ export default function SignUpPage() {
           <Grid
             item
             container
-            xs={4}
+            xs={5}
             justifyContent="	flex-start"
             sx={{ mt: 4.7, mb: 2.3 }}
           >
@@ -151,7 +162,7 @@ export default function SignUpPage() {
           value={values.confirmOtp}
           disabled={true}
           //disabled={isLoading}
-        />
+        /> */}
 
         {user.error ? (
           <Grid
@@ -194,12 +205,16 @@ export default function SignUpPage() {
             display="flex"
           >
             <Typography display="inline" sx={{ mr: 1 }}>
-              I agree to Credinity&apos;s
-              {/* <Link display="inline" href="" color="primary">
-                Service Agreement
-              </Link> */}
-              &nbsp;
-              <Link display="inline" href="" color="primary">
+              I agree to Credinity&apos;s &nbsp;
+              <Link
+                display="inline"
+                href=""
+                color="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(setIsOpenPrivacyConterm(true));
+                }}
+              >
                 Privacy policy
               </Link>
             </Typography>
@@ -265,8 +280,8 @@ export default function SignUpPage() {
             onSubmit={async (values) => {
               if (submitAction === "signUpAction") {
                 dispatch(setSignUpProcessing(true));
-                const res = await dispatch(signUpAsync(values));
-                if (res) writeLog(`signup page =>${JSON.stringify(res)}`);
+                values.privacyPolicyVersion = user.privacyVersion;
+                await dispatch(signUpAsync(values));
                 dispatch(setSignUpProcessing(false));
               } else if (submitAction === "otpAction") {
                 dispatch(setOtpProcessing(true));
@@ -279,6 +294,12 @@ export default function SignUpPage() {
           >
             {(signUpProps) => registerForm(signUpProps)}
           </Formik>
+        </Grid>
+        <Grid item xs={12} sx={{ mx: 4 }}>
+          <CustomizedDialogs
+            title="นโยบายรักษาข้อมูลส่วนบุคคล"
+            htmlDetail={user.privacyDetailHtml}
+          />
         </Grid>
       </Grid>
     </PageContainer>

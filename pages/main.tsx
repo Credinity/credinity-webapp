@@ -59,7 +59,7 @@ export default function MainPage() {
           />
         </Grid>
         <Grid item>
-          <Typography variant="h2">LOAN&amp;{<br />}INVESTER</Typography>
+          <Typography variant="h2">LOAN&nbsp;&amp;{<br />}INVESTER</Typography>
         </Grid>
         <Grid item>
           <Button

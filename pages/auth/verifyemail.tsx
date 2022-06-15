@@ -6,7 +6,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export default function VerifyEmailPage() {
-  const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
   return (
     <PageContainer
@@ -37,7 +36,7 @@ export default function VerifyEmailPage() {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={user.isProcessing}
+              disabled
             >
               <Typography>VERIFY EMAIL</Typography>
             </Button>
@@ -51,7 +50,13 @@ export default function VerifyEmailPage() {
             display="flex"
           >
             <Typography display="inline" variant="h5" sx={{ mr: 1 }}>
-              <Link href="" color="primary">
+              <Link
+                href=""
+                color="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
                 Trouble verifying?
               </Link>
             </Typography>

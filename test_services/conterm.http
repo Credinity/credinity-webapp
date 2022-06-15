@@ -1,0 +1,9 @@
+
+### Get Conterm
+GET https://u0lj6spjl3.execute-api.ap-southeast-1.amazonaws.com/Dev/api/Terms/GetLatestPrivacyPolicy HTTP/1.1
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYTQzZjI5ZTAwZmZhMWI3MTNiZGFlZSIsIm5iZiI6MTY1NTE3OTMwMiwiZXhwIjoxNjU1Nzg0MTAyLCJpYXQiOjE2NTUxNzkzMDJ9.MASfaXhMR2P77QXJmU2G2Gz1AYNFcNTbAiXRdqpAiWI
+# Content-Type: application/json
+
+# {
+#     "requestId":"aaa"
+# }

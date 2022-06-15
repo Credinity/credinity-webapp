@@ -4,7 +4,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
-import * as serverService from "@/services/authService";
+import * as authService from "@/services/authPageApi";
+import * as termsCondService from "@/services/termsCondPageApi";
 import { SignUpFormProps, SignUpReq, SignUpRes } from "@/models/auth.model";
 import {
   validateEmail,
@@ -21,6 +22,8 @@ interface UserState {
   isOtpProcessing: boolean;
   isDisableInput: boolean;
   isRedCheckBox: boolean;
+  privacyVersion: string;
+  privacyDetailHtml: string;
 }
 
 const initialState: UserState = {
@@ -30,6 +33,8 @@ const initialState: UserState = {
   isOtpProcessing: false,
   isDisableInput: false,
   isRedCheckBox: false,
+  privacyVersion: "",
+  privacyDetailHtml: "",
 };
 
 function SignUpValidation(values: SignUpFormProps): string {
@@ -55,6 +60,13 @@ function SignUpValidation(values: SignUpFormProps): string {
 }
 
 //Async sign up
+export const getPrivacyPolicyAsync = createAsyncThunk(
+  "user/getPrivacyPolicy",
+  async () => {
+    const response = await termsCondService.getPrivacyPolicy();
+    return response;
+  }
+);
 export const signUpAsync = createAsyncThunk(
   "user/signup", //action label show on redux devtool
   async (values: SignUpFormProps) => {
@@ -64,8 +76,9 @@ export const signUpAsync = createAsyncThunk(
       const req: SignUpReq = {
         email: values.email,
         password: values.password,
+        privacyPolicyVersion: values.privacyPolicyVersion,
       };
-      const response = await serverService.signUp(req);
+      const response = await authService.signUp(req);
       return response;
     } else {
       const error: resError = {
@@ -107,15 +120,16 @@ const userSlice = createSlice({
     //Action เปลี่ยนแปลงค่าแบบ Asnyc
     //fullfilled = complete/ rejected/ pending = processing
     builder.addCase(signUpAsync.fulfilled, (state, action) => {
-      writeLog(
-        `signUpAsync.fulfilled action payload => ${JSON.stringify(
-          action.payload
-        )}`
-      );
+      // writeLog(
+      //   `signUpAsync.fulfilled action payload => ${JSON.stringify(
+      //     action.payload
+      //   )}`
+      // );
       var res = action.payload;
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
         Router.push("/auth/verifyemail");
+        state.isRequestSuccess = false;
       } else if (res?.isSuccess == false) {
         var _msg = res?.errors[0]?.message ?? "";
         if (_msg == "CheckboxFail") {
@@ -125,6 +139,24 @@ const userSlice = createSlice({
           state.isRedCheckBox = false;
           state.error = _msg;
         }
+      }
+    });
+    builder.addCase(getPrivacyPolicyAsync.fulfilled, (state, action) => {
+      if (state.privacyVersion != "") return;
+      // writeLog(
+      //   `getPrivacyPolicyAsync.fulfilled action payload => ${JSON.stringify(
+      //     action.payload
+      //   )}`
+      // );
+      var res = action.payload;
+      if (res?.isSuccess) {
+        state.privacyVersion = res.version;
+        //todo pop: Language change
+        state.privacyDetailHtml = res.privacyPolicyTextTh;
+      } else {
+        var _msg = res?.errors[0]?.message ?? "";
+        state.isRedCheckBox = false;
+        state.error = _msg;
       }
     });
   },

@@ -10,3 +10,7 @@ export interface BaseApiResponse {
   isSuccess: boolean;
   errors: Error[];
 }
+
+export interface BaseApiRequest {
+  requestId: string;
+}
