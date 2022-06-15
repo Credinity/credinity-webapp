@@ -296,10 +296,12 @@ export default function SignUpPage() {
           </Formik>
         </Grid>
         <Grid item xs={12} sx={{ mx: 4 }}>
-          <CustomizedDialogs
-            title="นโยบายรักษาข้อมูลส่วนบุคคล"
-            htmlDetail={user.privacyDetailHtml}
-          />
+          {user.privacyVersion != "" ? (
+            <CustomizedDialogs
+              title="นโยบายรักษาข้อมูลส่วนบุคคล"
+              htmlDetail={user.privacyDetailHtml}
+            />
+          ) : null}
         </Grid>
       </Grid>
     </PageContainer>
