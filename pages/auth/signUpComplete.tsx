@@ -5,7 +5,7 @@ import { Box, Button, Grid, Link, Paper, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 
-export default function VerifyEmailPage() {
+export default function SignUpComplete() {
   const user = useSelector(userSelector);
   return (
     <PageContainer
