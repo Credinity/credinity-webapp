@@ -16,8 +16,8 @@ const ApiCaller = async ({
     req: any;
     token?: string;
 }): Promise<any> => {
+    var logger = new CredLogger("API_CALLER");
     try {
-        var logger = new CredLogger("API_CALLER");
         if (
             method == null ||
             method == undefined ||
@@ -35,11 +35,13 @@ const ApiCaller = async ({
         if (token) headers["Authorization"] = `Bearer ${token}`;
 
         req.requestId = uuidv4();
+
         let config: AxiosRequestConfig<any> = {
             method: method,
             headers: headers,
             url: process.env.BASE_SERVICE_API + url,
             data: req,
+            timeout: 10000,
         };
 
         logger.info(`[REQUEST] ${url}:`, JSON.stringify(req));
@@ -61,7 +63,7 @@ const ApiCaller = async ({
         logger.info(`[RESPONSE] ${url}:`, JSON.stringify(response.data));
         throw new Error(response.data.message);
     } catch (error) {
-        console.log(`[RESPONSE] ${url}:`, JSON.stringify(error));
+        logger.error(`[RESPONSE] ${url}:`, JSON.stringify(error));
         throw error;
     }
 };

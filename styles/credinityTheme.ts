@@ -1,4 +1,4 @@
-import { Primary, Secondary, White } from "@/public/constants/color.constant";
+import { Primary, Secondary, White, VenetianRed } from "@/public/constants/color.constant";
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
@@ -53,5 +53,8 @@ export const theme = createTheme({
     secondary: {
       main: Secondary,
     },
+    error:{
+      main: VenetianRed,
+    }
   },
 });

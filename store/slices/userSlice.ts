@@ -128,7 +128,7 @@ const userSlice = createSlice({
       var res = action.payload;
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
-        Router.push("/auth/verifyemail");
+        Router.push("/auth/signUpComplete");
         state.isRequestSuccess = false;
       } else if (res?.isSuccess == false) {
         var _msg = res?.errors[0]?.message ?? "";

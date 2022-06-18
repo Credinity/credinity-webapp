@@ -19,6 +19,7 @@ function jwtMiddleware(req: NextApiRequest, res: NextApiResponse) {
             "/api/auth/validateResetPasswordKey",
             "/api/auth/resetPassword",
             "/api/termsApi/getPrivacyPolicy",
+            "/api/auth/activateUser",
         ],
     });
 
