@@ -1,11 +1,9 @@
 import CredinityFullFooter from "@/components/layouts/CredinityFullFooter";
 import AppBarHeader from "@/components/layouts/AppBarHeader";
 import PageContainer from "@/components/layouts/PageContainer";
-import { White } from "@/public/constants/color.constant";
 import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import {
-  Button,
   CircularProgress,
   Grid,
   Paper,
@@ -15,7 +13,9 @@ import {
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
+import Image from "next/image";
+import MainPageImg from "../public/img/contents/mainpageImg.png";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
 export default function Index() {
   const user = useSelector(userSelector);
   const [isReadMore, setIsReadMore]: [boolean, Function] = useState(false);
@@ -85,119 +85,50 @@ export default function Index() {
       loadingMessage="Redirecting..."
     >
       <AppBarHeader menuList={menuArray} />
-      <Grid
-        container
+      <Stack
         direction="column"
-        gridTemplateColumns="auto"
-        sx={{ px: "40px" }}
+        justifyContent="center"
+        spacing={1}
+        sx={{ px: "20px" }}
       >
-        <Grid
-          item
-          container
-          justifyItems="center"
-          alignItems="center"
-          sx={{ mt: 1 }}
-        >
-          <Typography variant="h3" textAlign="center">
-            Credinity, a P2P lending and investment service platform
-          </Typography>
-        </Grid>
-
-        <Grid
-          item
-          container
-          justifyItems="center"
-          alignItems="center"
-          sx={{ paddingY: 2 }}
-        >
-          {isReadMore ? null : (
-            <Button
-              type="button"
-              variant="contained"
-              style={{
-                backgroundColor: White,
-                border: "1px solid #808080",
-                color: "black",
-                boxShadow: "none",
-                width: "100%",
-              }}
-              onClick={() => {
-                setIsReadMore(true);
-              }}
-            >
-              <Typography variant="h3">READ MORE</Typography>
-            </Button>
-          )}
-        </Grid>
-        <Grid item container justifyItems="center" alignItems="center">
-          {/* <Image
-            src=""
-            alt=""
-            width={1900}
-            height={1600}
-          /> */}
-
-          <Paper
-            elevation={3}
-            sx={{
-              Width: 1000,
-              Height: 800,
-              backgroundColor: "lightgray",
-            }}
-          />
-        </Grid>
-        {isReadMore ? moreCards() : null}
-        <Grid item container sx={{ paddingY: 2 }}>
-          {isSignIn ? (
-            <Stack alignItems="center">
-              <CircularProgress />
-            </Stack>
-          ) : (
-            <Button
-              style={{
-                backgroundColor: "#808080",
-                color: White,
-                textTransform: "none",
-                fontWeight: "bold",
-              }}
-              fullWidth
-              onClick={() => {
-                setSignIn(true);
-                routePage("/auth/signIn");
-                console.log(window.innerHeight);
-                setSignIn(false);
-              }}
-            >
-              <Typography variant="h3">Sign In</Typography>
-            </Button>
-          )}
-        </Grid>
+        <Typography variant="h3" textAlign="center">
+          Credinity, a P2P lending and investment service platform
+        </Typography>
+        <Image
+          priority
+          src={MainPageImg}
+          alt="Main Photo"
+          layout="responsive"
+          width={800}
+          height={1000}
+        />
+        <Typography variant="caption" textAlign="start">
+          เราเป็นตัวกลางในการทำให้
+          ผู้ขอสินเชื่อและผู้ให้สินเชื่อมาพบกันโดยที่มีสินทรัพย์ค้ำประกัน
+          โดยเราจะเป็นผู้จัดการเอกสาร
+          รวมถึงรองรับความเสี่ยงของสินเชื่อให้กับผู้ให้สินเชื่อ
+          สนใจร่วมเป็นส่วนหนึ่งของเรา
+        </Typography>
         <Grid item container sx={{ paddingY: 1 }}>
           {isSignUp ? (
             <Stack alignItems="center">
               <CircularProgress />
             </Stack>
           ) : (
-            <Button
-              style={{
-                backgroundColor: "#D3D3D3",
-                color: "black",
-                textTransform: "none",
-                fontWeight: "bold",
-              }}
-              fullWidth
+            <PrimaryButton
+              disabled={isSignUp}
               onClick={() => {
                 setSignUp(true);
                 routePage("/auth/signUp");
                 setSignUp(false);
               }}
             >
-              <Typography variant="h3">Register</Typography>
-            </Button>
+              สมัครสมาชิกที่นี่
+            </PrimaryButton>
           )}
         </Grid>
         <CredinityFullFooter />
-      </Grid>
+      </Stack>
     </PageContainer>
   );
 }

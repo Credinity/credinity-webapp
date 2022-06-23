@@ -1,8 +1,7 @@
 import React from "react";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
-import { Checkbox, CircularProgress, Grid, Link } from "@mui/material";
+import { Checkbox, CircularProgress, Grid, Link, Stack } from "@mui/material";
 import { Gainsboro, Ladybug } from "@/public/constants/color.constant";
 import FormikTextField from "@/components/inputs/FormikTextField";
 import Image from "next/image";
@@ -18,11 +17,9 @@ import {
 import { useSelector } from "react-redux";
 import writeLog from "@/utils/logUtils";
 import PageContainer from "@/components/layouts/PageContainer";
-import {
-  pageSelector,
-  setIsOpenPrivacyConterm,
-} from "@/store/slices/pageSlice";
+import { setIsOpenPrivacyConterm } from "@/store/slices/pageSlice";
 import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
 
 const initialValues: SignUpFormProps = {
   email: "",
@@ -179,65 +176,45 @@ export default function SignUpPage() {
           </Grid>
         ) : null}
 
-        <Grid container sx={{ ml: 5, my: 1.3 }} alignItems="center">
-          <Grid
-            item
-            xs={0.5}
-            sx={{ mr: 1.2 }}
-            justifyContent="center"
-            display="flex"
-          >
-            <Checkbox
-              id="isAgreeCond"
-              name="isAgreeCond"
-              sx={{
-                color: user.isRedCheckBox ? Ladybug : Gainsboro,
+        <Stack direction="row" alignItems="center" sx={{ ml: -1, my: 1.3 }}>
+          <Checkbox
+            id="isAgreeCond"
+            name="isAgreeCond"
+            sx={{
+              color: user.isRedCheckBox ? Ladybug : Gainsboro,
+            }}
+            checked={values.isAgreeCond}
+            onChange={handleChange}
+          />
+          <Typography display="inline" sx={{ mr: 1 }}>
+            I agree to Credinity&apos;s &nbsp;
+            <Link
+              display="inline"
+              href=""
+              color="primary"
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(setIsOpenPrivacyConterm(true));
               }}
-              checked={values.isAgreeCond}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={10}
-            justifyContent="center"
-            alignItems="center"
-            display="flex"
-          >
-            <Typography display="inline" sx={{ mr: 1 }}>
-              I agree to Credinity&apos;s &nbsp;
-              <Link
-                display="inline"
-                href=""
-                color="primary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(setIsOpenPrivacyConterm(true));
-                }}
-              >
-                Privacy policy
-              </Link>
-            </Typography>
-          </Grid>
-        </Grid>
+            >
+              Privacy policy
+            </Link>
+          </Typography>
+        </Stack>
 
         <Grid item container xs={12} justifyContent="center" sx={{ mb: 2 }}>
           {user.isProcessing ? (
             <CircularProgress />
           ) : (
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              fullWidth
+            <PrimaryButton
               disabled={user.isProcessing}
               onClick={() => {
                 submitAction = "signUpAction";
                 handleSubmit();
               }}
             >
-              <Typography>SIGN UP</Typography>
-            </Button>
+              SIGN UP
+            </PrimaryButton>
           )}
         </Grid>
         <Grid
@@ -250,7 +227,7 @@ export default function SignUpPage() {
         >
           <Typography display="inline" fontWeight="medium" sx={{ mr: 1 }}>
             Already have an account? &nbsp;
-            <Link href="" color="primary">
+            <Link href="/auth/signIn" color="primary">
               Sign in
             </Link>
           </Typography>
