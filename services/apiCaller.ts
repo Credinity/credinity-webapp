@@ -42,7 +42,7 @@ const ApiCaller = async ({
             headers: headers,
             url: process.env.BASE_SERVICE_API + url,
             data: req,
-            timeout: 10000,
+            timeout: 30000,
         };
 
         logger.info(`[REQUEST] ${url}:`, JSON.stringify(req));
