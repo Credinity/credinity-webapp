@@ -5,8 +5,6 @@ import { theme } from "styles/credinityTheme";
 import Head from "next/head";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
-import "@/public/css/Home.module.css";
-import "@/public/css/globals.css";
 
 function CredinityApp({ Component, pageProps }: AppProps) {
   return (

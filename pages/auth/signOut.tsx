@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 //#endregion
 
 //#region UI Components
-import PageContainer from "@/components/layout/PageContainer";
+import PageContainer from "@/components/layouts/PageContainer";
 //#endregion
 
 //#region Types

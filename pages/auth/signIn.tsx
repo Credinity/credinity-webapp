@@ -14,10 +14,10 @@ import {
   Divider,
 } from "@mui/material";
 import { FacebookRounded, Google } from "@mui/icons-material";
-import CredinityTextField from "@/components/input/CredinityTextField";
-import CredinityPillButton from "@/components/input/CredinityPillButton";
-import LanguageChanger from "@/components/input/LanguageChanger";
-import PageContainer from "@/components/layout/PageContainer";
+import CredinityTextField from "@/components/inputs/CredinityTextField";
+import CredinityPillButton from "@/components/inputs/CredinityPillButton";
+import LanguageChanger from "@/components/inputs/LanguageChanger";
+import PageContainer from "@/components/layouts/PageContainer";
 //#endregion
 
 //#region Types
@@ -73,7 +73,7 @@ const SignInPage: NextPage = () => {
         return;
       })
       .catch((err: any) => {
-        console.error('login:',err)
+        console.error("login:", err);
         setError(err.message);
         setIsLoading(false);
       });

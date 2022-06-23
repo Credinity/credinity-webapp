@@ -58,9 +58,9 @@ import {
 //#region service
 import axios from "axios";
 import { AnyAaaaRecord } from "dns";
-import LanguageChanger from "@/components/input/LanguageChanger";
-import PageContainer from "@/components/layout/PageContainer";
-import CredinityTextField from "@/components/input/CredinityTextField";
+import LanguageChanger from "@/components/inputs/LanguageChanger";
+import PageContainer from "@/components/layouts/PageContainer";
+import CredinityTextField from "@/components/inputs/CredinityTextField";
 import jsonwebtoken from "jsonwebtoken";
 //#endregion
 

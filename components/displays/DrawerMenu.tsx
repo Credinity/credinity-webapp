@@ -2,12 +2,20 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import List from "@mui/material/List";
-import { AppBar, ListItemButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-import CredinityFooter from "./CredinityFooter";
-import { White } from "@/public/constants/color.constant";
+import CredinityFooter from "@/components/layouts/CredinityFooter";
+import { Gainsboro, White } from "@/public/constants/color.constant";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
@@ -102,18 +110,27 @@ export default function DrawerMenu({ menuList }: Props) {
         <Box minWidth="100vw" minHeight="100%">
           <List sx={{ mt: 4, ml: 1 }}>
             {menuList.map(({ name, path }, index) => (
-              <ListItemButton
-                key={index}
-                sx={{ mb: 1 }}
-                onClick={() => {
-                  path ? routePage(path) : null;
-                }}
-              >
-                <Typography variant="h2">{name}</Typography>
-              </ListItemButton>
+              <Box key={index}>
+                <ListItem
+                  sx={{ mb: 1 }}
+                  onClick={() => {
+                    path ? routePage(path) : null;
+                  }}
+                >
+                  <ListItemButton>
+                    <ListItemText
+                      primary={<Typography variant="h3">{name}</Typography>}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider
+                  variant="middle"
+                  sx={{ mx: 4, backgroundColor: Gainsboro }}
+                />
+              </Box>
             ))}
+            <Box sx={{ height: "10vh" }} />
           </List>
-          <Box sx={{ flexGrow: 1, height: "15%" }} />
 
           <CredinityFooter />
         </Box>
