@@ -35,13 +35,14 @@ const ApiCaller = async ({
         if (token) headers["Authorization"] = `Bearer ${token}`;
 
         req.requestId = uuidv4();
+        if (!req.requestId) req.requestId = "unknownUuidError";
 
         let config: AxiosRequestConfig<any> = {
             method: method,
             headers: headers,
             url: process.env.BASE_SERVICE_API + url,
             data: req,
-            timeout: 10000,
+            timeout: 30000,
         };
 
         logger.info(`[REQUEST] ${url}:`, JSON.stringify(req));
@@ -63,7 +64,7 @@ const ApiCaller = async ({
         logger.info(`[RESPONSE] ${url}:`, JSON.stringify(response.data));
         throw new Error(response.data.message);
     } catch (error) {
-        logger.error(`[RESPONSE] ${url}:`, JSON.stringify(error));
+        logger.error(`[ERROR] ${url}:`, JSON.stringify(error));
         throw error;
     }
 };
