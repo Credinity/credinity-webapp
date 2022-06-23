@@ -268,6 +268,15 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
 }) => {
   var { key } = query;
+  if(key == undefined || key.length == 0)
+    return {
+      props:{
+        resetPassKey: key,
+        keyValidationError:
+        "Cannot validate reset password token. Please try again later.",
+      }
+    };
+
   var requestObj = {
     key: key,
   };
@@ -276,7 +285,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     let result = await axios
     .post(
       process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API +
-        "/auth/validateResetPasswordKey",
+        "auth/validateResetPasswordKey",
       requestObj
     )
     .then((response) => {
