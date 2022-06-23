@@ -1,6 +1,6 @@
-import CredinityFooter from "@/components/display/CredinityFooter";
-import AppBarHeader from "@/components/layout/AppBarHeader";
-import PageContainer from "@/components/layout/PageContainer";
+import CredinityFullFooter from "@/components/layouts/CredinityFullFooter";
+import AppBarHeader from "@/components/layouts/AppBarHeader";
+import PageContainer from "@/components/layouts/PageContainer";
 import { White } from "@/public/constants/color.constant";
 import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
@@ -16,9 +16,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-type Props = {};
-
-export default function Index({}: Props) {
+export default function Index() {
   const user = useSelector(userSelector);
   const [isReadMore, setIsReadMore]: [boolean, Function] = useState(false);
   const [isSignIn, setSignIn]: [boolean, Function] = useState(false);
@@ -142,8 +140,8 @@ export default function Index({}: Props) {
           <Paper
             elevation={3}
             sx={{
-              minWidth: "100%",
-              minHeight: "55vh",
+              Width: 1000,
+              Height: 800,
               backgroundColor: "lightgray",
             }}
           />
@@ -166,6 +164,7 @@ export default function Index({}: Props) {
               onClick={() => {
                 setSignIn(true);
                 routePage("/auth/signIn");
+                console.log(window.innerHeight);
                 setSignIn(false);
               }}
             >
@@ -197,7 +196,7 @@ export default function Index({}: Props) {
             </Button>
           )}
         </Grid>
-        <CredinityFooter />
+        <CredinityFullFooter />
       </Grid>
     </PageContainer>
   );

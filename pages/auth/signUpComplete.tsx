@@ -1,4 +1,4 @@
-import PageContainer from "@/components/layout/PageContainer";
+import PageContainer from "@/components/layouts/PageContainer";
 import { userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import { Box, Button, Grid, Link, Paper, Typography } from "@mui/material";

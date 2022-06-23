@@ -1,5 +1,5 @@
-import AppBarHeader from "@/components/layout/AppBarHeader";
-import PageContainer from "@/components/layout/PageContainer";
+import AppBarHeader from "@/components/layouts/AppBarHeader";
+import PageContainer from "@/components/layouts/PageContainer";
 import { pageSelector } from "@/store/slices/pageSlice";
 import { Button, Grid, Paper, Typography } from "@mui/material";
 import React from "react";

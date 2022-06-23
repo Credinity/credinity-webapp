@@ -1,4 +1,4 @@
-import PageContainer from "@/components/layout/PageContainer";
+import PageContainer from "@/components/layouts/PageContainer";
 import { Button, Grid, Typography } from "@mui/material";
 import { GetServerSideProps, NextPage } from "next";
 import React from "react";
