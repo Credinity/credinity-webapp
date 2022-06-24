@@ -7,7 +7,7 @@ import {
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
-  //K. Jane Request Style : 23 Jun 2022
+  //K. Jane Style : 24 Jun 2022
   typography: {
     fontFamily: "Kanit",
     fontWeightLight: 100,
@@ -20,36 +20,36 @@ export const theme = createTheme({
       lineHeight: 1.2,
     },
     h1: {
-      fontSize: "48px",
-      lineHeight: 1,
+      fontSize: "28px",
+      lineHeight: 1.3,
     },
     h2: {
-      fontSize: "38px",
-      lineHeight: 1,
+      fontSize: "24px",
+      lineHeight: 1.3,
     },
     h3: {
-      fontSize: "24px",
-      lineHeight: 1.2,
+      fontSize: "20px",
+      lineHeight: 1.5,
     },
     h4: {
-      fontSize: "16px",
-      lineHeight: 1.7,
+      fontSize: "18px",
+      lineHeight: 1.6,
     },
     h5: {
-      fontSize: "14px",
-      lineHeight: 1.7,
+      fontSize: "16px",
+      lineHeight: 1.6,
     },
     body1: {
-      fontSize: "14px",
-      lineHeight: 1.7,
+      fontSize: "16px",
+      lineHeight: 1.6,
     },
     body2: {
-      fontSize: "12px",
-      lineHeight: 1.7,
+      fontSize: "14px",
+      lineHeight: 1.6,
     },
     caption: {
       fontSize: "14px",
-      lineHeight: 1.7,
+      lineHeight: 1.6,
     },
   },
   spacing: 8,
