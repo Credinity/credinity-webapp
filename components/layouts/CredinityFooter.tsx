@@ -1,18 +1,13 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { Grid } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 
-export default function CredinityFooter() {
+export default function CredinityFooter(props: any) {
   return (
-    <Grid item container alignSelf="center" justifyContent="center">
-      <Typography
-        variant="body1"
-        align="center"
-        fontWeight="bold"
-        sx={{ mt: "1.5rem" }}
-      >
+    <Box width="100vw" {...props}>
+      <Typography variant="body2" align="center" fontWeight="bold">
         ©2022 Credinity .. All right reserved
       </Typography>
-    </Grid>
+    </Box>
   );
 }

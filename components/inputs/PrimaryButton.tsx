@@ -18,7 +18,9 @@ const CredinityButton = styled(Button)<ButtonProps>(({ theme }) => ({
 export default function PrimaryButton(props: any) {
   return (
     <CredinityButton fullWidth variant="contained" {...props}>
-      <Typography variant="button"> {props.children}</Typography>
+      <Typography variant="button" sx={{ wordWrap: "break-word" }}>
+        {props.children}
+      </Typography>
     </CredinityButton>
   );
 }
