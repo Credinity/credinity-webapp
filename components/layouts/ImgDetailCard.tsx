@@ -1,41 +1,27 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
 import ImageHover from "@/components/displays/ImgHover";
-import { StaticImageData } from "next/image";
+import { FeatureItem } from "@/models/content.model";
 
-type Props = {
-  imgNormal: StaticImageData;
-  imgHover: StaticImageData;
-  imgAlt: string;
-  title: string;
-  detail: string;
-};
-
-export default function ImgDetailCard({
-  imgNormal,
-  imgHover,
-  imgAlt,
-  title,
-  detail,
-}: Props) {
+export default function ImgDetailCard(item: FeatureItem) {
   return (
     <Stack direction="column" justifyContent="center">
       <Stack alignItems="center" justifyContent="center">
-        <ImageHover imgNormal={imgNormal} imgHover={imgHover} imgAlt={imgAlt} />
+        <ImageHover {...item} />
       </Stack>
       <Typography
         variant="h3"
         textAlign="center"
         sx={{ wordWrap: "break-word" }}
       >
-        {title}
+        {item.title}
       </Typography>
       <Typography
         variant="caption"
         textAlign="start"
         sx={{ mt: 1, wordWrap: "break-word" }}
       >
-        {detail}
+        {item.detail}
       </Typography>
     </Stack>
   );

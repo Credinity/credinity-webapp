@@ -5,20 +5,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { useRouter } from "next/router";
 import { Secondary } from "@/public/constants/color.constant";
+import { ArticleItem } from "@/models/content.model";
 
-type Props = {
-  contentId: string;
-  imgContent: string;
-  altImg: string;
-  title: string;
-  detail: string;
-};
-
-export default function ArticleCard(props: Props) {
+export default function ArticleCard(item: ArticleItem) {
   const router = useRouter();
   return (
     <Card variant="outlined" sx={{ padding: 2, borderRadius: 4 }}>
-      <CardMedia component="img" src={props.imgContent} alt={props.altImg} />
+      <CardMedia component="img" src={item.pathImg} alt={item.altImg} />
       <CardContent>
         <Typography
           gutterBottom
@@ -27,12 +20,12 @@ export default function ArticleCard(props: Props) {
           fontWeight="bold"
           sx={{ wordWrap: "break-word" }}
         >
-          {props.title}
+          {item.title}
         </Typography>
         {/* <ReadMoreText variant="body2">{props.detail}</ReadMoreText> */}
 
         <Typography sx={{ display: "inline", width: "100%" }}>
-          {props.detail.slice(0, 120)}
+          {item.detail.slice(0, 120)}
           <Box component="span">
             <Link color={Secondary} href="/content/article">
               {"... อ่านเพิ่ม >>"}
