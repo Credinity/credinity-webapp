@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import type { GetServerSideProps } from "next";
+import jsonwebtoken from "jsonwebtoken";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import ImgDetailCard from "@/components/layouts/ImgDetailCard";
@@ -26,9 +28,16 @@ import AutoHover from "../public/img/features/AutoHover.png";
 import Anyone from "../public/img/features/Anyone.png";
 import AnyoneHover from "../public/img/features/AnyoneHover.png";
 import ArticleCard from "@/components/layouts/ArticleCard";
-export default function Index() {
+
+type Props = {
+  initialCheckToken: boolean;
+};
+
+export default function Index({ initialCheckToken }: Props) {
   const user = useSelector(userSelector);
   const [isSignUp, setSignUp]: [boolean, Function] = useState(false);
+  const [isContainToken, setContainToken]: [boolean, Function] =
+    useState(initialCheckToken);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const routePage = (path: string) => {
@@ -75,24 +84,26 @@ export default function Index() {
             สนใจร่วมเป็นส่วนหนึ่งของเรา
           </Typography>
         </Box>
-        <Grid item container>
-          {isSignUp ? (
-            <Stack alignItems="center">
-              <CircularProgress />
-            </Stack>
-          ) : (
-            <PrimaryButton
-              disabled={isSignUp}
-              onClick={() => {
-                setSignUp(true);
-                routePage("/auth/signUp");
-                setSignUp(false);
-              }}
-            >
-              สมัครสมาชิกที่นี่
-            </PrimaryButton>
-          )}
-        </Grid>
+        {isContainToken ? null : (
+          <Grid item container>
+            {isSignUp ? (
+              <Stack alignItems="center">
+                <CircularProgress />
+              </Stack>
+            ) : (
+              <PrimaryButton
+                disabled={isSignUp}
+                onClick={() => {
+                  setSignUp(true);
+                  routePage("/auth/signUp");
+                  setSignUp(false);
+                }}
+              >
+                สมัครสมาชิกที่นี่
+              </PrimaryButton>
+            )}
+          </Grid>
+        )}
         <Box minHeight="15px" />
         <Typography variant="h2">การบริการของเรา</Typography>
         <Divider sx={{ backgroundColor: Black, my: 2 }} />
@@ -168,3 +179,21 @@ export default function Index() {
     </PageContainer>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  var jwt = jsonwebtoken.decode(req.cookies.authorization);
+  console.log("index", { jwt });
+  if (jwt) {
+    return {
+      props: {
+        initialCheckToken: [true],
+      },
+    };
+  } else {
+    return {
+      props: {
+        initialCheckToken: [false],
+      },
+    };
+  }
+};
