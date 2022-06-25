@@ -285,7 +285,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     let result = await axios
     .post(
       process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API +
-        "auth/validateResetPasswordKey",
+        "/auth/validateResetPasswordKey",
       requestObj
     )
     .then((response) => {
