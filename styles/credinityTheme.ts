@@ -7,43 +7,49 @@ import {
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
+  //K. Jane Style : 24 Jun 2022
   typography: {
     fontFamily: "Kanit",
-    fontWeightLight: 300,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500,
-    fontWeightBold: 700,
-    h1: {
-      fontSize: "48px",
-      lineHeight: 1,
-    },
-    h2: {
-      fontSize: "38px",
-      lineHeight: 1,
-    },
-    h3: {
-      fontSize: "24px",
+    fontWeightLight: 100,
+    fontWeightRegular: 200,
+    fontWeightMedium: 300,
+    fontWeightBold: 400,
+    button: {
+      fontSize: "26px",
+      fontWeight: "300",
       lineHeight: 1.2,
     },
+    h1: {
+      fontSize: "28px",
+      lineHeight: 1.3,
+    },
+    h2: {
+      fontSize: "24px",
+      lineHeight: 1.3,
+    },
+    h3: {
+      fontSize: "20px",
+      lineHeight: 1.5,
+    },
     h4: {
-      fontSize: "16px",
-      lineHeight: 1.7,
+      fontSize: "18px",
+      lineHeight: 1.6,
     },
     h5: {
-      fontSize: "14px",
-      lineHeight: 1.7,
+      fontSize: "16px",
+      lineHeight: 1.6,
     },
     body1: {
-      fontSize: "14px",
-      lineHeight: 1.7,
+      fontSize: "16px",
+      lineHeight: 1.6,
     },
     body2: {
-      fontSize: "12px",
-      lineHeight: 1.7,
+      fontSize: "14px",
+      lineHeight: 1.6,
     },
     caption: {
       fontSize: "14px",
-      lineHeight: 1.7,
+      lineHeight: 1.6,
     },
   },
   spacing: 8,

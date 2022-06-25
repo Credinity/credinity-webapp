@@ -41,7 +41,10 @@ export default function CredinityFullFooter() {
           >
             <FontAwesomeIcon icon={faEnvelope} inverse />
             {/* //todo : Change Email */}
-            <DarkTypography variant="body2" sx={{ ml: 2 }}>
+            <DarkTypography
+              variant="body2"
+              sx={{ ml: 2, wordWrap: "break-word" }}
+            >
               Email: credinitygroup@gmail.com
             </DarkTypography>
           </Stack>
@@ -50,7 +53,10 @@ export default function CredinityFullFooter() {
             sx={{ display: "flex", alignItems: "center", ml: 2, mt: 1 }}
           >
             <FontAwesomeIcon icon={faPhone} inverse />
-            <DarkTypography variant="body2" sx={{ ml: 2 }}>
+            <DarkTypography
+              variant="body2"
+              sx={{ ml: 2, wordWrap: "break-word" }}
+            >
               Call: 035-xxx-xxx
             </DarkTypography>
           </Stack>

@@ -107,7 +107,11 @@ export default function DrawerMenu({ menuList }: Props) {
           </AppBar>
         </HeaderBar>
 
-        <Box minWidth="100vw" minHeight="100%">
+        <Box
+          minWidth="100vw"
+          minHeight="92vh"
+          sx={{ display: "flex", flexDirection: "column" }}
+        >
           <List sx={{ mt: 4, ml: 1 }}>
             {menuList.map(({ name, path }, index) => (
               <Box key={index}>
@@ -129,10 +133,9 @@ export default function DrawerMenu({ menuList }: Props) {
                 />
               </Box>
             ))}
-            <Box sx={{ height: "10vh" }} />
           </List>
-
-          <CredinityFooter />
+          <Box minHeight="20px" />
+          <CredinityFooter sx={{ mt: "auto", mb: "10px" }} />
         </Box>
       </SwipeableDrawer>
     </Box>

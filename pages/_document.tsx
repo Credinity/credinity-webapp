@@ -30,7 +30,7 @@ class CredinityDoc extends Document {
           />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400&display=swap"
           />
         </Head>
         <body>
