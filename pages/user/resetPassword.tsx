@@ -56,13 +56,14 @@ import {
 //#endregion
 
 //#region service
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { AnyAaaaRecord } from "dns";
 import LanguageChanger from "@/components/inputs/LanguageChanger";
 import PageContainer from "@/components/layouts/PageContainer";
 import CredinityTextField from "@/components/inputs/CredinityTextField";
 import jsonwebtoken from "jsonwebtoken";
 import { CredLogger } from "@/utils/logUtils";
+import { ValidateResetPasswordKey } from "@/services/userService";
 //#endregion
 
 const ResetPasswordPage: NextPage<{
@@ -277,40 +278,14 @@ export const getServerSideProps: GetServerSideProps = async ({
       }
     };
 
-  var requestObj = {
-    key: key,
-  };
-
     var credLogger = new CredLogger("ResetPasswordPage");
-    let result = await axios
-    .post(
-      process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API +
-        "/auth/validateResetPasswordKey",
-      requestObj
-    )
-    .then((response) => {
-      let { data } = response;
-      if (data.isSuccess == false) {
-      credLogger.error(data);
-      return {
-          resetPassKey: key,
-          keyValidationError: data.errors[0].message,
-        };
-      }
-
-      return {
-        resetPassKey: key,
-        keyValidationError: "",
-      };
-    })
-    .catch((error) => {
-      credLogger.error(error);
-      return {
-        resetPassKey: key,
-        keyValidationError:
-          "Cannot validate reset password token. Please try again later.",
-      };
-    });
+    credLogger.log("key", key);
+    let validationResult = await ValidateResetPasswordKey(key.toString());
+    credLogger.log("validationResult", validationResult);
+    let result = {
+      resetPassKey: validationResult?.isSuccess? key: "",
+      keyValidationError: validationResult?.isSuccess? "" : validationResult?.errors[0]?.message
+    }
   return {
     props: result,
   };
