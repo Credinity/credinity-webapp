@@ -1,5 +1,4 @@
-import { Box, Link, Paper, Stack, Typography } from "@mui/material";
-import Image, { StaticImageData } from "next/image";
+import { Box, Link, Typography } from "@mui/material";
 import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
