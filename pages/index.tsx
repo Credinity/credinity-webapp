@@ -36,8 +36,7 @@ type Props = {
 export default function Index({ initialCheckToken }: Props) {
   const user = useSelector(userSelector);
   const [isSignUp, setSignUp]: [boolean, Function] = useState(false);
-  const [isContainToken, setContainToken]: [boolean, Function] =
-    useState(initialCheckToken);
+  const [isContainToken] = useState(initialCheckToken);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const routePage = (path: string) => {
@@ -46,15 +45,23 @@ export default function Index({ initialCheckToken }: Props) {
     dispatch(setRequestSuccess(false));
   };
 
-  const menuArray = [
-    { name: "LOG IN", path: "/auth/signIn" },
-    { name: "REGISTER", path: "/auth/signUp" },
-    { name: "INVESTOR", path: "" },
-    { name: "LOAN", path: "" },
-    { name: "NEWS", path: "" },
-    { name: "ABOUT US", path: "" },
-    { name: "PROFILE", path: "" },
-  ];
+  const menuArray = isContainToken
+    ? [
+        { name: "INVESTOR", path: "" },
+        { name: "LOAN", path: "" },
+        { name: "NEWS", path: "" },
+        { name: "ABOUT US", path: "" },
+        { name: "PROFILE", path: "" },
+      ]
+    : [
+        { name: "LOG IN", path: "/auth/signIn" },
+        { name: "REGISTER", path: "/auth/signUp" },
+        { name: "INVESTOR", path: "" },
+        { name: "LOAN", path: "" },
+        { name: "NEWS", path: "" },
+        { name: "ABOUT US", path: "" },
+        { name: "PROFILE", path: "" },
+      ];
   return (
     <PageContainer
       pageName="Index"
@@ -180,7 +187,7 @@ export default function Index({ initialCheckToken }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   var jwt = jsonwebtoken.decode(req.cookies.authorization);
   console.log("index", { jwt });
   if (jwt) {

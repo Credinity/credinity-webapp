@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import React from "react";
 import ImageHover from "@/components/displays/ImgHover";
 import { StaticImageData } from "next/image";
