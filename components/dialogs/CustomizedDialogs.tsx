@@ -37,7 +37,8 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
     <DialogTitle
       sx={{ m: 0, p: 2 }}
       {...other}
-      style={{ fontWeight: "bold", fontSize: 35 }}
+      variant="h1"
+      style={{ fontWeight: "bold" }}
     >
       {children}
       {onClose ? (
