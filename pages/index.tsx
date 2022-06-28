@@ -131,15 +131,16 @@ export default function Index({ initialCheckToken }: Props) {
                 <CircularProgress />
               </Stack>
             ) : (
+              // todo: แสดงปุ่มเมื่อผ่านการ login และยังไม่ ekyc
               <PrimaryButton
                 disabled={isSignUp}
                 onClick={() => {
                   setSignUp(true);
-                  routePage("/auth/signUp");
+                  routePage("/ekyc/faceRecognition");
                   setSignUp(false);
                 }}
               >
-                สมัครสมาชิกที่นี่
+                ยืนยันตัวตน
               </PrimaryButton>
             )}
           </Grid>

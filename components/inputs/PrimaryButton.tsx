@@ -1,11 +1,6 @@
-import {
-  AntiFlashWhite,
-  Diamond,
-  Gainsboro,
-  White,
-} from "@/public/constants/color.constant";
+import { Diamond, White } from "@/public/constants/color.constant";
 import { Button, ButtonProps, styled, Typography } from "@mui/material";
-import React, { MouseEventHandler } from "react";
+import React from "react";
 
 const CredinityButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: White,
