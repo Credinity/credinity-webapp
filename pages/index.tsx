@@ -20,15 +20,14 @@ import Image from "next/image";
 import ImgDetailCard from "@/components/layouts/ImgDetailCard";
 import { Black } from "@/public/constants/color.constant";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
-import MainPageImg from "../public/img/contents/mainpageImg.png";
-import Auction from "../public/img/features/Auction.png";
-import AuctionHover from "../public/img/features/AuctionHover.png";
-import Auto from "../public/img/features/Auto.png";
-import AutoHover from "../public/img/features/AutoHover.png";
-import Anyone from "../public/img/features/Anyone.png";
-import AnyoneHover from "../public/img/features/AnyoneHover.png";
-import ArticleCard from "@/components/displays/Carousel/ArticleCard";
-import { ArticleItem, FeatureItem } from "@/models/content.model";
+import MainPageImg from "@/public/img/contents/mainpageImg.png";
+import Auction from "@/public/img/features/Auction.png";
+import AuctionHover from "@/public/img/features/AuctionHover.png";
+import Auto from "@/public/img/features/Auto.png";
+import AutoHover from "@/public/img/features/AutoHover.png";
+import Anyone from "@/public/img/features/Anyone.png";
+import AnyoneHover from "@/public/img/features/AnyoneHover.png";
+import { FeatureItem } from "@/models/content.model";
 import ArticleCarouselView from "@/components/displays/Carousel/ArticleCarouselView";
 
 type Props = {
@@ -106,7 +105,7 @@ export default function Index({ initialCheckToken }: Props) {
         direction="column"
         justifyContent="center"
         spacing={1}
-        sx={{ px: "20px" }}
+        sx={{ mx: "5vw" }}
       >
         <Box sx={{ mb: 2 }}>
           <Typography variant="h1" fontWeight="bold" textAlign="center">
@@ -133,6 +132,7 @@ export default function Index({ initialCheckToken }: Props) {
             ) : (
               // todo: แสดงปุ่มเมื่อผ่านการ login และยังไม่ ekyc
               <PrimaryButton
+                fullWidth
                 disabled={isSignUp}
                 onClick={() => {
                   setSignUp(true);

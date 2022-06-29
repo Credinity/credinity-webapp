@@ -207,6 +207,7 @@ export default function SignUpPage() {
             <CircularProgress />
           ) : (
             <PrimaryButton
+              fullWidth
               disabled={user.isProcessing}
               onClick={() => {
                 submitAction = "signUpAction";
@@ -251,7 +252,7 @@ export default function SignUpPage() {
             height={100}
           />
         </Grid>
-        <Grid item xs={12} sx={{ mx: 4 }}>
+        <Grid item xs={12} sx={{ mx: "5vw" }}>
           <Formik
             initialValues={initialValues!}
             onSubmit={async (values) => {
@@ -272,7 +273,7 @@ export default function SignUpPage() {
             {(signUpProps) => registerForm(signUpProps)}
           </Formik>
         </Grid>
-        <Grid item xs={12} sx={{ mx: 4 }}>
+        <Grid item xs={12} sx={{ mx: "5vw" }}>
           {user.privacyVersion != "" ? (
             <CustomizedDialogs
               title="นโยบายรักษาข้อมูลส่วนบุคคล"
