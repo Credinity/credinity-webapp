@@ -11,7 +11,6 @@ import {
   validateEmail,
   validatePassword,
 } from "helpers/client/regexValidation";
-import writeLog from "@/utils/logUtils";
 import Router from "next/router";
 import { Error as resError } from "@/models/base.model";
 
