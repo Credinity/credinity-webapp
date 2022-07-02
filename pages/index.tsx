@@ -1,7 +1,6 @@
 import CredinityFullFooter from "@/components/layouts/CredinityFullFooter";
 import AppBarHeader from "@/components/layouts/AppBarHeader";
 import PageContainer from "@/components/layouts/PageContainer";
-import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import {
   Box,
@@ -15,7 +14,6 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import type { GetServerSideProps } from "next";
 import jsonwebtoken from "jsonwebtoken";
-import { useSelector } from "react-redux";
 import Image from "next/image";
 import ImgDetailCard from "@/components/layouts/ImgDetailCard";
 import { Black } from "@/public/constants/color.constant";
@@ -35,15 +33,14 @@ type Props = {
 };
 
 export default function Index({ initialCheckToken }: Props) {
-  const user = useSelector(userSelector);
-  const [isSignUp, setSignUp]: [boolean, Function] = useState(false);
+  const [isPageLoading, setisPageLoading]: [boolean, Function] =
+    useState(false);
   const [isContainToken] = useState(initialCheckToken);
-  const dispatch = useAppDispatch();
   const router = useRouter();
   const routePage = (path: string) => {
-    dispatch(setRequestSuccess(true));
+    setisPageLoading(true);
     router.push(path);
-    dispatch(setRequestSuccess(false));
+    setisPageLoading(false);
   };
 
   const menuArray = isContainToken
@@ -97,7 +94,7 @@ export default function Index({ initialCheckToken }: Props) {
   return (
     <PageContainer
       pageName="Index"
-      loading={user.isRequestSuccess}
+      loading={isPageLoading}
       loadingMessage="Redirecting..."
     >
       <AppBarHeader menuList={menuArray} />
@@ -125,7 +122,7 @@ export default function Index({ initialCheckToken }: Props) {
         </Box>
         {isContainToken ? (
           <Grid item container>
-            {isSignUp ? (
+            {isPageLoading ? (
               <Stack alignItems="center">
                 <CircularProgress />
               </Stack>
@@ -133,11 +130,9 @@ export default function Index({ initialCheckToken }: Props) {
               // todo: แสดงปุ่มเมื่อผ่านการ login และยังไม่ ekyc
               <PrimaryButton
                 fullWidth
-                disabled={isSignUp}
+                disabled={isPageLoading}
                 onClick={() => {
-                  setSignUp(true);
-                  routePage("/ekyc/faceRecognition");
-                  setSignUp(false);
+                  routePage("/ekyc/stepIntro");
                 }}
               >
                 ยืนยันตัวตน

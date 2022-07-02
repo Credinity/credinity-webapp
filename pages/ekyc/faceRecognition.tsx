@@ -1,15 +1,14 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import Image from "next/image";
-import { useSelector } from "react-redux";
 import { Box, Stack, Typography } from "@mui/material";
-import { pageSelector } from "@/store/slices/pageSlice";
 import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import CameraCover from "@/public/img/cameracover/profile-cover-camera.svg";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import CheckIcon from "@mui/icons-material/Check";
 import { PhotoCamera } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 const videoConstraints = {
   width: 300,
@@ -18,7 +17,9 @@ const videoConstraints = {
 };
 
 export default function faceRecognition() {
-  const page = useSelector(pageSelector);
+  const router = useRouter();
+  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
+    useState(false);
   const [imgSrc, setImgSrc]: [string, Function] = useState("");
   const videoRef = useRef(null);
   const capture = React.useCallback(() => {
@@ -26,38 +27,25 @@ export default function faceRecognition() {
       const imageSrc = videoRef.current.getScreenshot();
       if (imageSrc) {
         setImgSrc(imageSrc);
-      } else {
-        // navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(
-        //   (stream) => {
-        //     // camera available
-        //     videoRef.current.srcObject = stream;
-        //     videoRef.current.play();
-        //   },
-        //   (e) => {
-        //     // camera not available
-        //   }
-        // );
       }
     }
   }, [imgSrc]);
   return (
     <PageContainer
       pageName="Face Recognition"
-      loading={page.isRequestSuccess}
+      loading={isPageLoading}
       loadingMessage="Redirecting..."
     >
       <BackButton />
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          mx: "5vw",
-        }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ mx: "5vw" }}
       >
-        <Typography fontWeight="bold" variant="h2" sx={{ my: "3vh" }}>
-          สแกนใบหน้าของคุณ
+        <Typography fontWeight="bold" variant="h1" sx={{ my: "3vh" }}>
+          ถ่ายใบหน้าของคุณ
         </Typography>
         <Box position="relative" sx={{ mb: 5 }}>
           {imgSrc == "" ? (
@@ -90,12 +78,10 @@ export default function faceRecognition() {
             />
           </Box>
           <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "start",
-              alignItems: "start",
-            }}
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+            alignItems="start"
           >
             <Typography
               sx={{ mt: 3 }}
@@ -125,12 +111,10 @@ export default function faceRecognition() {
             </Stack>
           </Box>
         </Box>
-        <>
+        <Stack spacing={2} width="100%">
           {imgSrc != "" ? (
             <PrimaryButton
-              sx={{ mx: 5 }}
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
                 setImgSrc("");
               }}
             >
@@ -139,17 +123,26 @@ export default function faceRecognition() {
             </PrimaryButton>
           ) : (
             <PrimaryButton
-              sx={{ mx: 5 }}
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
                 capture();
               }}
             >
               <PhotoCamera />
-              &nbsp; บันทึก
+              &nbsp; ถ่ายรูป
             </PrimaryButton>
           )}
-        </>
+
+          <PrimaryButton
+            sx={{ mx: 5 }}
+            onClick={() => {
+              setIsPageLoading(true);
+              router.push("/ekyc/infoForm");
+              setIsPageLoading(false);
+            }}
+          >
+            บันทึก
+          </PrimaryButton>
+        </Stack>
       </Box>
     </PageContainer>
   );
