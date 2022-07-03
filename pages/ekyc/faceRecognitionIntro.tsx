@@ -38,7 +38,7 @@ export default function faceRecognition() {
           width="100%"
         >
           <Typography
-            sx={{ mt: 3 }}
+            sx={{ mt: "3vh" }}
             textAlign="start"
             fontWeight="bold"
             variant="h3"

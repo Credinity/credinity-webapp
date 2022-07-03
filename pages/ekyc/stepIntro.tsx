@@ -38,7 +38,7 @@ export default function ekycStepIntroPage() {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        spacing={6}
+        spacing={8}
         sx={{ mx: "5vw", my: "5vh" }}
       >
         <Grid container>

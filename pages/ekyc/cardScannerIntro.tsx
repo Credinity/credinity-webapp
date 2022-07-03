@@ -46,7 +46,7 @@ export default function cardScannerIntro() {
           fontWeight="bold"
           textAlign="center"
           variant="h1"
-          sx={{ mx: "5vw", mt: "5vh" }}
+          sx={{ mx: "5vw", mt: "3vh" }}
         >
           สแกนบัตรประชาชน
         </Typography>

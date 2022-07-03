@@ -31,7 +31,7 @@ export default function cardScanner() {
   }, [imgSrc]);
   return (
     <PageContainer
-      pageName="Face Recognition"
+      pageName="Card Capture"
       loading={isPageLoading}
       loadingMessage="Redirecting..."
     >

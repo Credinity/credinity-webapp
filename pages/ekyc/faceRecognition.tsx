@@ -32,7 +32,7 @@ export default function faceRecognition() {
   }, [imgSrc]);
   return (
     <PageContainer
-      pageName="Face Recognition"
+      pageName="Intro Face Recognition"
       loading={isPageLoading}
       loadingMessage="Redirecting..."
     >
