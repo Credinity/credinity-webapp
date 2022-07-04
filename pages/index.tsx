@@ -27,15 +27,23 @@ import Anyone from "@/public/img/features/Anyone.png";
 import AnyoneHover from "@/public/img/features/AnyoneHover.png";
 import { FeatureItem } from "@/models/content.model";
 import ArticleCarouselView from "@/components/displays/Carousel/ArticleCarouselView";
+import { useSelector } from "react-redux";
+import {
+  pageSelector,
+  setIsContainTokenCookie,
+} from "@/store/slices/pageSlice";
 
 type Props = {
   initialCheckToken: boolean;
 };
 
 export default function Index({ initialCheckToken }: Props) {
+  const dispatch = useAppDispatch();
+  const page = useSelector(pageSelector);
+
   const [isPageLoading, setisPageLoading]: [boolean, Function] =
     useState(false);
-  const [isContainToken] = useState(initialCheckToken);
+
   const router = useRouter();
   const routePage = (path: string) => {
     setisPageLoading(true);
@@ -43,23 +51,9 @@ export default function Index({ initialCheckToken }: Props) {
     setisPageLoading(false);
   };
 
-  const menuArray = isContainToken
-    ? [
-        { name: "LOG IN", path: "/auth/signIn" },
-        { name: "REGISTER", path: "/auth/signUp" },
-        { name: "INVESTOR", path: "" },
-        { name: "LOAN", path: "" },
-        { name: "NEWS", path: "" },
-        { name: "ABOUT US", path: "" },
-        { name: "PROFILE", path: "" },
-      ]
-    : [
-        { name: "INVESTOR", path: "" },
-        { name: "LOAN", path: "" },
-        { name: "NEWS", path: "" },
-        { name: "ABOUT US", path: "" },
-        { name: "PROFILE", path: "" },
-      ];
+  React.useEffect(() => {
+    dispatch(setIsContainTokenCookie(initialCheckToken));
+  }, []);
 
   const featureArray: FeatureItem[] = [
     {
@@ -97,7 +91,7 @@ export default function Index({ initialCheckToken }: Props) {
       loading={isPageLoading}
       loadingMessage="Redirecting..."
     >
-      <AppBarHeader menuList={menuArray} />
+      <AppBarHeader />
       <Stack
         direction="column"
         justifyContent="center"
@@ -120,7 +114,7 @@ export default function Index({ initialCheckToken }: Props) {
             สนใจร่วมเป็นส่วนหนึ่งของเรา
           </Typography>
         </Box>
-        {isContainToken ? (
+        {page.isContainTokenCookie ? null : (
           <Grid item container>
             {isPageLoading ? (
               <Stack alignItems="center">
@@ -139,7 +133,7 @@ export default function Index({ initialCheckToken }: Props) {
               </PrimaryButton>
             )}
           </Grid>
-        ) : null}
+        )}
         <Box minHeight="15px" />
         <Typography variant="h2">การบริการของเรา</Typography>
         <Divider sx={{ backgroundColor: Black, my: 2 }} />

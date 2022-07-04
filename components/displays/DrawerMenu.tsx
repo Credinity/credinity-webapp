@@ -19,7 +19,9 @@ import { Gainsboro, White } from "@/public/constants/color.constant";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
-import { MenuArrItem } from "@/models/page.model";
+import { useAppDispatch } from "@/store/store";
+import { useSelector } from "react-redux";
+import { pageSelector } from "@/store/slices/pageSlice";
 
 const anchor = "right";
 const HeaderBar = styled("div")(({ theme }) => ({
@@ -32,12 +34,9 @@ const HeaderBar = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-type Props = {
-  menuList: MenuArrItem[];
-};
-export default function DrawerMenu({ menuList }: Props) {
-  //const user = useSelector(userSelector);
-  //const dispatch = useAppDispatch();
+export default function DrawerMenu() {
+  const dispatch = useAppDispatch();
+  const page = useSelector(pageSelector);
   const router = useRouter();
   const [state, setState] = React.useState({
     right: false,
@@ -113,7 +112,7 @@ export default function DrawerMenu({ menuList }: Props) {
           sx={{ display: "flex", flexDirection: "column" }}
         >
           <List sx={{ mt: 4, ml: 1 }}>
-            {menuList.map(({ name, path }, index) => (
+            {page.drawerMenuArray.map(({ name, path }, index) => (
               <Box key={index}>
                 <ListItem
                   sx={{ mb: 1 }}

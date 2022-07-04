@@ -7,11 +7,7 @@ import { White } from "@/public/constants/color.constant";
 import Image from "next/image";
 import { MenuArrItem } from "@/models/page.model";
 
-type Props = {
-  menuList: MenuArrItem[];
-};
-
-export default function AppBarHeader({ menuList }: Props) {
+export default function AppBarHeader() {
   return (
     <AppBar position="static" elevation={0} sx={{ backgroundColor: White }}>
       <Toolbar>
@@ -22,7 +18,7 @@ export default function AppBarHeader({ menuList }: Props) {
           height={40}
         />
         <Box sx={{ flexGrow: 1 }} />
-        <DrawerMenu menuList={menuList} />
+        <DrawerMenu />
       </Toolbar>
     </AppBar>
   );
