@@ -1,15 +1,20 @@
 import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import { EkycFormProps } from "@/models/ekyc.model";
-import { Box, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { Formik, Form, FormikProps } from "formik";
-import FormikTextField from "@/components/inputs/FormikTextField";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "@/store/store";
+import {
+  pageSelector,
+  setDetailPage,
+  setTitlePage,
+} from "@/store/slices/pageSlice";
 
 const initialValues: EkycFormProps = {
   displayName: "",
@@ -147,7 +152,6 @@ const ekycForm = ({
         value={values.lineId}
         onChange={handleChange}
         fullWidth
-        required
         sx={{ mb: 2 }}
       />
       <CustomizedField
@@ -157,7 +161,6 @@ const ekycForm = ({
         value={values.facebook}
         onChange={handleChange}
         fullWidth
-        required
         sx={{ mb: 2 }}
       />
       <CustomizedField
@@ -167,7 +170,6 @@ const ekycForm = ({
         value={values.referralCode}
         onChange={handleChange}
         fullWidth
-        required
       />
       <PrimaryButton
         fullWidth
@@ -184,15 +186,11 @@ const ekycForm = ({
 
 export default function infoForm() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const page = useSelector(pageSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date()
-  );
 
-  const handleDateChange = (newValue: Date | null) => {
-    setSelectedDate(newValue);
-  };
   return (
     <PageContainer
       pageName="E-KYC Form"
@@ -215,7 +213,15 @@ export default function infoForm() {
           initialValues={initialValues!}
           onSubmit={async (values) => {
             //todo : call services
-            console.log(JSON.stringify(values));
+            setIsPageLoading(true);
+            dispatch(setTitlePage("ระบบกำลังตรวจสอบข้อมูล"));
+            dispatch(
+              setDetailPage(
+                "คุณจะได้รับการแจ้งเตือนผ่านอีเมลหลังจากระบบตรวจสอบข้อมูลสำเร็จ"
+              )
+            );
+            router.push("/status/waiting");
+            setIsPageLoading(false);
           }}
         >
           {(ekycFormProps) => ekycForm(ekycFormProps)}
