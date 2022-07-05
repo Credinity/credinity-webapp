@@ -26,7 +26,6 @@ async function uploadKycIdentificationImage(
       method: HTTP_METHOD_POST,
       url: "/User/UploadKycIdentificationImage",
       req: req,
-      isUploadFile: true,
     });
     res.json(response);
   } catch (error) {
