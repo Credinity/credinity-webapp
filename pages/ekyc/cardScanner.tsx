@@ -114,7 +114,8 @@ export default function cardScanner() {
             sx={{ mx: 5 }}
             onClick={async () => {
               setIsPageLoading(true);
-              await dispatch(uploadKycIdImageAsync(media.kycIdImgB64));
+              //await dispatch(uploadKycIdImageAsync(media.kycIdImgB64));
+              router.push("/ekyc/faceRecognitionIntro");
               setIsPageLoading(false);
             }}
           >

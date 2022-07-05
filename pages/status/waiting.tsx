@@ -10,7 +10,7 @@ import {
   pageSelector,
   setIsContainTokenCookie,
 } from "@/store/slices/pageSlice";
-import { Gainsboro } from "@/public/constants/color.constant";
+import { Gainsboro, Primary } from "@/public/constants/color.constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHourglass } from "@fortawesome/free-solid-svg-icons";
 import { Box, Typography } from "@mui/material";
@@ -69,6 +69,7 @@ export default function waiting(props: Props) {
           <FontAwesomeIcon
             icon={faHourglass}
             style={{ width: 100, height: 100 }}
+            color={Primary}
           />
         </Box>
         <Typography

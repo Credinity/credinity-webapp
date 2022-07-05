@@ -14,6 +14,7 @@ import PageContainer from "@/components/layouts/PageContainer";
 import { useRouter } from "next/router";
 import jsonwebtoken from "jsonwebtoken";
 import Cookies from "universal-cookie";
+import { Authorization } from "@/public/constants/key.constant";
 //#endregion
 
 const SignOutPage: NextPage = () => {
@@ -27,7 +28,7 @@ const SignOutPage: NextPage = () => {
 
   const revokeJwt = () => {
     setTimeout(() => {
-      cookies.remove("authorization", { path: "/" });
+      cookies.remove(Authorization, { path: "/" });
       router.push("/auth/signIn");
     }, 1000);
   };
@@ -54,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   const cookies = new Cookies(req.headers.cookies);
-  cookies.remove("authorization");
+  cookies.remove(Authorization);
   return { props: {} };
 };
 export default SignOutPage;

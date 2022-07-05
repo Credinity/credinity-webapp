@@ -6,7 +6,7 @@ import { Gainsboro, Ladybug } from "@/public/constants/color.constant";
 import FormikTextField from "@/components/inputs/FormikTextField";
 import Image from "next/image";
 import { useAppDispatch } from "@/store/store";
-import { SignUpFormProps } from "@/models/auth.model";
+import { SignUpFormProps } from "@/models/user.model";
 import {
   getPrivacyPolicyAsync,
   setOtpProcessing,
@@ -246,7 +246,7 @@ export default function SignUpPage() {
       <Grid container direction="column" minHeight="100vh" spacing={0}>
         <Grid item alignSelf="center" sx={{ mt: 4 }}>
           <Image
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             alt="credinity logo"
             width={100}
             height={100}

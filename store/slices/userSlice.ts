@@ -4,9 +4,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
-import * as authService from "@/services/authService";
+import * as userService from "@/services/userService";
 import * as termsCondService from "@/services/termsCondService";
-import { SignUpFormProps, SignUpReq, SignUpRes } from "@/models/auth.model";
+import {
+  SignUpFormProps,
+  SignUpReq,
+  SignUpRes,
+  UserProfileReq,
+} from "@/models/user.model";
 import {
   validateEmail,
   validatePassword,
@@ -23,6 +28,7 @@ interface UserState {
   isRedCheckBox: boolean;
   privacyVersion: string;
   privacyDetailHtml: string;
+  ekycStatus?: number;
 }
 
 const initialState: UserState = {
@@ -77,7 +83,7 @@ export const signUpAsync = createAsyncThunk(
         password: values.password,
         privacyPolicyVersion: values.privacyPolicyVersion,
       };
-      const response = await authService.signUp(req);
+      const response = await userService.signUp(req);
       return response;
     } else {
       const error: resError = {
@@ -92,6 +98,13 @@ export const signUpAsync = createAsyncThunk(
       };
       return res;
     }
+  }
+);
+export const getProfileAsync = createAsyncThunk(
+  "user/profile", //action label show on redux devtool
+  async (req: UserProfileReq) => {
+    const response = await userService.getProfile(req);
+    return response;
   }
 );
 
@@ -119,11 +132,6 @@ const userSlice = createSlice({
     //Action เปลี่ยนแปลงค่าแบบ Asnyc
     //fullfilled = complete/ rejected/ pending = processing
     builder.addCase(signUpAsync.fulfilled, (state, action) => {
-      // writeLog(
-      //   `signUpAsync.fulfilled action payload => ${JSON.stringify(
-      //     action.payload
-      //   )}`
-      // );
       var res = action.payload;
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
@@ -142,11 +150,6 @@ const userSlice = createSlice({
     });
     builder.addCase(getPrivacyPolicyAsync.fulfilled, (state, action) => {
       if (state.privacyVersion != "") return;
-      // writeLog(
-      //   `getPrivacyPolicyAsync.fulfilled action payload => ${JSON.stringify(
-      //     action.payload
-      //   )}`
-      // );
       var res = action.payload;
       if (res?.isSuccess) {
         state.privacyVersion = res.version;
@@ -155,6 +158,15 @@ const userSlice = createSlice({
       } else {
         var _msg = res?.errors[0]?.message ?? "";
         state.isRedCheckBox = false;
+        state.error = _msg;
+      }
+    });
+    builder.addCase(getProfileAsync.fulfilled, (state, action) => {
+      var res = action.payload;
+      if (res?.isSuccess) {
+        state.ekycStatus = res.kycStatus;
+      } else if (res?.isSuccess == false) {
+        var _msg = res?.errors[0]?.message ?? "";
         state.error = _msg;
       }
     });

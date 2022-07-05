@@ -12,5 +12,5 @@ export interface BaseApiResponse {
 }
 
 export interface BaseApiRequest {
-  requestId: string;
+  requestId?: string;
 }
