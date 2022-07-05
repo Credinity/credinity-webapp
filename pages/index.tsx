@@ -32,6 +32,7 @@ import {
   pageSelector,
   setIsContainTokenCookie,
 } from "@/store/slices/pageSlice";
+import { useEffect } from "react";
 
 type Props = {
   initialCheckToken: boolean;
@@ -40,20 +41,18 @@ type Props = {
 export default function Index({ initialCheckToken }: Props) {
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
+  useEffect(() => {
+    dispatch(setIsContainTokenCookie(initialCheckToken));
+  }, []);
 
   const [isPageLoading, setisPageLoading]: [boolean, Function] =
     useState(false);
-
   const router = useRouter();
   const routePage = (path: string) => {
     setisPageLoading(true);
     router.push(path);
     setisPageLoading(false);
   };
-
-  React.useEffect(() => {
-    dispatch(setIsContainTokenCookie(initialCheckToken));
-  }, []);
 
   const featureArray: FeatureItem[] = [
     {
@@ -114,7 +113,7 @@ export default function Index({ initialCheckToken }: Props) {
             สนใจร่วมเป็นส่วนหนึ่งของเรา
           </Typography>
         </Box>
-        {page.isContainTokenCookie ? null : (
+        {page && page.isContainTokenCookie ? (
           <Grid item container>
             {isPageLoading ? (
               <Stack alignItems="center">
@@ -133,7 +132,7 @@ export default function Index({ initialCheckToken }: Props) {
               </PrimaryButton>
             )}
           </Grid>
-        )}
+        ) : null}
         <Box minHeight="15px" />
         <Typography variant="h2">การบริการของเรา</Typography>
         <Divider sx={{ backgroundColor: Black, my: 2 }} />
@@ -159,13 +158,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   if (jwt) {
     return {
       props: {
-        initialCheckToken: [true],
+        initialCheckToken: true,
       },
     };
   } else {
     return {
       props: {
-        initialCheckToken: [false],
+        initialCheckToken: false,
       },
     };
   }
