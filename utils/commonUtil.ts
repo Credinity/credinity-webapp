@@ -20,3 +20,9 @@ export const getBase64 = (file: any): Promise<string | ArrayBuffer | null> => {
     reader.onerror = (error) => reject(error);
   });
 };
+
+export const b64toBlob = async (img: string) => {
+  const base64Response = await fetch(img);
+  const blob = await base64Response.blob();
+  return blob;
+};

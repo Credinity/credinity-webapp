@@ -4,8 +4,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
-import * as authService from "@/services/authPageApi";
-import * as termsCondService from "@/services/termsCondPageApi";
+import * as authService from "@/services/authService";
+import * as termsCondService from "@/services/termsCondService";
 import { SignUpFormProps, SignUpReq, SignUpRes } from "@/models/auth.model";
 import {
   validateEmail,

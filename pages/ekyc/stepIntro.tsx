@@ -1,7 +1,7 @@
 import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import { Box, Grid, Link, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,11 +12,21 @@ import {
   faSquarePen,
 } from "@fortawesome/free-solid-svg-icons";
 import { Gray } from "@/public/constants/color.constant";
+import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
+import { useSelector } from "react-redux";
+import { getPrivacyPolicyAsync, userSelector } from "@/store/slices/userSlice";
+import { useAppDispatch } from "@/store/store";
+import { setIsOpenPrivacyConterm } from "@/store/slices/pageSlice";
 
 export default function ekycStepIntroPage() {
   const [isPageLoading, setisPageLoading]: [boolean, Function] =
     useState(false);
   const router = useRouter();
+  const user = useSelector(userSelector);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getPrivacyPolicyAsync());
+  }, []);
   return (
     <PageContainer
       pageName="Ekyc intro"
@@ -157,10 +167,10 @@ export default function ekycStepIntroPage() {
               color="primary"
               onClick={(e) => {
                 e.preventDefault();
-                // dispatch(setIsOpenPrivacyConterm(true));
+                dispatch(setIsOpenPrivacyConterm(true));
               }}
             >
-              รายละเอียกที่นี้
+              รายละเอียดที่นี้
             </Link>
             &nbsp;ก่อนเริ่มทำรายการ
           </Typography>
@@ -175,6 +185,14 @@ export default function ekycStepIntroPage() {
           </PrimaryButton>
         </Grid>
       </Stack>
+      <Grid item xs={12} sx={{ mx: "5vw" }}>
+        {user.privacyVersion != "" ? (
+          <CustomizedDialogs
+            title="นโยบายรักษาข้อมูลส่วนบุคคล"
+            htmlDetail={user.privacyDetailHtml}
+          />
+        ) : null}
+      </Grid>
     </PageContainer>
   );
 }

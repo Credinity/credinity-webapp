@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
 import { Checkbox, CircularProgress, Grid, Link, Stack } from "@mui/material";
@@ -36,7 +36,7 @@ export default function SignUpPage() {
   const user = useSelector(userSelector);
   let submitAction: string | undefined = undefined;
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getPrivacyPolicyAsync());
   }, []);
 

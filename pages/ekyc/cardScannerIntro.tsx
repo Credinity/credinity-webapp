@@ -13,6 +13,8 @@ import React, { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import { Ladybug } from "@/public/constants/color.constant";
+import CardImg from "@/public/img/person/id-card.png";
+import Image from "next/image";
 
 export default function cardScannerIntro() {
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
@@ -62,13 +64,15 @@ export default function cardScannerIntro() {
             </Typography>
           </ToggleButton>
 
-          <ToggleButton value="ForeignCard">
+          <ToggleButton value="ForeignCard" disabled>
             <Typography textAlign="center" fontWeight="bold" variant="h3">
               Foreigner
             </Typography>
           </ToggleButton>
         </ToggleButtonGroup>
-
+        <Box sx={{ my: 2 }}>
+          <Image priority src={CardImg} alt="ID Card" />
+        </Box>
         <Box
           display="flex"
           flexDirection="column"
@@ -101,6 +105,17 @@ export default function cardScannerIntro() {
           >
             <CheckIcon color="primary" />
             <Typography variant="body1">มีแสงสว่างเพียงพอ</Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            gap={1}
+            sx={{ my: 1, ml: 3 }}
+          >
+            <CheckIcon color="primary" />
+            <Typography variant="body1">
+              ไม่สามารถยืนยันตัวตนได้ถ้าไม่อนุญาติใช้กล้อง
+            </Typography>
           </Stack>
         </Box>
         <Stack width="100%" sx={{ mt: "4vh" }}>

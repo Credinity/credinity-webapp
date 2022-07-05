@@ -1,13 +1,21 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import Image from "next/image";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import FrameCover from "@/public/img/cameracover/id-card-cover-camera.svg";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import { PhotoCamera } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import {
+  mediaSelector,
+  setKycIdImgB64,
+  uploadKycIdImageAsync,
+} from "@/store/slices/mediaSlice";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "@/store/store";
+import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
 
 const videoConstraints = {
   width: 280,
@@ -17,18 +25,19 @@ const videoConstraints = {
 
 export default function cardScanner() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const media = useSelector(mediaSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
-  const [imgSrc, setImgSrc]: [string, Function] = useState("");
   const videoRef = useRef(null);
   const capture = React.useCallback(() => {
     if (videoRef) {
       const imageSrc = videoRef.current.getScreenshot();
       if (imageSrc) {
-        setImgSrc(imageSrc);
+        dispatch(setKycIdImgB64(imageSrc));
       }
     }
-  }, [imgSrc]);
+  }, []);
   return (
     <PageContainer
       pageName="Card Capture"
@@ -50,7 +59,7 @@ export default function cardScanner() {
           วางบัตรประชาชนในกรอบ
         </Typography>
         <Box position="relative" sx={{ mb: 5 }}>
-          {imgSrc == "" ? (
+          {media.kycIdImgB64 == "" ? (
             <Webcam
               audio={false}
               width={280}
@@ -60,7 +69,12 @@ export default function cardScanner() {
               videoConstraints={videoConstraints}
             />
           ) : (
-            <Image src={imgSrc} alt="ID Card Photo" width={280} height={439} />
+            <Image
+              src={media.kycIdImgB64}
+              alt="ID Card Photo"
+              width={280}
+              height={439}
+            />
           )}
           <Box
             position="absolute"
@@ -76,10 +90,10 @@ export default function cardScanner() {
           </Box>
         </Box>
         <Stack spacing={2} width="100%">
-          {imgSrc != "" ? (
+          {media && media.kycIdImgB64 != "" ? (
             <PrimaryButton
               onClick={() => {
-                setImgSrc("");
+                dispatch(setKycIdImgB64(""));
               }}
             >
               <PhotoCamera />
@@ -98,9 +112,9 @@ export default function cardScanner() {
 
           <PrimaryButton
             sx={{ mx: 5 }}
-            onClick={() => {
+            onClick={async () => {
               setIsPageLoading(true);
-              router.push("/ekyc/faceRecognitionIntro");
+              await dispatch(uploadKycIdImageAsync(media.kycIdImgB64));
               setIsPageLoading(false);
             }}
           >
@@ -108,6 +122,11 @@ export default function cardScanner() {
           </PrimaryButton>
         </Stack>
       </Box>
+      <Grid item xs={12} sx={{ mx: "5vw" }}>
+        {media.error != "" ? (
+          <CustomizedDialogs title="พบข้อผิดพลาด" message={media.error} />
+        ) : null}
+      </Grid>
     </PageContainer>
   );
 }

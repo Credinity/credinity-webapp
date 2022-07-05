@@ -69,7 +69,7 @@ const SignInPage: NextPage = () => {
         });
         setRequestSuccess(true);
         setIsLoading(false);
-        router.push("/user/profile");
+        router.push("/");
         return;
       })
       .catch((err: any) => {

@@ -70,10 +70,11 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   title: string;
-  htmlDetail: string;
+  htmlDetail?: string;
+  message?: string;
 };
 
-export default function CustomizedDialogs({ title, htmlDetail }: Props) {
+export default function CustomizedDialogs(props: Props) {
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
   const handleClose = () => {
@@ -94,10 +95,19 @@ export default function CustomizedDialogs({ title, htmlDetail }: Props) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          {title}
+          {props.title}
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <Typography dangerouslySetInnerHTML={{ __html: htmlDetail }} />
+          {props.htmlDetail ? (
+            <Typography
+              dangerouslySetInnerHTML={{ __html: props.htmlDetail }}
+            />
+          ) : null}
+          {props.message ? (
+            <Typography variant="body1" sx={{ wordWrap: "break-word" }}>
+              {props.message}
+            </Typography>
+          ) : null}
         </DialogContent>
       </BootstrapDialog>
     </>

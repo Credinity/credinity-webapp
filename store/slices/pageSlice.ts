@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
-import {
-  AuthorizedMenu,
-  UnAuthorizedMenu,
-} from "@/public/constants/menu.constant";
 
 interface PageState {
   error: string;
@@ -13,7 +9,6 @@ interface PageState {
   isProcessing: boolean;
   isOpenPrivacyConterm: boolean;
   isContainTokenCookie: boolean;
-  drawerMenuArray: Array<{ name: string; path: string }>;
 }
 
 const initialState: PageState = {
@@ -24,7 +19,6 @@ const initialState: PageState = {
   isProcessing: false,
   isOpenPrivacyConterm: false,
   isContainTokenCookie: false,
-  drawerMenuArray: UnAuthorizedMenu,
 };
 
 const pageSlice = createSlice({
@@ -51,9 +45,6 @@ const pageSlice = createSlice({
     },
     setIsContainTokenCookie: (state, action: PayloadAction<boolean>) => {
       state.isContainTokenCookie = action.payload;
-      state.drawerMenuArray = state.isContainTokenCookie
-        ? UnAuthorizedMenu
-        : AuthorizedMenu;
     },
   },
 });
@@ -71,5 +62,7 @@ export const {
 
 // export selector
 export const pageSelector = (store: RootState) => store.page;
+export const IsContainTokenCookieSelector = (store: RootState): boolean =>
+  store.page.isContainTokenCookie;
 
 export default pageSlice.reducer;
