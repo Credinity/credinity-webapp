@@ -1,5 +1,4 @@
-import { SignUpReq, SignUpRes } from "@/models/auth.model";
-import axiosLocal from "@/utils/axiosLocalUtil";
+import pageApi from "@/utils/axiosLocalUtil";
 import { v4 as uuidv4 } from "uuid";
 import writeLog from "@/utils/logUtils";
 import Axios, { AxiosRequestConfig } from "axios";
@@ -10,13 +9,11 @@ const ApiCaller = async ({
   url,
   req,
   token,
-  isUploadFile,
 }: {
   method: string;
   url: string;
   req: any;
   token?: string;
-  isUploadFile?: boolean;
 }): Promise<any> => {
   var logger = new CredLogger("API_CALLER");
   try {
@@ -30,17 +27,18 @@ const ApiCaller = async ({
       throw new Error("Method is not defined");
     }
 
-    let headers: Record<string, string> = isUploadFile
-      ? { "Content-Type": "multipart/form-data" }
-      : {
-          "Content-Type": "application/json",
-        };
+    let headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
 
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
+    req.requestId = uuidv4();
+    if (!req.requestId) req.requestId = "unknownUuidError";
+
     let config: AxiosRequestConfig<any> = {
       method: method,
-
+      headers: headers,
       url: process.env.BASE_SERVICE_API + url,
       data: req,
       timeout: 30000,
