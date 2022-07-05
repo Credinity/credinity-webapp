@@ -78,7 +78,7 @@ const ForgotPasswordPage: NextPage = () => {
       >
         <Grid item alignSelf="center" sx={{ mb: 0 }}>
           <Image
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             alt="credinity logo"
             width={100}
             height={100}

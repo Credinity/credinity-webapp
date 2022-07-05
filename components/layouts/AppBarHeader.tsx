@@ -20,7 +20,7 @@ export default function AppBarHeader(props: Props) {
         ) : (
           <Image
             alt="logo"
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             width={40}
             height={40}
           />

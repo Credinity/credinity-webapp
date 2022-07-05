@@ -164,7 +164,7 @@ const ResetPasswordPage: NextPage<{
       >
         <Grid item alignSelf="center" sx={{ mb: 0 }}>
           <Image
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             alt="credinity logo"
             width={100}
             height={100}
@@ -269,23 +269,25 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
 }) => {
   var { key } = query;
-  if(key == undefined || key.length == 0)
+  if (key == undefined || key.length == 0)
     return {
-      props:{
+      props: {
         resetPassKey: key,
         keyValidationError:
-        "Cannot validate reset password token. Please try again later.",
-      }
+          "Cannot validate reset password token. Please try again later.",
+      },
     };
 
-    var credLogger = new CredLogger("ResetPasswordPage");
-    credLogger.log("key", key);
-    let validationResult = await ValidateResetPasswordKey(key.toString());
-    credLogger.log("validationResult", validationResult);
-    let result = {
-      resetPassKey: validationResult?.isSuccess? key: "",
-      keyValidationError: validationResult?.isSuccess? "" : validationResult?.errors[0]?.message
-    }
+  var credLogger = new CredLogger("ResetPasswordPage");
+  credLogger.log("key", key);
+  let validationResult = await ValidateResetPasswordKey(key.toString());
+  credLogger.log("validationResult", validationResult);
+  let result = {
+    resetPassKey: validationResult?.isSuccess ? key : "",
+    keyValidationError: validationResult?.isSuccess
+      ? ""
+      : validationResult?.errors[0]?.message,
+  };
   return {
     props: result,
   };

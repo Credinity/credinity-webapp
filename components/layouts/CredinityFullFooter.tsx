@@ -27,7 +27,7 @@ export default function CredinityFullFooter() {
         <Grid container item xs={3} justifyContent="center">
           <Image
             alt="logo"
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             width={40}
             height={40}
             objectFit="contain"

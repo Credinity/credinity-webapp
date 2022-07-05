@@ -18,7 +18,7 @@ const PageContainer: FunctionComponent<any> = (props: any) => {
     >
       <Head>
         <title>{props.pageName}</title>
-        <link rel="icon" href="/img/credinity-tr-logo.png" />
+        <link rel="icon" href="/img/logo/credinity-tr-logo.png" />
       </Head>
       {props.loading ? (
         <CreadinityLoader loadingMessage={props.loadingMessage} />
