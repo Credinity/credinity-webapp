@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import DrawerMenu from "@/components/displays/DrawerMenu";
-import { White } from "@/public/constants/color.constant";
+import { White } from "@/models/constants/color.constant";
 import Image from "next/image";
 import BackButton from "@/components/inputs/BackButton";
 

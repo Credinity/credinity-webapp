@@ -1,4 +1,4 @@
-# BASE_SERVICE_API=https://u0lj6spjl3.execute-api.ap-southeast-1.amazonaws.com/Dev/api
+# NEXT_PUBLIC_BASE_URL_API=https://u0lj6spjl3.execute-api.ap-southeast-1.amazonaws.com/Dev/api
 
 ### Register 
 POST https://u0lj6spjl3.execute-api.ap-southeast-1.amazonaws.com/Dev/api/Auth/Register HTTP/1.1

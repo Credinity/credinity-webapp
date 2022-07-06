@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
-import { Ladybug } from "@/public/constants/color.constant";
+import { Ladybug } from "@/models/constants/color.constant";
 import CardImg from "@/public/img/person/id-card.png";
 import Image from "next/image";
 

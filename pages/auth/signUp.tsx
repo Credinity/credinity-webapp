@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
 import { Checkbox, CircularProgress, Grid, Link, Stack } from "@mui/material";
-import { Gainsboro, Ladybug } from "@/public/constants/color.constant";
+import { Gainsboro, Ladybug } from "@/models/constants/color.constant";
 import FormikTextField from "@/components/inputs/FormikTextField";
 import Image from "next/image";
 import { useAppDispatch } from "@/store/store";

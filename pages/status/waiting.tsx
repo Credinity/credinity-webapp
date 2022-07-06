@@ -10,7 +10,7 @@ import {
   pageSelector,
   setIsContainTokenCookie,
 } from "@/store/slices/pageSlice";
-import { Gainsboro, Primary } from "@/public/constants/color.constant";
+import { Gainsboro, Primary } from "@/models/constants/color.constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHourglass } from "@fortawesome/free-solid-svg-icons";
 import { Box, Typography } from "@mui/material";

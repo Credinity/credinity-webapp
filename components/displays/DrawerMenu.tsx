@@ -15,7 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import CredinityFooter from "@/components/layouts/CredinityFooter";
-import { Gainsboro, White } from "@/public/constants/color.constant";
+import { Gainsboro, White } from "@/models/constants/color.constant";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
@@ -24,7 +24,7 @@ import { pageSelector } from "@/store/slices/pageSlice";
 import {
   AuthorizedMenu,
   UnAuthorizedMenu,
-} from "@/public/constants/menu.constant";
+} from "@/models/constants/menu.constant";
 import { useEffect } from "react";
 
 const anchor = "right";

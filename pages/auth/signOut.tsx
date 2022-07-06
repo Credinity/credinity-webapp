@@ -14,7 +14,7 @@ import PageContainer from "@/components/layouts/PageContainer";
 import { useRouter } from "next/router";
 import jsonwebtoken from "jsonwebtoken";
 import Cookies from "universal-cookie";
-import { Authorization } from "@/public/constants/key.constant";
+import { Authorization } from "@/models/constants/key.constant";
 //#endregion
 
 const SignOutPage: NextPage = () => {

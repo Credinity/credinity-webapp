@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { useRouter } from "next/router";
-import { Secondary } from "@/public/constants/color.constant";
+import { Secondary } from "@/models/constants/color.constant";
 import { ArticleItem } from "@/models/content.model";
 
 export default function ArticleCard(item: ArticleItem) {

@@ -13,21 +13,20 @@ export interface SignUpRes extends BaseApiResponse {
 
 export interface User {
   userId: string;
-  firstName?: null;
+  username: string;
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
+  kycStatus: number;
+  emailVerificationStatus: number;
 }
 
-export interface UserProfileReq extends BaseApiRequest {
+export interface UserProfileReq {
   userId: string;
 }
 
 export interface UserProfileRes extends BaseApiResponse {
-  userId: string;
-  username: "";
-  emailVerificationStatus: number;
-  fullName: "";
-  firstName: "";
-  lastName: "";
-  kycStatus: number;
+  user: User;
 }
 
 //======== Form ========//

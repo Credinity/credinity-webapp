@@ -11,7 +11,7 @@ import {
   faImage,
   faSquarePen,
 } from "@fortawesome/free-solid-svg-icons";
-import { Gray } from "@/public/constants/color.constant";
+import { Gray } from "@/models/constants/color.constant";
 import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
 import { useSelector } from "react-redux";
 import { getPrivacyPolicyAsync, userSelector } from "@/store/slices/userSlice";

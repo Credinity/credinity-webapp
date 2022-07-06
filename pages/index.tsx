@@ -16,7 +16,7 @@ import type { GetServerSideProps } from "next";
 import jsonwebtoken from "jsonwebtoken";
 import Image from "next/image";
 import ImgDetailCard from "@/components/layouts/ImgDetailCard";
-import { Black } from "@/public/constants/color.constant";
+import { Black } from "@/models/constants/color.constant";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import MainPageImg from "@/public/img/contents/mainpageImg.png";
 import Auction from "@/public/img/features/Auction.png";

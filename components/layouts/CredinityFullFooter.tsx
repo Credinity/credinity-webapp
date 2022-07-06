@@ -13,7 +13,7 @@ import {
   AntiFlashWhite,
   DarkCharcoal,
   Gray,
-} from "@/public/constants/color.constant";
+} from "@/models/constants/color.constant";
 import DarkTypography from "@/components/displays/DarkTypography";
 
 export default function CredinityFullFooter() {

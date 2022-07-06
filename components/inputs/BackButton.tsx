@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box, Button, Typography, styled } from "@mui/material";
 import { SxProps, Theme } from "@mui/material/styles";
-import { Black } from "@/public/constants/color.constant";
+import { Black } from "@/models/constants/color.constant";
 import { useRouter } from "next/router";
 
 type Props = {

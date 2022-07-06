@@ -1,6 +1,6 @@
 import PageContainer from "@/components/layouts/PageContainer";
-import { Gainsboro, Primary } from "@/public/constants/color.constant";
-import { UserID } from "@/public/constants/key.constant";
+import { Gainsboro, Primary } from "@/models/constants/color.constant";
+import { UserID } from "@/models/constants/key.constant";
 import { getProfileAsync, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";

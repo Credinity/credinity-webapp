@@ -28,7 +28,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import jsonwebtoken from "jsonwebtoken";
 import Cookies from "universal-cookie";
-import { Authorization, UserID } from "@/public/constants/key.constant";
+import { Authorization, UserID } from "@/models/constants/key.constant";
 //#endregion
 
 const SignInPage: NextPage = () => {
