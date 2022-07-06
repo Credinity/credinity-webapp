@@ -11,11 +11,7 @@ import { FunctionComponent } from "react";
 
 const PageContainer: FunctionComponent<any> = (props: any) => {
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-      }}
-    >
+    <Box minHeight="100vh">
       <Head>
         <title>{props.pageName}</title>
         <link rel="icon" href="/img/logo/credinity-tr-logo.png" />
@@ -23,11 +19,23 @@ const PageContainer: FunctionComponent<any> = (props: any) => {
       {props.loading ? (
         <CreadinityLoader loadingMessage={props.loadingMessage} />
       ) : null}
-      <Grid container justifyContent="center">
-        <Grid item xs={12} md={4} lg={3} xl={2}>
-          {props.children}
+      {props.backgroundColor ? (
+        <Grid
+          container
+          justifyContent="center"
+          sx={{ backgroundColor: props.backgroundColor }}
+        >
+          <Grid item xs={12} md={4} lg={3} xl={2}>
+            {props.children}
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <Grid container justifyContent="center">
+          <Grid item xs={12} md={4} lg={3} xl={2}>
+            {props.children}
+          </Grid>
+        </Grid>
+      )}
     </Box>
   );
 };
