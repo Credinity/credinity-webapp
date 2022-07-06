@@ -23,16 +23,13 @@ export default function EkycStatusPage({}: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
-  const [userID, setUserID]: [string, Function] = useState("");
+
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
   useEffect(() => {
-    console.log(`get ALL ${JSON.stringify(cookies.getAll())}`);
-
     let id = cookies.get(UserID);
-    console.log(`userID ${id}`);
-    if (userID != "") {
-      dispatch(getProfileAsync({ userId: userID }));
+    if (id != "") {
+      dispatch(getProfileAsync({ userId: id }));
     }
   }, []);
   return (

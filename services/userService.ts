@@ -1,13 +1,19 @@
 import { AxiosError } from "axios";
-import { ApiCaller } from "./apiCaller";
+import { v4 as uuidv4 } from "uuid";
+import axiosLocal from "@/utils/axiosLocalUtil";
+import { ApiCaller } from "@/services/apiCaller";
+import { NextApiCaller } from "@/services/nextApiCaller";
+import Cookies from "universal-cookie";
 import {
   SignUpReq,
   SignUpRes,
   UserProfileReq,
   UserProfileRes,
 } from "@/models/user.model";
-import axiosLocal from "@/utils/axiosLocalUtil";
-import { v4 as uuidv4 } from "uuid";
+import { HTTP_METHOD_POST } from "@/models/constants/service.constant";
+import { Authorization } from "@/models/constants/key.constant";
+
+const cookies = new Cookies();
 
 const ValidateResetPasswordKey = async (key: string) => {
   var result = await ApiCaller({
@@ -40,13 +46,19 @@ export const signUp = async (req: SignUpReq): Promise<SignUpRes> => {
   return response;
 };
 
-export const getProfile = async (
-  req: UserProfileReq
-): Promise<UserProfileRes> => {
-  req.requestId = uuidv4();
-  const { data: response } = await axiosLocal.post<UserProfileRes>(
-    "/user/getProfile",
-    req
-  );
-  return response;
+export const getProfile = (req: UserProfileReq): Promise<UserProfileRes> => {
+  return new Promise((resolve, reject) => {
+    NextApiCaller({
+      method: HTTP_METHOD_POST,
+      url: "/user/getProfile",
+      token: cookies.get(Authorization),
+      req: req,
+    })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };

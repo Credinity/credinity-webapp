@@ -1,5 +1,5 @@
 import { StaticImageData } from "next/image";
-import { BaseApiResponse } from "./base.model";
+import { BaseApiResponse } from "@/models/base.model";
 
 export interface ArticleItem {
   contentId: number;

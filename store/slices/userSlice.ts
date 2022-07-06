@@ -164,7 +164,7 @@ const userSlice = createSlice({
     builder.addCase(getProfileAsync.fulfilled, (state, action) => {
       var res = action.payload;
       if (res?.isSuccess) {
-        state.ekycStatus = res.kycStatus;
+        state.ekycStatus = res.user.kycStatus;
       } else if (res?.isSuccess == false) {
         var _msg = res?.errors[0]?.message ?? "";
         state.error = _msg;

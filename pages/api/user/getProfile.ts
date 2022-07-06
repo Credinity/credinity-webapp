@@ -1,17 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { apiHandler } from "helpers/api/apiHandler";
 import { ApiCaller } from "@/services/apiCaller";
-import { HTTP_METHOD_POST } from "@/utils/constant";
+import { HTTP_METHOD_POST } from "@/models/constants/service.constant";
 import Cookies from "universal-cookie";
-import { Authorization } from "@/public/constants/key.constant";
+import { Authorization } from "@/models/constants/key.constant";
 
 const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const cookies = new Cookies();
+    let token = req.headers.authorization?.replace("Bearer ", "");
     const response = await ApiCaller({
       method: HTTP_METHOD_POST,
       url: "/User/GetProfile",
-      token: cookies.get(Authorization),
+      token: token,
       req: req.body,
     });
     res.json(response);

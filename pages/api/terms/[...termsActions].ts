@@ -1,8 +1,5 @@
-import { PrivacyPolicyRes } from "@/models/conterm.model";
 import { ApiCaller } from "@/services/apiCaller";
-import axiosHttps from "@/utils/axiosUtil";
-import { HTTP_METHOD_GET, HTTP_METHOD_POST } from "@/utils/constant";
-import writeLog from "@/utils/logUtils";
+import { HTTP_METHOD_GET } from "@/models/constants/service.constant";
 import { apiHandler } from "helpers/api/apiHandler";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";

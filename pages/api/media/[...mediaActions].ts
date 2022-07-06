@@ -1,5 +1,5 @@
 import { ApiCaller } from "@/services/apiCaller";
-import { HTTP_METHOD_POST } from "@/utils/constant";
+import { HTTP_METHOD_POST } from "@/models/constants/service.constant";
 import { apiHandler } from "helpers/api/apiHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";
@@ -21,7 +21,6 @@ async function uploadKycIdentificationImage(
   res: NextApiResponse
 ) {
   try {
-    console.log("Hello");
     const response = await ApiCaller({
       method: HTTP_METHOD_POST,
       url: "/User/UploadKycIdentificationImage",

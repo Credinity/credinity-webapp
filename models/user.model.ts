@@ -1,4 +1,4 @@
-import { BaseApiRequest, BaseApiResponse } from "./base.model";
+import { BaseApiRequest, BaseApiResponse } from "@/models/base.model";
 
 export interface SignUpReq extends BaseApiRequest {
   email: string;

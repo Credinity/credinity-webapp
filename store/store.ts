@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 
-import userReducer from "./slices/userSlice";
-import pageReducer from "./slices/pageSlice";
-import mediaReducer from "./slices/mediaSlice";
+import mediaReducer from "@/store/slices/mediaSlice";
+import pageReducer from "@/store/slices/pageSlice";
+import userReducer from "@/store/slices/userSlice";
 //All reducers
 const reducers = {
   user: userReducer,
