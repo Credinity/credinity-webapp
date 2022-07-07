@@ -41,12 +41,11 @@ export interface SignUpFormProps {
 }
 
 export interface EkycFormProps {
-  displayName: string;
+  username: string;
   fullName: string;
   idType?: number;
   idNo: string;
   laserId: string;
-  docAddress: string;
   birthDate?: number;
   phoneNumber: string;
   ethnicitySt: string;
@@ -55,5 +54,6 @@ export interface EkycFormProps {
   nationality?: number;
   lineId: string;
   facebook: string;
+  address: string;
   referralCode: string;
 }

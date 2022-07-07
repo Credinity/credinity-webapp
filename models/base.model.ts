@@ -5,7 +5,7 @@ export interface Error {
 }
 
 export interface BaseApiResponse {
-  successMessage: null;
+  successMessage?: string;
   requestId: string;
   isSuccess: boolean;
   errors: Error[];

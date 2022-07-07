@@ -1,9 +1,10 @@
+import { HTTP_METHOD_GET } from "@/models/constants/service.constant";
 import { PrivacyPolicyRes } from "@/models/conterm.model";
-import axiosLocal from "@/utils/axiosLocalUtil";
+import NextApiPromiseBase from "@/services/commonService";
 
-export const getPrivacyPolicy = async (): Promise<PrivacyPolicyRes> => {
-  const { data: response } = await axiosLocal.get<PrivacyPolicyRes>(
-    "/terms/getPrivacyPolicy"
-  );
-  return response;
+export const getPrivacyPolicy = (): Promise<PrivacyPolicyRes> => {
+  return NextApiPromiseBase({
+    method: HTTP_METHOD_GET,
+    url: "/terms/getPrivacyPolicy",
+  });
 };

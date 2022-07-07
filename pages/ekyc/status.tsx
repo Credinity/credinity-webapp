@@ -1,20 +1,29 @@
 import PageContainer from "@/components/layouts/PageContainer";
-import { Gainsboro, Primary } from "@/models/constants/color.constant";
+import { Gainsboro, Gray, Primary } from "@/models/constants/color.constant";
 import { UserID } from "@/models/constants/key.constant";
 import { getProfileAsync, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Cookies from "universal-cookie";
 import Logo from "@/public/img/logo/credinity-tr-txt.png";
 import Image from "next/image";
-import {
-  faCircleCheck,
-  faCircleExclamation,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
+import CredinityFooter from "@/components/layouts/CredinityFooter";
+import CreadinityLoader from "@/components/displays/CreadinityLoader";
 
 type Props = {};
 
@@ -37,65 +46,93 @@ export default function EkycStatusPage({}: Props) {
       pageName="Status"
       loading={isPageLoading}
       loadingMessage="Redirecting..."
+      backgroundColor={Gainsboro}
     >
-      <Grid
-        container
+      <Stack
+        direction="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ mx: "5vw", backgroundColor: Gainsboro }}
+        minHeight="100vh"
+        sx={{ mx: "5vw" }}
       >
-        <Grid item xs={12}>
-          <Image src={Logo} alt="Credinity logo" />
-        </Grid>
-        <Paper elevation={5} sx={{ borderRadius: 20 }}>
-          {user && user.ekycStatus == 1 ? (
-            <Stack justifyContent="center" alignItems="center" spacing={3}>
-              <FontAwesomeIcon
-                icon={faCircleCheck}
-                inverse
-                size="2x"
-                color={Primary}
-              />
-              <Typography
-                variant="h1"
-                fontWeight="bold"
-                sx={{ wordWrap: "break-word" }}
+        {user.ekycStatus == undefined ? (
+          <CreadinityLoader />
+        ) : (
+          <>
+            <Box minHeight={200}>รอรูป</Box>
+            <Card>
+              <CardContent
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                ยืนยันบัญชีผู้ใช้แล้ว
-              </Typography>
-              <Typography variant="body1" sx={{ wordWrap: "break-word" }}>
-                คุณสร้างบัญชี Credinity สำเร็จแล้ว {<br />}
-                กรุณาเก็บข้อมูลของท่านเพื่อใช้ในการใช้เว็บไซต์ต่อไป
-              </Typography>
-            </Stack>
-          ) : (
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <FontAwesomeIcon
-                icon={faCircleExclamation}
-                inverse
-                size="2x"
-                color={Primary}
-              />
-              <Typography
-                variant="h1"
-                fontWeight="bold"
-                sx={{ wordWrap: "break-word" }}
-              >
-                ดำเนินการไม่สำเร็จ
-              </Typography>
-              <Typography variant="body1" sx={{ wordWrap: "break-word" }}>
-                ไม่พบข้อมูลกรุณาลองใหม่อีกครั้ง {<br />}
-                หากท่านเป็นผู้ลงทะเบียนใหม่โปรดตรวจสอบสถานะของท่านอีกครั้งภายหลัง
-              </Typography>
-            </Box>
-          )}
-        </Paper>
-      </Grid>
+                <Box sx={{ mt: 10 }}>
+                  {user && user.ekycStatus == 1 ? (
+                    <FontAwesomeIcon
+                      icon={faCircleCheck}
+                      size="6x"
+                      color={Primary}
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faCircleExclamation}
+                      size="6x"
+                      color={Gainsboro}
+                    />
+                  )}
+                </Box>
+                <Typography
+                  textAlign="center"
+                  variant="h1"
+                  fontWeight="bold"
+                  sx={{ wordWrap: "break-word", my: 4 }}
+                >
+                  {user && user.ekycStatus == 1 ? (
+                    <>ยืนยันบัญชีผู้ใช้แล้ว</>
+                  ) : (
+                    <>ดำเนินการไม่สำเร็จ</>
+                  )}
+                </Typography>
+                <Typography
+                  textAlign="center"
+                  variant="body1"
+                  sx={{ wordWrap: "break-word", mb: 4 }}
+                >
+                  {user && user.ekycStatus == 1 ? (
+                    <>
+                      คุณสร้างบัญชี Credinity สำเร็จแล้ว
+                      กรุณาเก็บข้อมูลของท่านเพื่อใช้ในการใช้เว็บไซต์ต่อไป
+                    </>
+                  ) : (
+                    <>
+                      ไม่พบข้อมูลกรุณาลองใหม่อีกครั้ง{<br />}
+                      หากท่านเป็นผู้ลงทะเบียนใหม่โปรดตรวจสอบสถานะของท่านอีกครั้งภายหลัง
+                    </>
+                  )}
+                </Typography>
+                <PrimaryButton
+                  sx={{ wordWrap: "break-word", mb: 10, width: "50vw" }}
+                  onClick={() => {
+                    setIsPageLoading(true);
+                    router.push("/");
+                    setIsPageLoading(false);
+                  }}
+                >
+                  {user && user.ekycStatus == 1 ? (
+                    <>กลับสู่หน้าหลัก</>
+                  ) : (
+                    <>ปิด</>
+                  )}
+                </PrimaryButton>
+              </CardContent>
+            </Card>
+            <CredinityFooter sx={{ mt: "auto", mb: "10px" }} />
+          </>
+        )}
+      </Stack>
     </PageContainer>
   );
 }

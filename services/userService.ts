@@ -1,10 +1,9 @@
 import { AxiosError } from "axios";
 import { v4 as uuidv4 } from "uuid";
-import axiosLocal from "@/utils/axiosLocalUtil";
 import { ApiCaller } from "@/services/apiCaller";
-import { NextApiCaller } from "@/services/nextApiCaller";
 import Cookies from "universal-cookie";
 import {
+  EkycFormProps,
   SignUpReq,
   SignUpRes,
   UserProfileReq,
@@ -12,6 +11,8 @@ import {
 } from "@/models/user.model";
 import { HTTP_METHOD_POST } from "@/models/constants/service.constant";
 import { Authorization } from "@/models/constants/key.constant";
+import { BaseApiResponse } from "@/models/base.model";
+import NextApiPromiseBase from "@/services/commonService";
 
 const cookies = new Cookies();
 
@@ -37,28 +38,31 @@ export { ValidateResetPasswordKey };
 
 //ข้อมูลที่ส่งเข้ามาคือ signProps
 //: Promise คือ return Promise<type ที่ Back end จะ return อะไรมาบ้าง>
-export const signUp = async (req: SignUpReq): Promise<SignUpRes> => {
-  req.requestId = uuidv4();
-  const { data: response } = await axiosLocal.post<SignUpRes>(
-    "/auth/signup",
-    req
-  );
-  return response;
+
+export const signUp = (req: SignUpReq): Promise<SignUpRes> => {
+  return NextApiPromiseBase({
+    method: HTTP_METHOD_POST,
+    url: "/auth/signup",
+    req: req,
+  });
 };
 
 export const getProfile = (req: UserProfileReq): Promise<UserProfileRes> => {
-  return new Promise((resolve, reject) => {
-    NextApiCaller({
-      method: HTTP_METHOD_POST,
-      url: "/user/getProfile",
-      token: cookies.get(Authorization),
-      req: req,
-    })
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+  return NextApiPromiseBase({
+    method: HTTP_METHOD_POST,
+    url: "/user/getProfile",
+    req: req,
+    token: cookies.get(Authorization),
+  });
+};
+
+export const submitKycInformation = (
+  req: EkycFormProps
+): Promise<BaseApiResponse> => {
+  return NextApiPromiseBase({
+    method: HTTP_METHOD_POST,
+    url: "/user/SubmitKycInformation",
+    req: req,
+    token: cookies.get(Authorization),
   });
 };
