@@ -7,6 +7,7 @@ import { RootState } from "@/store/store";
 import * as userService from "@/services/userService";
 import * as termsCondService from "@/services/termsCondService";
 import {
+  EkycFormProps,
   SignUpFormProps,
   SignUpReq,
   SignUpRes,
@@ -54,6 +55,28 @@ function SignUpValidation(values: SignUpFormProps): string {
     result = "Confirm Password is required";
   } else if (values.password !== values.confirmPass) {
     result = "Mismatch password";
+  } else if (!validatePassword(values.password)) {
+    result = "Password is wrong format (min 8, max 24)";
+  } else if (values.isAgreeCond == false) {
+    result = "CheckboxFail";
+  } else {
+    result = "Correct";
+  }
+  return result;
+}
+
+function KycFormValidation(values: EkycFormProps): string {
+  var result = "";
+  if (!values.username) {
+    result = "Username is required";
+  } else if (!validateEmail(values.email)) {
+    result = "Email is wrong format";
+  } else if (!values.password) {
+    result = "Password is required";
+  } else if (!values.confirmPass) {
+    result = "Confirm Password is required";
+  } else if (values.password !== values.confirmPass) {
+    result = "Mismatch password";
   } else if (!validatePassword.test(values.password)) {
     result = "Password is wrong format (min 8, max 24)";
   } else if (values.isAgreeCond == false) {
@@ -64,7 +87,7 @@ function SignUpValidation(values: SignUpFormProps): string {
   return result;
 }
 
-//Async sign up
+//Async
 export const getPrivacyPolicyAsync = createAsyncThunk(
   "user/getPrivacyPolicy",
   async () => {
@@ -72,6 +95,7 @@ export const getPrivacyPolicyAsync = createAsyncThunk(
     return response;
   }
 );
+
 export const signUpAsync = createAsyncThunk(
   "user/signup", //action label show on redux devtool
   async (values: SignUpFormProps) => {
@@ -93,18 +117,48 @@ export const signUpAsync = createAsyncThunk(
       const res: SignUpRes = {
         isSuccess: false,
         errors,
-        successMessage: null,
+        successMessage: "",
         requestId: "",
       };
       return res;
     }
   }
 );
+
 export const getProfileAsync = createAsyncThunk(
   "user/profile", //action label show on redux devtool
   async (req: UserProfileReq) => {
     const response = await userService.getProfile(req);
     return response;
+  }
+);
+
+export const submitKycFormAsync = createAsyncThunk(
+  "user/submitKycForm",
+  async (values: EkycFormProps) => {
+    var _result = SignUpValidation(values);
+    if (_result == "Correct") {
+      //ยิงไป server
+      const req: SignUpReq = {
+        email: values.email,
+        password: values.password,
+        privacyPolicyVersion: values.privacyPolicyVersion,
+      };
+      const response = await userService.signUp(req);
+      return response;
+    } else {
+      const error: resError = {
+        message: _result,
+      };
+      var errors = new Array(error);
+      const res: SignUpRes = {
+        isSuccess: false,
+        errors,
+        successMessage: "",
+        requestId: "",
+      };
+      return res;
+    }
   }
 );
 

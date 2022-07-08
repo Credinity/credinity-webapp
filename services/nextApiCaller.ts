@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import Axios, { AxiosRequestConfig } from "axios";
 
 const NextApiCaller = async ({
@@ -9,7 +8,7 @@ const NextApiCaller = async ({
 }: {
   method: string;
   url: string;
-  req: any;
+  req?: any;
   token?: string;
 }): Promise<any> => {
   try {

@@ -48,9 +48,7 @@ export interface EkycFormProps {
   laserId: string;
   birthDate?: number;
   phoneNumber: string;
-  ethnicitySt: string;
   ethnicity?: number;
-  nationalitySt: string;
   nationality?: number;
   lineId: string;
   facebook: string;

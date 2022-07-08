@@ -8,10 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
-import {
-  pageSelector,
-  setIsOpenPrivacyConterm,
-} from "@/store/slices/pageSlice";
+import { pageSelector, setIsOpenDialog } from "@/store/slices/pageSlice";
 import { Slide } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 
@@ -78,7 +75,7 @@ export default function CustomizedDialogs(props: Props) {
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
   const handleClose = () => {
-    dispatch(setIsOpenPrivacyConterm(false));
+    dispatch(setIsOpenDialog(false));
   };
 
   return (
@@ -89,7 +86,7 @@ export default function CustomizedDialogs(props: Props) {
         scroll="paper"
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={page.isOpenPrivacyConterm}
+        open={page.isOpenDialog}
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"

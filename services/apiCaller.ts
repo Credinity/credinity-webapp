@@ -1,17 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 import Axios, { AxiosRequestConfig } from "axios";
 import { CredLogger } from "@/utils/logUtils";
+import { HTTP_METHOD_GET } from "@/models/constants/service.constant";
 
 const ApiCaller = async ({
   method,
   url,
   req,
   token,
+  isAddReqId,
 }: {
   method: string;
   url: string;
-  req: any;
+  req?: any;
   token?: string;
+  isAddReqId?: boolean;
 }): Promise<any> => {
   var logger = new CredLogger("API_CALLER");
   try {
@@ -31,8 +34,14 @@ const ApiCaller = async ({
 
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    req.requestId = uuidv4();
-    if (!req.requestId) req.requestId = "unknownUuidError";
+    if (req) {
+      req.requestId = uuidv4();
+      if (!req.requestId) req.requestId = "unknownUuidError";
+    } else if (isAddReqId === undefined || isAddReqId != false) {
+      if (method.toUpperCase() != HTTP_METHOD_GET) {
+        req = { requestId: uuidv4() };
+      }
+    }
 
     let config: AxiosRequestConfig<any> = {
       method: method,

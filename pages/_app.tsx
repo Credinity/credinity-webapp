@@ -5,6 +5,7 @@ import { theme } from "styles/credinityTheme";
 import Head from "next/head";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
+import { SnackbarProvider } from "notistack";
 
 function CredinityApp({ Component, pageProps }: AppProps) {
   return (
@@ -14,7 +15,9 @@ function CredinityApp({ Component, pageProps }: AppProps) {
       </Head>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
+          <SnackbarProvider maxSnack={4}>
+            <Component {...pageProps} />
+          </SnackbarProvider>
         </ThemeProvider>
       </Provider>
     </>

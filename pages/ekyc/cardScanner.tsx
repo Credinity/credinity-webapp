@@ -15,7 +15,7 @@ import {
 } from "@/store/slices/mediaSlice";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/store/store";
-import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
+import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 
 const videoConstraints = {
   width: 280,

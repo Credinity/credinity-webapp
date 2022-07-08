@@ -3,21 +3,24 @@ import { HTTP_METHOD_GET } from "@/models/constants/service.constant";
 import { apiHandler } from "helpers/api/apiHandler";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const termsRouter = (req: NextApiRequest, res: NextApiResponse) => {
-  const action = req.query["termsActions"][0];
+const lovRouter = (req: NextApiRequest, res: NextApiResponse) => {
+  const action = req.query["lovActions"][0];
 
-  if (req.method === HTTP_METHOD_GET && action === "getPrivacyPolicy") {
-    return getPrivacyPolicy(res);
+  if (req.method === HTTP_METHOD_GET && action === "getLovByType") {
+    let lastIndex = req.query["lovActions"].length - 1;
+    let lastAction = req.query["lovActions"][lastIndex];
+    return getLovByType(lastAction, res);
   } else {
     return res.status(405).end(`Error: Action is not supported for ${req.url}`);
   }
 };
 
-async function getPrivacyPolicy(res: NextApiResponse<any>) {
+async function getLovByType(reqUrl: string, res: NextApiResponse<any>) {
   try {
     const response = await ApiCaller({
       method: HTTP_METHOD_GET,
-      url: "/Terms/GetLatestPrivacyPolicy",
+      url: `/Lov/GetLov/${reqUrl}`,
+      isAddReqId: false,
     });
     res.json(response);
   } catch (error) {
@@ -25,4 +28,4 @@ async function getPrivacyPolicy(res: NextApiResponse<any>) {
   }
 }
 
-export default apiHandler(termsRouter);
+export default apiHandler(lovRouter);

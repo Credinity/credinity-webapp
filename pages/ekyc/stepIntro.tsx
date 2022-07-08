@@ -12,11 +12,11 @@ import {
   faSquarePen,
 } from "@fortawesome/free-solid-svg-icons";
 import { Gray } from "@/models/constants/color.constant";
-import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
+import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import { useSelector } from "react-redux";
 import { getPrivacyPolicyAsync, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
-import { setIsOpenPrivacyConterm } from "@/store/slices/pageSlice";
+import { setIsOpenDialog } from "@/store/slices/pageSlice";
 
 export default function ekycStepIntroPage() {
   const [isPageLoading, setisPageLoading]: [boolean, Function] =
@@ -167,7 +167,7 @@ export default function ekycStepIntroPage() {
               color="primary"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(setIsOpenPrivacyConterm(true));
+                dispatch(setIsOpenDialog(true));
               }}
             >
               รายละเอียดที่นี้

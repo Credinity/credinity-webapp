@@ -17,8 +17,8 @@ import {
 import { useSelector } from "react-redux";
 import writeLog from "@/utils/logUtils";
 import PageContainer from "@/components/layouts/PageContainer";
-import { setIsOpenPrivacyConterm } from "@/store/slices/pageSlice";
-import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
+import { setIsOpenDialog } from "@/store/slices/pageSlice";
+import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 
 const initialValues: SignUpFormProps = {
@@ -194,7 +194,7 @@ export default function SignUpPage() {
               color="primary"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(setIsOpenPrivacyConterm(true));
+                dispatch(setIsOpenDialog(true));
               }}
             >
               Privacy policy

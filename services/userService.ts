@@ -56,12 +56,10 @@ export const getProfile = (req: UserProfileReq): Promise<UserProfileRes> => {
   });
 };
 
-export const submitKycInformation = (
-  req: EkycFormProps
-): Promise<BaseApiResponse> => {
+export const submitKycForm = (req: EkycFormProps): Promise<BaseApiResponse> => {
   return NextApiPromiseBase({
     method: HTTP_METHOD_POST,
-    url: "/user/SubmitKycInformation",
+    url: "/user/submitKycForm",
     req: req,
     token: cookies.get(Authorization),
   });

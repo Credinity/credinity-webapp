@@ -20,3 +20,14 @@ export interface FeatureItem {
 export interface MediaRes extends BaseApiResponse {
   addedFileLocation: string;
 }
+
+export interface LovItem {
+  lovId: number;
+  nameTh: "";
+  nameEn: "";
+  description?: "";
+}
+
+export interface LovByTypeRes extends BaseApiResponse {
+  lovList: Array<LovItem>;
+}

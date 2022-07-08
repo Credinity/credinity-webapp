@@ -5,9 +5,8 @@ interface PageState {
   error: string;
   titlePage: string;
   detailPage: string;
-  isRequestSuccess: boolean;
-  isProcessing: boolean;
-  isOpenPrivacyConterm: boolean;
+  isOpenAlert: boolean;
+  isOpenDialog: boolean;
   isContainTokenCookie: boolean;
 }
 
@@ -15,9 +14,8 @@ const initialState: PageState = {
   error: "",
   titlePage: "",
   detailPage: "",
-  isRequestSuccess: false,
-  isProcessing: false,
-  isOpenPrivacyConterm: false,
+  isOpenAlert: false,
+  isOpenDialog: false,
   isContainTokenCookie: false,
 };
 
@@ -34,14 +32,11 @@ const pageSlice = createSlice({
     setDetailPage: (state, action: PayloadAction<string>) => {
       state.detailPage = action.payload;
     },
-    setRequestSuccess: (state, action: PayloadAction<boolean>) => {
-      state.isRequestSuccess = action.payload;
+    setIsOpenAlert: (state, action: PayloadAction<boolean>) => {
+      state.isOpenAlert = action.payload;
     },
-    setIsProcessing: (state, action: PayloadAction<boolean>) => {
-      state.isProcessing = action.payload;
-    },
-    setIsOpenPrivacyConterm: (state, action: PayloadAction<boolean>) => {
-      state.isOpenPrivacyConterm = action.payload;
+    setIsOpenDialog: (state, action: PayloadAction<boolean>) => {
+      state.isOpenDialog = action.payload;
     },
     setIsContainTokenCookie: (state, action: PayloadAction<boolean>) => {
       state.isContainTokenCookie = action.payload;
@@ -54,15 +49,12 @@ export const {
   setErrorMsg,
   setTitlePage,
   setDetailPage,
-  setRequestSuccess,
-  setIsProcessing,
-  setIsOpenPrivacyConterm,
+  setIsOpenAlert,
+  setIsOpenDialog,
   setIsContainTokenCookie,
 } = pageSlice.actions;
 
 // export selector
 export const pageSelector = (store: RootState) => store.page;
-export const IsContainTokenCookieSelector = (store: RootState): boolean =>
-  store.page.isContainTokenCookie;
 
 export default pageSlice.reducer;
