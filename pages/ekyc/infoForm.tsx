@@ -1,9 +1,9 @@
 import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
-import { EkycFormProps } from "@/models/ekyc.model";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { EkycFormReq } from "@/models/user.model";
+import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { Formik, Form, FormikProps } from "formik";
@@ -15,50 +15,54 @@ import {
   setDetailPage,
   setTitlePage,
 } from "@/store/slices/pageSlice";
+import { submitKycFormAsync, userSelector } from "@/store/slices/userSlice";
+import { LovItem } from "@/models/content.model";
+import { GetLovByType } from "@/services/commonService";
+import { useSnackbar } from "notistack";
+import { citizenFormat, phoneNumberFormat } from "helpers/client/stringFormat";
 
-const initialValues: EkycFormProps = {
-  displayName: "",
+const initialValues: EkycFormReq = {
+  username: "",
   fullName: "",
+  idType: 0,
   idNo: "",
   laserId: "",
-  docAddress: "",
-  birthDate: Date.now(),
+  address: "",
   phoneNumber: "",
-  ethnicitySt: "",
-  nationalitySt: "",
+  ethnicity: 0,
+  nationality: 0,
   lineId: "",
   facebook: "",
   referralCode: "",
 };
 
 const CustomizedField = (props: any) => {
-  return (
-    <TextField
-      {...props}
-      variant="standard"
-      InputProps={{ style: { fontSize: 18 } }}
-      InputLabelProps={{ style: { fontSize: 18 } }}
-    />
-  );
+  return <TextField {...props} fullWidth variant="standard" />;
 };
 
-const ekycForm = ({
-  values,
-  setFieldValue,
-  isValid,
-  dirty,
-  handleSubmit,
-  handleChange,
-}: FormikProps<EkycFormProps>) => {
+const ekycForm = (
+  {
+    values,
+    setFieldValue,
+    isValid,
+    dirty,
+    handleSubmit,
+    handleChange,
+  }: FormikProps<EkycFormReq>,
+  options: Array<LovItem>
+) => {
+  const defaultOptionsProps = {
+    options: options,
+    getOptionLabel: (option: LovItem) => option.nameTh,
+  };
   return (
     <Form onSubmit={handleSubmit}>
       <CustomizedField
-        id="DisplayName"
-        label="ตั้งชื่อ Username"
-        name="displayName"
-        value={values.displayName}
+        id="Username"
+        label="ชื่อสาธารณะ"
+        name="username"
+        value={values.username}
         onChange={handleChange}
-        fullWidth
         required
         sx={{ mb: 2 }}
       />
@@ -68,17 +72,23 @@ const ekycForm = ({
         name="fullName"
         value={values.fullName}
         onChange={handleChange}
-        fullWidth
         required
         sx={{ mb: 2 }}
       />
       <CustomizedField
         id="IdNo"
-        label="หมายเลขบัตรประชาชน/ พาสปอร์ต"
+        label="หมายเลขบัตรประชาชน"
         name="idNo"
         value={values.idNo}
-        onChange={handleChange}
-        fullWidth
+        onChange={(event: any) => {
+          const { value } = event.target;
+          let cid = citizenFormat(value);
+          if (cid) {
+            setFieldValue("idNo", cid, true);
+          } else {
+            setFieldValue("idNo", value, true);
+          }
+        }}
         required
         sx={{ mb: 2 }}
       />
@@ -88,17 +98,29 @@ const ekycForm = ({
         name="laserId"
         value={values.laserId}
         onChange={handleChange}
-        fullWidth
         required
         sx={{ mb: 2 }}
       />
       <CustomizedField
-        id="DocAddress"
+        id="Address"
         label="ที่อยู่ปัจจุบันในการจัดส่งเอกสาร"
-        name="docAddress"
-        value={values.docAddress}
+        name="address"
+        value={values.address}
         onChange={handleChange}
-        fullWidth
+        required
+        multiline
+        sx={{ mb: 2 }}
+      />
+      <CustomizedField
+        id="PhoneNo"
+        label="เบอร์โทรศัพท์"
+        name="phoneNumber"
+        value={values.phoneNumber}
+        onChange={(event: any) => {
+          const { value } = event.target;
+          let phone = phoneNumberFormat(value);
+          setFieldValue("phoneNumber", phone, true);
+        }}
         required
         multiline
         sx={{ mb: 2 }}
@@ -123,25 +145,65 @@ const ekycForm = ({
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={6} sx={{ mb: 2 }}>
-          <CustomizedField
+          <Autocomplete
             id="Ethnicity"
-            name="ethnicitySt"
-            label="เชื้อชาติ"
-            value={values.ethnicitySt}
-            onChange={handleChange}
-            fullWidth
-            required
+            {...defaultOptionsProps}
+            renderOption={(props, option, index) => {
+              const key = `${index}-${option.lovId}`;
+              return (
+                <li {...props} key={key}>
+                  {option.nameTh}
+                </li>
+              );
+            }}
+            onChange={(event, value) => {
+              event.preventDefault();
+              setFieldValue("ethnicity", value?.lovId, true);
+            }}
+            clearOnEscape
+            autoSelect
+            autoComplete
+            openOnFocus
+            renderInput={(params) => (
+              <CustomizedField
+                label="เชื้อชาติ"
+                name="ethnicity"
+                {...params}
+                onChange={handleChange}
+                required
+              />
+            )}
           />
         </Grid>
         <Grid item xs={6} sx={{ mb: 2 }}>
-          <CustomizedField
+          <Autocomplete
             id="Nationality"
-            label="สัญชาติ"
-            name="nationalitySt"
-            value={values.nationalitySt}
-            onChange={handleChange}
-            fullWidth
-            required
+            {...defaultOptionsProps}
+            renderOption={(props, option, index) => {
+              const key = `${index}-${option.lovId}`;
+              return (
+                <li {...props} key={key}>
+                  {option.nameTh}
+                </li>
+              );
+            }}
+            onChange={(event, value) => {
+              event.preventDefault();
+              setFieldValue("nationality", value?.lovId, true);
+            }}
+            clearOnEscape
+            autoSelect
+            autoComplete
+            openOnFocus
+            renderInput={(params) => (
+              <CustomizedField
+                label="สัญชาติ"
+                name="nationality"
+                {...params}
+                onChange={handleChange}
+                required
+              />
+            )}
           />
         </Grid>
       </Grid>
@@ -151,7 +213,6 @@ const ekycForm = ({
         name="lineId"
         value={values.lineId}
         onChange={handleChange}
-        fullWidth
         sx={{ mb: 2 }}
       />
       <CustomizedField
@@ -160,7 +221,6 @@ const ekycForm = ({
         name="facebook"
         value={values.facebook}
         onChange={handleChange}
-        fullWidth
         sx={{ mb: 2 }}
       />
       <CustomizedField
@@ -169,11 +229,11 @@ const ekycForm = ({
         name="referralCode"
         value={values.referralCode}
         onChange={handleChange}
-        fullWidth
       />
       <PrimaryButton
         fullWidth
         sx={{ my: 5 }}
+        disabled={!(isValid && dirty)}
         onClick={() => {
           handleSubmit();
         }}
@@ -188,14 +248,42 @@ export default function infoForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
+  const user = useSelector(userSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
+  const [lovNationality, setLovNationality]: [Array<LovItem>, Function] =
+    useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    user && user.errorList != undefined
+      ? user.errorList.map((msg) => {
+          if (msg != undefined) {
+            enqueueSnackbar(msg, {
+              variant: "error",
+              autoHideDuration: 4000,
+              anchorOrigin: { horizontal: "center", vertical: "top" },
+            });
+          }
+        })
+      : null;
+  }, [user.errorList]);
+
+  useEffect(() => {
+    GetLovByType("nationality")
+      .then((res) => {
+        setLovNationality(res.lovList);
+      })
+      .catch((err) => {
+        console.log(`Err => ${JSON.stringify(err)}`);
+      });
+  }, []);
 
   return (
     <PageContainer
       pageName="E-KYC Form"
       loading={isPageLoading}
-      loadingMessage="Redirecting..."
+      loadingMessage="Loading..."
     >
       <BackButton />
       <Box
@@ -212,19 +300,25 @@ export default function infoForm() {
         <Formik
           initialValues={initialValues!}
           onSubmit={async (values) => {
-            //todo : call services
             setIsPageLoading(true);
-            dispatch(setTitlePage("ระบบกำลังตรวจสอบข้อมูล"));
-            dispatch(
-              setDetailPage(
-                "คุณจะได้รับการแจ้งเตือนผ่านอีเมลหลังจากระบบตรวจสอบข้อมูลสำเร็จ"
-              )
-            );
-            router.push("/status/waiting");
-            setIsPageLoading(false);
+            dispatch(submitKycFormAsync(values))
+              .then((res) => {
+                dispatch(setTitlePage("ระบบกำลังตรวจสอบข้อมูล"));
+                dispatch(
+                  setDetailPage(
+                    "คุณจะได้รับการแจ้งเตือนผ่านอีเมลหลังจากระบบตรวจสอบข้อมูลสำเร็จ"
+                  )
+                );
+                setIsPageLoading(false);
+              })
+              .catch((err) => {
+                console.log("ERR");
+                console.log(JSON.stringify(err));
+                setIsPageLoading(false);
+              });
           }}
         >
-          {(ekycFormProps) => ekycForm(ekycFormProps)}
+          {(ekycFormProps) => ekycForm(ekycFormProps, lovNationality)}
         </Formik>
       </Box>
     </PageContainer>

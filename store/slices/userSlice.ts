@@ -7,21 +7,30 @@ import { RootState } from "@/store/store";
 import * as userService from "@/services/userService";
 import * as termsCondService from "@/services/termsCondService";
 import {
-  EkycFormProps,
+  EkycFormReq,
   SignUpFormProps,
   SignUpReq,
   SignUpRes,
   UserProfileReq,
 } from "@/models/user.model";
 import {
+  EngNumReg,
+  NumReg,
+  ThaiEngTextReg,
   validateEmail,
   validatePassword,
 } from "helpers/client/regexValidation";
 import Router from "next/router";
-import { Error as resError } from "@/models/base.model";
+import { BaseApiResponse, Error as resError } from "@/models/base.model";
+import {
+  calculateAge,
+  mapErrorListToStringArr,
+  validNationalID,
+} from "@/utils/commonUtil";
 
 interface UserState {
   error: string;
+  errorList?: Array<string | undefined>;
   isRequestSuccess: boolean;
   isProcessing: boolean;
   isOtpProcessing: boolean;
@@ -34,6 +43,7 @@ interface UserState {
 
 const initialState: UserState = {
   error: "",
+  errorList: undefined,
   isRequestSuccess: false,
   isProcessing: false,
   isOtpProcessing: false,
@@ -65,24 +75,70 @@ function SignUpValidation(values: SignUpFormProps): string {
   return result;
 }
 
-function KycFormValidation(values: EkycFormProps): string {
-  var result = "";
-  if (!values.username) {
-    result = "Username is required";
-  } else if (!validateEmail(values.email)) {
-    result = "Email is wrong format";
-  } else if (!values.password) {
-    result = "Password is required";
-  } else if (!values.confirmPass) {
-    result = "Confirm Password is required";
-  } else if (values.password !== values.confirmPass) {
-    result = "Mismatch password";
-  } else if (!validatePassword.test(values.password)) {
-    result = "Password is wrong format (min 8, max 24)";
-  } else if (values.isAgreeCond == false) {
-    result = "CheckboxFail";
+function KycFormValidation(values: EkycFormReq): string[] {
+  let isRequiredInvalid = false;
+  var result = [];
+
+  if (!values.fullName) {
+    isRequiredInvalid = true;
   } else {
-    result = "Correct";
+    if (!ThaiEngTextReg(values.fullName)) {
+      result.push("Full name incorrect format");
+    }
+  }
+  if (!values.idNo) {
+    isRequiredInvalid = true;
+  } else {
+    let _checkSt = values.idNo.replace(/[^\d]/g, "");
+    if (!validNationalID(_checkSt)) {
+      result.push("ตัวเลขบัตรประชาไม่ถูกต้อง");
+    }
+  }
+
+  if (!values.phoneNumber) {
+    isRequiredInvalid = true;
+  } else {
+    let _checkSt = values.phoneNumber.replace(/[^\d]/g, "");
+    if (_checkSt.length > 10) {
+      result.push("เบอร์โทรศัพท์ไม่ถูกต้อง");
+    }
+  }
+
+  if (!values.laserId) {
+    isRequiredInvalid = true;
+  } else {
+    if (!EngNumReg(values.laserId)) {
+      result.push("laser ID incorrect format");
+    }
+  }
+
+  //calculateAge
+  if (!values.birthDate) {
+    isRequiredInvalid = true;
+  } else {
+    let age = calculateAge(values.birthDate);
+    if (age < 21) {
+      result.push("ขออภัย คุณอายุไม่ถึงเกณฑ์ที่กำหนด");
+    }
+  }
+
+  //check required
+  if (!values.username) {
+    isRequiredInvalid = true;
+  } else if (!values.address) {
+    isRequiredInvalid = true;
+  } else if (!values.ethnicity) {
+    isRequiredInvalid = true;
+  } else if (!values.nationality) {
+    isRequiredInvalid = true;
+  }
+
+  if (isRequiredInvalid) {
+    result.push("คุณยังกรอกข้อมูลไม่ครบ");
+  }
+
+  if (result.length == 0) {
+    result.push("Correct");
   }
   return result;
 }
@@ -135,23 +191,24 @@ export const getProfileAsync = createAsyncThunk(
 
 export const submitKycFormAsync = createAsyncThunk(
   "user/submitKycForm",
-  async (values: EkycFormProps) => {
-    var _result = SignUpValidation(values);
-    if (_result == "Correct") {
+  async (values: EkycFormReq) => {
+    var _result = KycFormValidation(values);
+    if (_result[0] == "Correct") {
+      let req = { ...values };
+      req.idNo = req.idNo.replace(/[^\d]/g, "");
+      req.phoneNumber = req.phoneNumber.replace(/[^\d]/g, "");
       //ยิงไป server
-      const req: SignUpReq = {
-        email: values.email,
-        password: values.password,
-        privacyPolicyVersion: values.privacyPolicyVersion,
-      };
-      const response = await userService.signUp(req);
+      console.log(`send to service: ${JSON.stringify(req)}`);
+      const response = await userService.submitKycForm(req);
       return response;
     } else {
-      const error: resError = {
-        message: _result,
-      };
-      var errors = new Array(error);
-      const res: SignUpRes = {
+      var errors = _result.map((msg) => {
+        const error: resError = {
+          message: msg,
+        };
+        return error;
+      });
+      const res: BaseApiResponse = {
         isSuccess: false,
         errors,
         successMessage: "",
@@ -222,6 +279,19 @@ const userSlice = createSlice({
       } else if (res?.isSuccess == false) {
         var _msg = res?.errors[0]?.message ?? "";
         state.error = _msg;
+      }
+    });
+    builder.addCase(submitKycFormAsync.fulfilled, (state, action) => {
+      var res = action.payload;
+      if (res?.isSuccess) {
+        state.isRequestSuccess = true;
+        Router.push("/status/waiting");
+        state.isRequestSuccess = false;
+      } else if (res?.isSuccess == false) {
+        let errors = mapErrorListToStringArr(res?.errors);
+        if (errors) {
+          state.errorList = errors;
+        }
       }
     });
   },

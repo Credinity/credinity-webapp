@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ApiCaller } from "@/services/apiCaller";
 import Cookies from "universal-cookie";
 import {
-  EkycFormProps,
+  EkycFormReq,
   SignUpReq,
   SignUpRes,
   UserProfileReq,
@@ -56,7 +56,7 @@ export const getProfile = (req: UserProfileReq): Promise<UserProfileRes> => {
   });
 };
 
-export const submitKycForm = (req: EkycFormProps): Promise<BaseApiResponse> => {
+export const submitKycForm = (req: EkycFormReq): Promise<BaseApiResponse> => {
   return NextApiPromiseBase({
     method: HTTP_METHOD_POST,
     url: "/user/submitKycForm",

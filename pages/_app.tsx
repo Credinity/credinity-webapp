@@ -6,6 +6,7 @@ import Head from "next/head";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
+import SnackbarCloseButton from "@/components/feedbacks/SnackbarCloseButton";
 
 function CredinityApp({ Component, pageProps }: AppProps) {
   return (
@@ -15,7 +16,10 @@ function CredinityApp({ Component, pageProps }: AppProps) {
       </Head>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <SnackbarProvider maxSnack={4}>
+          <SnackbarProvider
+            maxSnack={4}
+            action={(id) => <SnackbarCloseButton id={id} />}
+          >
             <Component {...pageProps} />
           </SnackbarProvider>
         </ThemeProvider>

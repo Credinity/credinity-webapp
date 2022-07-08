@@ -19,3 +19,8 @@ export const EngNumReg = (txt: string): boolean => {
   const regex = /^[A-Za-z0-9]+$/;
   return regex.test(String(txt));
 };
+
+export const NumReg = (txt: string): boolean => {
+  const regex = /^[0-9]+$/;
+  return regex.test(String(txt));
+};

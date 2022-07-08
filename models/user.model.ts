@@ -40,13 +40,13 @@ export interface SignUpFormProps {
   privacyPolicyVersion: string;
 }
 
-export interface EkycFormProps {
+export interface EkycFormReq extends BaseApiRequest {
   username: string;
   fullName: string;
   idType?: number;
   idNo: string;
   laserId: string;
-  birthDate?: number;
+  birthDate?: Date;
   phoneNumber: string;
   ethnicity?: number;
   nationality?: number;
