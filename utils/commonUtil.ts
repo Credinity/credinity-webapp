@@ -1,4 +1,5 @@
 import { Error } from "@/models/base.model";
+import { v4 as uuidv4 } from "uuid";
 
 export const productImageURL = (image?: string): string => {
   return `${process.env.NEXT_PUBLIC_BASE_IMAGE_URL_API}/${image}`;
@@ -23,10 +24,20 @@ export const getBase64 = (file: any): Promise<string | ArrayBuffer | null> => {
   });
 };
 
-export const b64toBlob = async (img: string): Promise<Blob> => {
-  const base64Response = await fetch(img);
-  const blob = await base64Response.blob();
-  return blob;
+export const imgB64toFormData = async (img64: string, nameImg: string) => {
+  try {
+    const resp = await fetch(img64);
+    const fblob = await resp.blob();
+    const file = new File([fblob], `${nameImg}${uuidv4()}.png`, {
+      type: "image/png",
+    });
+    const formData = new FormData();
+    formData.append(`file`, file);
+    return formData;
+  } catch (error) {
+    console.log(`ERR => : ${error}`);
+    return new FormData();
+  }
 };
 
 export const mapErrorListToStringArr = (
