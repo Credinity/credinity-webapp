@@ -9,6 +9,7 @@ type Props = {
   url: string;
   req?: any;
   token?: string;
+  customeHeader?: Record<string, string>;
 };
 
 const cookies = new Cookies();
@@ -20,6 +21,7 @@ export default function NextApiPromiseBase<Type>(props: Props): Promise<Type> {
       url: props.url,
       req: props.req,
       token: props.token,
+      customeHeader: props.customeHeader,
     })
       .then((res) => {
         resolve(res);

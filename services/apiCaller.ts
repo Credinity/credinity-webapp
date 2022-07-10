@@ -1,21 +1,24 @@
 import { v4 as uuidv4 } from "uuid";
 import Axios, { AxiosRequestConfig } from "axios";
 import { CredLogger } from "@/utils/logUtils";
-import { HTTP_METHOD_GET } from "@/models/constants/service.constant";
+
+type Props = {
+  method: string;
+  url: string;
+  req?: any;
+  token?: string;
+  customeHeader?: Record<string, string>;
+  isAddReqId?: boolean;
+};
 
 const ApiCaller = async ({
   method,
   url,
   req,
   token,
+  customeHeader,
   isAddReqId,
-}: {
-  method: string;
-  url: string;
-  req?: any;
-  token?: string;
-  isAddReqId?: boolean;
-}): Promise<any> => {
+}: Props): Promise<any> => {
   var logger = new CredLogger("API_CALLER");
   try {
     if (
@@ -28,19 +31,19 @@ const ApiCaller = async ({
       throw new Error("Method is not defined");
     }
 
-    let headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
+    let headers: Record<string, string> =
+      customeHeader != undefined
+        ? customeHeader
+        : {
+            "Content-Type": "application/json",
+          };
 
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    if (req) {
+    if (isAddReqId != undefined && isAddReqId == false) {
+      //No need to add requestId
+    } else {
       req.requestId = uuidv4();
-      if (!req.requestId) req.requestId = "unknownUuidError";
-    } else if (isAddReqId === undefined || isAddReqId != false) {
-      if (method.toUpperCase() != HTTP_METHOD_GET) {
-        req = { requestId: uuidv4() };
-      }
     }
 
     let config: AxiosRequestConfig<any> = {

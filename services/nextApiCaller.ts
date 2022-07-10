@@ -1,16 +1,20 @@
 import Axios, { AxiosRequestConfig } from "axios";
 
+type Props = {
+  method: string;
+  url: string;
+  req?: any;
+  token?: string;
+  customeHeader?: Record<string, string>;
+};
+
 const NextApiCaller = async ({
   method,
   url,
   req,
   token,
-}: {
-  method: string;
-  url: string;
-  req?: any;
-  token?: string;
-}): Promise<any> => {
+  customeHeader,
+}: Props): Promise<any> => {
   try {
     if (
       method == null ||
@@ -21,9 +25,12 @@ const NextApiCaller = async ({
       throw new Error("Method is not defined");
     }
 
-    let headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
+    let headers: Record<string, string> =
+      customeHeader != undefined
+        ? customeHeader
+        : {
+            "Content-Type": "application/json",
+          };
 
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
