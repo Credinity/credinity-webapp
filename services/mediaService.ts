@@ -5,10 +5,12 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export const uploadKycIdImg = (req: FormData): Promise<MediaRes> => {
+export const uploadImgFormData = (
+  req: FormData,
+  path: string
+): Promise<MediaRes> => {
   return new Promise((resolve, reject) => {
-    let url =
-      process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API + "/media/uploadKycIdImg";
+    let url = process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API + path;
     axios
       .post(url, req, {
         headers: {

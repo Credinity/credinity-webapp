@@ -2,7 +2,6 @@ import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import { EkycFormReq } from "@/models/user.model";
 import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -10,11 +9,7 @@ import { Formik, Form, FormikProps } from "formik";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/store/store";
-import {
-  pageSelector,
-  setDetailPage,
-  setTitlePage,
-} from "@/store/slices/pageSlice";
+import { setDetailPage, setTitlePage } from "@/store/slices/pageSlice";
 import { submitKycFormAsync, userSelector } from "@/store/slices/userSlice";
 import { LovItem } from "@/models/content.model";
 import { GetLovByType } from "@/services/commonService";
@@ -245,9 +240,7 @@ const ekycForm = (
 };
 
 export default function infoForm() {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const page = useSelector(pageSelector);
   const user = useSelector(userSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
@@ -277,6 +270,15 @@ export default function infoForm() {
       .catch((err) => {});
   }, []);
 
+  useEffect(() => {
+    dispatch(setTitlePage("ระบบกำลังตรวจสอบข้อมูล"));
+    dispatch(
+      setDetailPage(
+        "คุณจะได้รับการแจ้งเตือนผ่านอีเมลหลังจากระบบตรวจสอบข้อมูลสำเร็จ"
+      )
+    );
+  }, [user.isRequestSuccess]);
+
   return (
     <PageContainer
       pageName="E-KYC Form"
@@ -299,19 +301,9 @@ export default function infoForm() {
           initialValues={initialValues!}
           onSubmit={async (values) => {
             setIsPageLoading(true);
-            dispatch(submitKycFormAsync(values))
-              .then((res) => {
-                dispatch(setTitlePage("ระบบกำลังตรวจสอบข้อมูล"));
-                dispatch(
-                  setDetailPage(
-                    "คุณจะได้รับการแจ้งเตือนผ่านอีเมลหลังจากระบบตรวจสอบข้อมูลสำเร็จ"
-                  )
-                );
-                setIsPageLoading(false);
-              })
-              .catch((err) => {
-                setIsPageLoading(false);
-              });
+            dispatch(submitKycFormAsync(values)).finally(() => {
+              setIsPageLoading(false);
+            });
           }}
         >
           {(ekycFormProps) => ekycForm(ekycFormProps, lovNationality)}

@@ -8,7 +8,13 @@ import CameraCover from "@/public/img/cameracover/profile-cover-camera.svg";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import CheckIcon from "@mui/icons-material/Check";
 import { PhotoCamera } from "@mui/icons-material";
-import { useRouter } from "next/router";
+import { useAppDispatch } from "@/store/store";
+import { useSelector } from "react-redux";
+import {
+  mediaSelector,
+  setSelfieImgb64,
+  uploadPortraitEkycImgAsync,
+} from "@/store/slices/mediaSlice";
 
 const videoConstraints = {
   width: 300,
@@ -17,19 +23,19 @@ const videoConstraints = {
 };
 
 export default function faceRecognition() {
-  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const media = useSelector(mediaSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
-  const [imgSrc, setImgSrc]: [string, Function] = useState("");
   const videoRef = useRef(null);
   const capture = React.useCallback(() => {
     if (videoRef) {
       const imageSrc = videoRef.current.getScreenshot();
       if (imageSrc) {
-        setImgSrc(imageSrc);
+        dispatch(setSelfieImgb64(imageSrc));
       }
     }
-  }, [imgSrc]);
+  }, []);
   return (
     <PageContainer
       pageName="Intro Face Recognition"
@@ -48,7 +54,7 @@ export default function faceRecognition() {
           ถ่ายใบหน้าของคุณ
         </Typography>
         <Box position="relative" sx={{ mb: 5 }}>
-          {imgSrc == "" ? (
+          {media.selfieImgb64 == "" ? (
             <Webcam
               audio={false}
               height={300}
@@ -58,7 +64,12 @@ export default function faceRecognition() {
               videoConstraints={videoConstraints}
             />
           ) : (
-            <Image src={imgSrc} alt="Selfie Photo" height={300} width={300} />
+            <Image
+              src={media.selfieImgb64}
+              alt="Selfie Photo"
+              height={300}
+              width={300}
+            />
           )}
           <Box
             position="absolute"
@@ -112,10 +123,10 @@ export default function faceRecognition() {
           </Box>
         </Box>
         <Stack spacing={2} width="100%">
-          {imgSrc != "" ? (
+          {media.selfieImgb64 != "" ? (
             <PrimaryButton
               onClick={() => {
-                setImgSrc("");
+                dispatch(setSelfieImgb64(""));
               }}
             >
               <PhotoCamera />
@@ -131,13 +142,15 @@ export default function faceRecognition() {
               &nbsp; ถ่ายรูป
             </PrimaryButton>
           )}
-
           <PrimaryButton
             sx={{ mx: 5 }}
-            onClick={() => {
+            onClick={async () => {
               setIsPageLoading(true);
-              router.push("/ekyc/infoForm");
-              setIsPageLoading(false);
+              dispatch(uploadPortraitEkycImgAsync(media.selfieImgb64)).finally(
+                () => {
+                  setIsPageLoading(false);
+                }
+              );
             }}
           >
             บันทึก

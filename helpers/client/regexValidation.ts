@@ -20,7 +20,7 @@ export const NumReg = (txt: string): boolean => {
 };
 
 export const LaserIDReg = (txt: string): boolean => {
-  const regex = /^[a-z]{2}[0-9]{10}$/;
+  const regex = /^[a-zA-z]{2}[0-9]{10}$/;
   return regex.test(String(txt));
 };
 

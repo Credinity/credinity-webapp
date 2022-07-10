@@ -293,8 +293,8 @@ const userSlice = createSlice({
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
         Router.push("/status/waiting");
-        state.isRequestSuccess = false;
       } else if (res?.isSuccess == false) {
+        state.isRequestSuccess = false;
         let errors = mapErrorListToStringArr(res?.errors);
         if (errors) {
           state.errorList = errors;

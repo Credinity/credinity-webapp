@@ -7,11 +7,10 @@ import PageContainer from "@/components/layouts/PageContainer";
 import FrameCover from "@/public/img/cameracover/id-card-cover-camera.svg";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import { PhotoCamera } from "@mui/icons-material";
-import { useRouter } from "next/router";
 import {
   mediaSelector,
   setKycIdImgB64,
-  uploadKycIdImageAsync,
+  uploadIdKycImgAsync,
 } from "@/store/slices/mediaSlice";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/store/store";
@@ -24,7 +23,6 @@ const videoConstraints = {
 };
 
 export default function cardScanner() {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const media = useSelector(mediaSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
@@ -114,7 +112,7 @@ export default function cardScanner() {
             sx={{ mx: 5 }}
             onClick={async () => {
               setIsPageLoading(true);
-              dispatch(uploadKycIdImageAsync(media.kycIdImgB64)).finally(() => {
+              dispatch(uploadIdKycImgAsync(media.kycIdImgB64)).finally(() => {
                 setIsPageLoading(false);
               });
             }}
