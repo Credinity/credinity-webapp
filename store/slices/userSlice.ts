@@ -14,11 +14,11 @@ import {
   UserProfileReq,
 } from "@/models/user.model";
 import {
-  EngNumReg,
-  NumReg,
-  ThaiEngTextReg,
-  validateEmail,
-  validatePassword,
+  LaserIDReg,
+  EmailReg,
+  PasswordReg,
+  NameReg,
+  PhoneNoReg,
 } from "helpers/client/regexValidation";
 import Router from "next/router";
 import { BaseApiResponse, Error as resError } from "@/models/base.model";
@@ -57,7 +57,7 @@ function SignUpValidation(values: SignUpFormProps): string {
   var result = "";
   if (!values.email) {
     result = "Email is required";
-  } else if (!validateEmail(values.email)) {
+  } else if (!EmailReg(values.email)) {
     result = "Email is wrong format";
   } else if (!values.password) {
     result = "Password is required";
@@ -65,7 +65,7 @@ function SignUpValidation(values: SignUpFormProps): string {
     result = "Confirm Password is required";
   } else if (values.password !== values.confirmPass) {
     result = "Mismatch password";
-  } else if (!validatePassword(values.password)) {
+  } else if (!PasswordReg(values.password)) {
     result = "Password is wrong format (min 8, max 24)";
   } else if (values.isAgreeCond == false) {
     result = "CheckboxFail";
@@ -79,14 +79,22 @@ function KycFormValidation(values: EkycFormReq): string[] {
   let isRequiredInvalid = false;
   var result = [];
 
-  if (!values.fullName) {
+  if (!isRequiredInvalid && !values.username) {
     isRequiredInvalid = true;
   } else {
-    if (!ThaiEngTextReg(values.fullName)) {
+    if (!NameReg(values.username)) {
+      result.push("Username incorrect format");
+    }
+  }
+
+  if (!isRequiredInvalid && !values.fullName) {
+    isRequiredInvalid = true;
+  } else {
+    if (!NameReg(values.fullName)) {
       result.push("Full name incorrect format");
     }
   }
-  if (!values.idNo) {
+  if (!isRequiredInvalid && !values.idNo) {
     isRequiredInvalid = true;
   } else {
     let _checkSt = values.idNo.replace(/[^\d]/g, "");
@@ -95,25 +103,25 @@ function KycFormValidation(values: EkycFormReq): string[] {
     }
   }
 
-  if (!values.phoneNumber) {
+  if (!isRequiredInvalid && !values.phoneNumber) {
     isRequiredInvalid = true;
   } else {
-    let _checkSt = values.phoneNumber.replace(/[^\d]/g, "");
-    if (_checkSt.length > 10) {
+    let checkSt = values.phoneNumber.replace(/[^\d]/g, "");
+    if (!PhoneNoReg(checkSt)) {
       result.push("เบอร์โทรศัพท์ไม่ถูกต้อง");
     }
   }
 
-  if (!values.laserId) {
+  if (!isRequiredInvalid && !values.laserId) {
     isRequiredInvalid = true;
   } else {
-    if (!EngNumReg(values.laserId)) {
+    if (!LaserIDReg(values.laserId)) {
       result.push("laser ID incorrect format");
     }
   }
 
   //calculateAge
-  if (!values.birthDate) {
+  if (!isRequiredInvalid && !values.birthDate) {
     isRequiredInvalid = true;
   } else {
     let age = calculateAge(values.birthDate);
@@ -123,14 +131,14 @@ function KycFormValidation(values: EkycFormReq): string[] {
   }
 
   //check required
-  if (!values.username) {
-    isRequiredInvalid = true;
-  } else if (!values.address) {
-    isRequiredInvalid = true;
-  } else if (!values.ethnicity) {
-    isRequiredInvalid = true;
-  } else if (!values.nationality) {
-    isRequiredInvalid = true;
+  if (!isRequiredInvalid) {
+    if (!values.address) {
+      isRequiredInvalid = true;
+    } else if (!values.ethnicity) {
+      isRequiredInvalid = true;
+    } else if (!values.nationality) {
+      isRequiredInvalid = true;
+    }
   }
 
   if (isRequiredInvalid) {
