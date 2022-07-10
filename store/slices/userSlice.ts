@@ -198,7 +198,6 @@ export const submitKycFormAsync = createAsyncThunk(
       req.idNo = req.idNo.replace(/[^\d]/g, "");
       req.phoneNumber = req.phoneNumber.replace(/[^\d]/g, "");
       //ยิงไป server
-      console.log(`send to service: ${JSON.stringify(req)}`);
       const response = await userService.submitKycForm(req);
       return response;
     } else {

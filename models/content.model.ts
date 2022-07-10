@@ -17,10 +17,6 @@ export interface FeatureItem {
   detail?: string;
 }
 
-export interface MediaReq {
-  imgBase64: string;
-}
-
 export interface MediaRes extends BaseApiResponse {
   addedFileLocation: string;
 }

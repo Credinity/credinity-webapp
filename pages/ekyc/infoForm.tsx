@@ -274,9 +274,7 @@ export default function infoForm() {
       .then((res) => {
         setLovNationality(res.lovList);
       })
-      .catch((err) => {
-        console.log(`Err => ${JSON.stringify(err)}`);
-      });
+      .catch((err) => {});
   }, []);
 
   return (
@@ -312,8 +310,6 @@ export default function infoForm() {
                 setIsPageLoading(false);
               })
               .catch((err) => {
-                console.log("ERR");
-                console.log(JSON.stringify(err));
                 setIsPageLoading(false);
               });
           }}

@@ -35,7 +35,6 @@ export const imgB64toFormData = async (img64: string, nameImg: string) => {
     formData.append(`file`, file);
     return formData;
   } catch (error) {
-    console.log(`ERR => : ${error}`);
     return new FormData();
   }
 };

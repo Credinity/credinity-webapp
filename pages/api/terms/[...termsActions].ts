@@ -18,6 +18,7 @@ async function getPrivacyPolicy(res: NextApiResponse<any>) {
     const response = await ApiCaller({
       method: HTTP_METHOD_GET,
       url: "/Terms/GetLatestPrivacyPolicy",
+      isAddReqId: false,
     });
     res.json(response);
   } catch (error) {

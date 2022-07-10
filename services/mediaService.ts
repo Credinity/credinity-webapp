@@ -1,18 +1,27 @@
 import { Authorization } from "@/models/constants/key.constant";
-import { HTTP_METHOD_POST } from "@/models/constants/service.constant";
 import { MediaRes } from "@/models/content.model";
+import axios from "axios";
 import Cookies from "universal-cookie";
-import NextApiPromiseBase from "./commonService";
 
 const cookies = new Cookies();
 
-export const uploadKycIdentificationImage = (
-  req: FormData
-): Promise<MediaRes> => {
-  return NextApiPromiseBase({
-    method: HTTP_METHOD_POST,
-    url: "/media/uploadKycIdentificationImage",
-    req: req,
-    token: cookies.get(Authorization),
+export const uploadKycIdImg = (req: FormData): Promise<MediaRes> => {
+  return new Promise((resolve, reject) => {
+    let url =
+      process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API + "/media/uploadKycIdImg";
+    axios
+      .post(url, req, {
+        headers: {
+          "content-Type": "multipart/form-data",
+          Authorization: `Bearer ${cookies.get(Authorization)}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res;
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 };

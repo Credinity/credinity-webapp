@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 import * as mediaService from "@/services/mediaService";
-import { b64toBlob } from "@/utils/commonUtil";
 import Router from "next/router";
+import { imgB64toFormData } from "@/utils/commonUtil";
 
 interface MediaState {
   error: string;
@@ -21,12 +21,11 @@ const initialState: MediaState = {
 export const uploadKycIdImageAsync = createAsyncThunk(
   "media/uploadKycIdImageAsync",
   async (reqImgB64: string) => {
-    let blob = await b64toBlob(reqImgB64);
-    const data = new FormData();
-    const file = new File([blob], `KycIdImage.jpeg`);
-    data.append("image", file);
-    const response = await mediaService.uploadKycIdentificationImage(data);
-    return response;
+    try {
+      let formDataImg = await imgB64toFormData(reqImgB64, `KycIdImg`);
+      const response = await mediaService.uploadKycIdImg(formDataImg);
+      return response;
+    } catch (error) {}
   }
 );
 

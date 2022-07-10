@@ -31,7 +31,6 @@ let cidOldValue = "";
 export function citizenFormat(value: string) {
   if (!value) return value;
   const cid = value.replace(/[^\d]{0,12}/g, "");
-  console.log(cid);
   const cidLength = cid.length;
   const oldLength = cidOldValue.length;
   if (cidOldValue.length > cidLength) {
