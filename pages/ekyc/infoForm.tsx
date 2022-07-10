@@ -24,7 +24,7 @@ import { citizenFormat, phoneNumberFormat } from "helpers/client/stringFormat";
 const initialValues: EkycFormReq = {
   username: "",
   fullName: "",
-  idType: 0,
+  idType: 1,
   idNo: "",
   laserId: "",
   address: "",

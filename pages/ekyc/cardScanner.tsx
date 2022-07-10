@@ -65,7 +65,7 @@ export default function cardScanner() {
               width={280}
               height={439}
               ref={videoRef}
-              screenshotFormat="image/jpeg"
+              screenshotFormat="image/png"
               videoConstraints={videoConstraints}
             />
           ) : (

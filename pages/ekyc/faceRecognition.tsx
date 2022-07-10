@@ -54,7 +54,7 @@ export default function faceRecognition() {
               height={300}
               width={300}
               ref={videoRef}
-              screenshotFormat="image/jpeg"
+              screenshotFormat="image/png"
               videoConstraints={videoConstraints}
             />
           ) : (

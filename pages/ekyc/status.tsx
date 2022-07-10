@@ -59,7 +59,10 @@ export default function EkycStatusPage({}: Props) {
           <CreadinityLoader />
         ) : (
           <>
-            <Box minHeight={200}>รอรูป</Box>
+            <Box sx={{ mx: "10vw", mt: "10vh" }}>
+              <Image src={Logo}></Image>
+            </Box>
+
             <Card>
               <CardContent
                 sx={{
