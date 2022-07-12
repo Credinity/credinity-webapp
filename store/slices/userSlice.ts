@@ -291,8 +291,10 @@ const userSlice = createSlice({
     builder.addCase(submitKycFormAsync.fulfilled, (state, action) => {
       var res = action.payload;
       if (res?.isSuccess) {
+        state.isRequestSuccess = true;
         Router.push("/status/waitingStatus");
       } else if (res?.isSuccess == false) {
+        state.isRequestSuccess = false;
         let errors = mapErrorListToStringArr(res?.errors);
         if (errors) {
           state.errorList = errors;
