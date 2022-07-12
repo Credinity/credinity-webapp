@@ -271,12 +271,14 @@ export default function infoForm() {
   }, []);
 
   useEffect(() => {
-    dispatch(setTitlePage("ระบบกำลังตรวจสอบข้อมูล"));
-    dispatch(
-      setDetailPage(
-        "คุณจะได้รับการแจ้งเตือนผ่านอีเมลหลังจากระบบตรวจสอบข้อมูลสำเร็จ"
-      )
-    );
+    if (user.isRequestSuccess) {
+      dispatch(setTitlePage("ระบบกำลังตรวจสอบข้อมูล"));
+      dispatch(
+        setDetailPage(
+          "คุณจะได้รับการแจ้งเตือนผ่านอีเมลหลังจากระบบตรวจสอบข้อมูลสำเร็จ"
+        )
+      );
+    }
   }, [user.isRequestSuccess]);
 
   return (
