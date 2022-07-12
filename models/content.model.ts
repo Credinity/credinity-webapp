@@ -1,5 +1,5 @@
 import { StaticImageData } from "next/image";
-import { BaseApiResponse } from "@/models/base.model";
+import { BaseApiRequest, BaseApiResponse } from "@/models/base.model";
 
 export interface ArticleItem {
   contentId: number;
@@ -17,7 +17,12 @@ export interface FeatureItem {
   detail?: string;
 }
 
-export interface MediaRes extends BaseApiResponse {
+export interface FileReq extends BaseApiRequest {
+  base64Data: string;
+  fileName: string;
+}
+
+export interface FileRes extends BaseApiResponse {
   addedFileLocation: string;
 }
 

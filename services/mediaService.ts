@@ -1,29 +1,20 @@
 import { Authorization } from "@/models/constants/key.constant";
-import { MediaRes } from "@/models/content.model";
+import { HTTP_METHOD_POST } from "@/models/constants/service.constant";
+import { FileReq, FileRes } from "@/models/content.model";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import NextApiPromiseBase from "./commonService";
 
 const cookies = new Cookies();
 
 export const uploadImgFormData = (
-  req: FormData,
+  req: FileReq,
   path: string
-): Promise<MediaRes> => {
-  return new Promise((resolve, reject) => {
-    let url = process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API + path;
-    axios
-      .post(url, req, {
-        headers: {
-          "content-Type": "multipart/form-data",
-          Authorization: `Bearer ${cookies.get(Authorization)}`,
-        },
-      })
-      .then((res) => {
-        const { data } = res;
-        resolve(data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+): Promise<FileRes> => {
+  return NextApiPromiseBase({
+    method: HTTP_METHOD_POST,
+    url: path,
+    req: req,
+    token: cookies.get(Authorization),
   });
 };

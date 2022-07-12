@@ -19,27 +19,22 @@ const initialState: MediaState = {
 export const uploadIdKycImgAsync = createAsyncThunk(
   "media/uploadIdKycImgAsync ",
   async (reqImgB64: string) => {
-    try {
-      let formDataImg = await imgB64toFormData(reqImgB64, `KycIdImg`);
-      const response = await mediaService.uploadImgFormData(
-        formDataImg,
-        "/media/uploadKycIdImg"
-      );
-      return response;
-    } catch (error) {}
+    const response = await mediaService.uploadImgFormData(
+      { base64Data: reqImgB64, fileName: "KycIdImg" },
+      "/media/uploadKycIdImg"
+    );
+    return response;
   }
 );
 export const uploadPortraitEkycImgAsync = createAsyncThunk(
   "media/uploadPortraitEkycImgAsync ",
   async (reqImgB64: string) => {
-    try {
-      let formDataImg = await imgB64toFormData(reqImgB64, `SelfieImg`);
-      const response = await mediaService.uploadImgFormData(
-        formDataImg,
-        "/media/uploadPortraitImg"
-      );
-      return response;
-    } catch (error) {}
+    // let formDataImg = await imgB64toFormData(reqImgB64, `SelfieImg`);
+    const response = await mediaService.uploadImgFormData(
+      { base64Data: reqImgB64, fileName: "SelfieImg" },
+      "/media/uploadPortraitImg"
+    );
+    return response;
   }
 );
 
