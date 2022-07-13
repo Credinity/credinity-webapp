@@ -113,7 +113,7 @@ export default function SignUpPage() {
               onChange={handleChange}
               value={values.phoneNo}
               disabled={true}
-              //todo : OTP Flow
+              //todo : OTP Flow (Disable OTP)
               //disabled={user.isDisableInput}
             />
           </Grid>
@@ -263,7 +263,7 @@ export default function SignUpPage() {
                 dispatch(setSignUpProcessing(false));
               } else if (submitAction === "otpAction") {
                 dispatch(setOtpProcessing(true));
-                //todo OTP Service
+                //todo OTP Service (Disable OTP)
                 dispatch(setOtpProcessing(false));
               } else {
                 writeLog("something wrong");
