@@ -271,7 +271,7 @@ const userSlice = createSlice({
       var res = action.payload;
       if (res?.isSuccess) {
         state.privacyVersion = res.version;
-        //todo pop: Language change
+        //todo pop: Privacy HTML Language change
         state.privacyDetailHtml = res.privacyPolicyTextTh;
       } else {
         var _msg = res?.errors[0]?.message ?? "";

@@ -33,6 +33,9 @@ import {
   setIsContainTokenCookie,
 } from "@/store/slices/pageSlice";
 import { useEffect } from "react";
+import Cookies from "universal-cookie";
+import { UserID } from "@/models/constants/key.constant";
+import { getProfileAsync, userSelector } from "@/store/slices/userSlice";
 
 type Props = {
   initialCheckToken: boolean;
@@ -41,9 +44,21 @@ type Props = {
 export default function Index({ initialCheckToken }: Props) {
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
+  const user = useSelector(userSelector);
+
   useEffect(() => {
     dispatch(setIsContainTokenCookie(initialCheckToken));
   }, []);
+
+  useEffect(() => {
+    if (page.isContainTokenCookie) {
+      const cookies = new Cookies();
+      let id = cookies.get(UserID);
+      if (id != "") {
+        dispatch(getProfileAsync({ userId: id }));
+      }
+    }
+  }, [page.isContainTokenCookie]);
 
   const [isPageLoading, setisPageLoading]: [boolean, Function] =
     useState(false);
@@ -120,16 +135,19 @@ export default function Index({ initialCheckToken }: Props) {
                 <CircularProgress />
               </Stack>
             ) : (
-              // todo: แสดงปุ่มเมื่อผ่านการ login และยังไม่ ekyc
-              <PrimaryButton
-                fullWidth
-                disabled={isPageLoading}
-                onClick={() => {
-                  routePage("/ekyc/stepIntro");
-                }}
-              >
-                ยืนยันตัวตน
-              </PrimaryButton>
+              <>
+                {user.ekycStatus && user.ekycStatus == 0 ? (
+                  <PrimaryButton
+                    fullWidth
+                    disabled={isPageLoading}
+                    onClick={() => {
+                      routePage("/ekyc/stepIntro");
+                    }}
+                  >
+                    ยืนยันตัวตน
+                  </PrimaryButton>
+                ) : null}
+              </>
             )}
           </Grid>
         ) : null}
