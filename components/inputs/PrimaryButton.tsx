@@ -1,11 +1,6 @@
-import {
-  AntiFlashWhite,
-  Diamond,
-  Gainsboro,
-  White,
-} from "@/public/constants/color.constant";
+import { Diamond, White } from "@/models/constants/color.constant";
 import { Button, ButtonProps, styled, Typography } from "@mui/material";
-import React, { MouseEventHandler } from "react";
+import React from "react";
 
 const CredinityButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: White,
@@ -17,8 +12,14 @@ const CredinityButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 export default function PrimaryButton(props: any) {
   return (
-    <CredinityButton fullWidth variant="contained" {...props}>
-      <Typography variant="button" sx={{ wordWrap: "break-word" }}>
+    <CredinityButton variant="contained" {...props}>
+      <Typography
+        variant="button"
+        justifyContent="center"
+        alignItems="center"
+        display="flex"
+        sx={{ wordWrap: "break-word" }}
+      >
         {props.children}
       </Typography>
     </CredinityButton>

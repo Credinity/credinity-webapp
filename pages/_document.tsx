@@ -20,7 +20,7 @@ class CredinityDoc extends Document {
           <meta charSet="utf-8" />
           <link
             rel="shortcut icon"
-            href="/../public/img/credinity-tr-logo.png"
+            href="/../public/img/logo/credinity-tr-logo.png"
           />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link

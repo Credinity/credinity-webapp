@@ -4,19 +4,33 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 //เอาทุก export ในไฟล์
-import * as authService from "@/services/authPageApi";
-import * as termsCondService from "@/services/termsCondPageApi";
-import { SignUpFormProps, SignUpReq, SignUpRes } from "@/models/auth.model";
+import * as userService from "@/services/userService";
+import * as termsCondService from "@/services/termsCondService";
 import {
-  validateEmail,
-  validatePassword,
+  EkycFormReq,
+  SignUpFormProps,
+  SignUpReq,
+  SignUpRes,
+  UserProfileReq,
+} from "@/models/user.model";
+import {
+  LaserIDReg,
+  EmailReg,
+  PasswordReg,
+  NameReg,
+  PhoneNoReg,
 } from "helpers/client/regexValidation";
-import writeLog from "@/utils/logUtils";
 import Router from "next/router";
-import { Error as resError } from "@/models/base.model";
+import { BaseApiResponse, Error as resError } from "@/models/base.model";
+import {
+  calculateAge,
+  mapErrorListToStringArr,
+  validNationalID,
+} from "@/utils/commonUtil";
 
 interface UserState {
   error: string;
+  errorList?: Array<string | undefined>;
   isRequestSuccess: boolean;
   isProcessing: boolean;
   isOtpProcessing: boolean;
@@ -24,10 +38,12 @@ interface UserState {
   isRedCheckBox: boolean;
   privacyVersion: string;
   privacyDetailHtml: string;
+  ekycStatus?: number;
 }
 
 const initialState: UserState = {
   error: "",
+  errorList: undefined,
   isRequestSuccess: false,
   isProcessing: false,
   isOtpProcessing: false,
@@ -41,7 +57,7 @@ function SignUpValidation(values: SignUpFormProps): string {
   var result = "";
   if (!values.email) {
     result = "Email is required";
-  } else if (!validateEmail(values.email)) {
+  } else if (!EmailReg(values.email)) {
     result = "Email is wrong format";
   } else if (!values.password) {
     result = "Password is required";
@@ -49,7 +65,7 @@ function SignUpValidation(values: SignUpFormProps): string {
     result = "Confirm Password is required";
   } else if (values.password !== values.confirmPass) {
     result = "Mismatch password";
-  } else if (!validatePassword.test(values.password)) {
+  } else if (!PasswordReg(values.password)) {
     result = "Password is wrong format (min 8, max 24)";
   } else if (values.isAgreeCond == false) {
     result = "CheckboxFail";
@@ -59,7 +75,83 @@ function SignUpValidation(values: SignUpFormProps): string {
   return result;
 }
 
-//Async sign up
+function KycFormValidation(values: EkycFormReq): string[] {
+  let isRequiredInvalid = false;
+  var result = [];
+
+  if (!isRequiredInvalid && !values.username) {
+    isRequiredInvalid = true;
+  } else {
+    if (!NameReg(values.username)) {
+      result.push("Username incorrect format");
+    }
+  }
+
+  if (!isRequiredInvalid && !values.fullName) {
+    isRequiredInvalid = true;
+  } else {
+    if (!NameReg(values.fullName)) {
+      result.push("Full name incorrect format");
+    }
+  }
+  if (!isRequiredInvalid && !values.idNo) {
+    isRequiredInvalid = true;
+  } else {
+    let _checkSt = values.idNo.replace(/[^\d]/g, "");
+    if (!validNationalID(_checkSt)) {
+      result.push("ตัวเลขบัตรประชาไม่ถูกต้อง");
+    }
+  }
+
+  if (!isRequiredInvalid && !values.phoneNumber) {
+    isRequiredInvalid = true;
+  } else {
+    let checkSt = values.phoneNumber.replace(/[^\d]/g, "");
+    if (!PhoneNoReg(checkSt)) {
+      result.push("เบอร์โทรศัพท์ไม่ถูกต้อง");
+    }
+  }
+
+  if (!isRequiredInvalid && !values.laserId) {
+    isRequiredInvalid = true;
+  } else {
+    if (!LaserIDReg(values.laserId)) {
+      result.push("laser ID incorrect format");
+    }
+  }
+
+  //calculateAge
+  if (!isRequiredInvalid && !values.birthDate) {
+    isRequiredInvalid = true;
+  } else {
+    let age = calculateAge(values.birthDate);
+    if (age < 21) {
+      result.push("ขออภัย คุณอายุไม่ถึงเกณฑ์ที่กำหนด");
+    }
+  }
+
+  //check required
+  if (!isRequiredInvalid) {
+    if (!values.address) {
+      isRequiredInvalid = true;
+    } else if (!values.ethnicity) {
+      isRequiredInvalid = true;
+    } else if (!values.nationality) {
+      isRequiredInvalid = true;
+    }
+  }
+
+  if (isRequiredInvalid) {
+    result.push("คุณยังกรอกข้อมูลไม่ครบ");
+  }
+
+  if (result.length == 0) {
+    result.push("Correct");
+  }
+  return result;
+}
+
+//Async
 export const getPrivacyPolicyAsync = createAsyncThunk(
   "user/getPrivacyPolicy",
   async () => {
@@ -67,6 +159,7 @@ export const getPrivacyPolicyAsync = createAsyncThunk(
     return response;
   }
 );
+
 export const signUpAsync = createAsyncThunk(
   "user/signup", //action label show on redux devtool
   async (values: SignUpFormProps) => {
@@ -78,7 +171,7 @@ export const signUpAsync = createAsyncThunk(
         password: values.password,
         privacyPolicyVersion: values.privacyPolicyVersion,
       };
-      const response = await authService.signUp(req);
+      const response = await userService.signUp(req);
       return response;
     } else {
       const error: resError = {
@@ -88,7 +181,44 @@ export const signUpAsync = createAsyncThunk(
       const res: SignUpRes = {
         isSuccess: false,
         errors,
-        successMessage: null,
+        successMessage: "",
+        requestId: "",
+      };
+      return res;
+    }
+  }
+);
+
+export const getProfileAsync = createAsyncThunk(
+  "user/profile", //action label show on redux devtool
+  async (req: UserProfileReq) => {
+    const response = await userService.getProfile(req);
+    return response;
+  }
+);
+
+export const submitKycFormAsync = createAsyncThunk(
+  "user/submitKycForm",
+  async (values: EkycFormReq) => {
+    var _result = KycFormValidation(values);
+    if (_result[0] == "Correct") {
+      let req = { ...values };
+      req.idNo = req.idNo.replace(/[^\d]/g, "");
+      req.phoneNumber = req.phoneNumber.replace(/[^\d]/g, "");
+      //ยิงไป server
+      const response = await userService.submitKycForm(req);
+      return response;
+    } else {
+      var errors = _result.map((msg) => {
+        const error: resError = {
+          message: msg,
+        };
+        return error;
+      });
+      const res: BaseApiResponse = {
+        isSuccess: false,
+        errors,
+        successMessage: "",
         requestId: "",
       };
       return res;
@@ -120,11 +250,6 @@ const userSlice = createSlice({
     //Action เปลี่ยนแปลงค่าแบบ Asnyc
     //fullfilled = complete/ rejected/ pending = processing
     builder.addCase(signUpAsync.fulfilled, (state, action) => {
-      // writeLog(
-      //   `signUpAsync.fulfilled action payload => ${JSON.stringify(
-      //     action.payload
-      //   )}`
-      // );
       var res = action.payload;
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
@@ -143,11 +268,6 @@ const userSlice = createSlice({
     });
     builder.addCase(getPrivacyPolicyAsync.fulfilled, (state, action) => {
       if (state.privacyVersion != "") return;
-      // writeLog(
-      //   `getPrivacyPolicyAsync.fulfilled action payload => ${JSON.stringify(
-      //     action.payload
-      //   )}`
-      // );
       var res = action.payload;
       if (res?.isSuccess) {
         state.privacyVersion = res.version;
@@ -157,6 +277,28 @@ const userSlice = createSlice({
         var _msg = res?.errors[0]?.message ?? "";
         state.isRedCheckBox = false;
         state.error = _msg;
+      }
+    });
+    builder.addCase(getProfileAsync.fulfilled, (state, action) => {
+      var res = action.payload;
+      if (res?.isSuccess) {
+        state.ekycStatus = res.user.kycStatus;
+      } else if (res?.isSuccess == false) {
+        var _msg = res?.errors[0]?.message ?? "";
+        state.error = _msg;
+      }
+    });
+    builder.addCase(submitKycFormAsync.fulfilled, (state, action) => {
+      var res = action.payload;
+      if (res?.isSuccess) {
+        state.isRequestSuccess = true;
+        Router.push("/status/waitingStatus");
+      } else if (res?.isSuccess == false) {
+        state.isRequestSuccess = false;
+        let errors = mapErrorListToStringArr(res?.errors);
+        if (errors) {
+          state.errorList = errors;
+        }
       }
     });
   },

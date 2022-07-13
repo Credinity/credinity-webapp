@@ -3,43 +3,55 @@ import { RootState } from "@/store/store";
 
 interface PageState {
   error: string;
-  isRequestSuccess: boolean;
-  isProcessing: boolean;
-  isOpenPrivacyConterm: boolean;
+  titlePage: string;
+  detailPage: string;
+  isOpenAlert: boolean;
+  isOpenDialog: boolean;
+  isContainTokenCookie: boolean;
 }
 
 const initialState: PageState = {
   error: "",
-  isRequestSuccess: false,
-  isProcessing: false,
-  isOpenPrivacyConterm: false,
+  titlePage: "",
+  detailPage: "",
+  isOpenAlert: false,
+  isOpenDialog: false,
+  isContainTokenCookie: false,
 };
 
 const pageSlice = createSlice({
   name: "pageSlice",
   initialState: initialState,
   reducers: {
-    setRequestSuccess: (state, action: PayloadAction<boolean>) => {
-      state.isRequestSuccess = action.payload;
-    },
-    setIsProcessing: (state, action: PayloadAction<boolean>) => {
-      state.isProcessing = action.payload;
-    },
     setErrorMsg: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
-    setIsOpenPrivacyConterm: (state, action: PayloadAction<boolean>) => {
-      state.isOpenPrivacyConterm = action.payload;
+    setTitlePage: (state, action: PayloadAction<string>) => {
+      state.titlePage = action.payload;
+    },
+    setDetailPage: (state, action: PayloadAction<string>) => {
+      state.detailPage = action.payload;
+    },
+    setIsOpenAlert: (state, action: PayloadAction<boolean>) => {
+      state.isOpenAlert = action.payload;
+    },
+    setIsOpenDialog: (state, action: PayloadAction<boolean>) => {
+      state.isOpenDialog = action.payload;
+    },
+    setIsContainTokenCookie: (state, action: PayloadAction<boolean>) => {
+      state.isContainTokenCookie = action.payload;
     },
   },
 });
 
 //export action
 export const {
-  setRequestSuccess,
-  setIsProcessing,
   setErrorMsg,
-  setIsOpenPrivacyConterm,
+  setTitlePage,
+  setDetailPage,
+  setIsOpenAlert,
+  setIsOpenDialog,
+  setIsContainTokenCookie,
 } = pageSlice.actions;
 
 // export selector

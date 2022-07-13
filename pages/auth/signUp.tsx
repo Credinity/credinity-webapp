@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { Formik, Form, FormikProps } from "formik";
 import { Checkbox, CircularProgress, Grid, Link, Stack } from "@mui/material";
-import { Gainsboro, Ladybug } from "@/public/constants/color.constant";
+import { Gainsboro, Ladybug } from "@/models/constants/color.constant";
 import FormikTextField from "@/components/inputs/FormikTextField";
 import Image from "next/image";
 import { useAppDispatch } from "@/store/store";
-import { SignUpFormProps } from "@/models/auth.model";
+import { SignUpFormProps } from "@/models/user.model";
 import {
   getPrivacyPolicyAsync,
   setOtpProcessing,
@@ -17,8 +17,8 @@ import {
 import { useSelector } from "react-redux";
 import writeLog from "@/utils/logUtils";
 import PageContainer from "@/components/layouts/PageContainer";
-import { setIsOpenPrivacyConterm } from "@/store/slices/pageSlice";
-import CustomizedDialogs from "@/components/dialogs/CustomizedDialogs";
+import { setIsOpenDialog } from "@/store/slices/pageSlice";
+import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 
 const initialValues: SignUpFormProps = {
@@ -36,7 +36,7 @@ export default function SignUpPage() {
   const user = useSelector(userSelector);
   let submitAction: string | undefined = undefined;
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getPrivacyPolicyAsync());
   }, []);
 
@@ -194,7 +194,7 @@ export default function SignUpPage() {
               color="primary"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(setIsOpenPrivacyConterm(true));
+                dispatch(setIsOpenDialog(true));
               }}
             >
               Privacy policy
@@ -207,6 +207,7 @@ export default function SignUpPage() {
             <CircularProgress />
           ) : (
             <PrimaryButton
+              fullWidth
               disabled={user.isProcessing}
               onClick={() => {
                 submitAction = "signUpAction";
@@ -245,13 +246,13 @@ export default function SignUpPage() {
       <Grid container direction="column" minHeight="100vh" spacing={0}>
         <Grid item alignSelf="center" sx={{ mt: 4 }}>
           <Image
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             alt="credinity logo"
             width={100}
             height={100}
           />
         </Grid>
-        <Grid item xs={12} sx={{ mx: 4 }}>
+        <Grid item xs={12} sx={{ mx: "5vw" }}>
           <Formik
             initialValues={initialValues!}
             onSubmit={async (values) => {
@@ -272,7 +273,7 @@ export default function SignUpPage() {
             {(signUpProps) => registerForm(signUpProps)}
           </Formik>
         </Grid>
-        <Grid item xs={12} sx={{ mx: 4 }}>
+        <Grid item xs={12} sx={{ mx: "5vw" }}>
           {user.privacyVersion != "" ? (
             <CustomizedDialogs
               title="นโยบายรักษาข้อมูลส่วนบุคคล"

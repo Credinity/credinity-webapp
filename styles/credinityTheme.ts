@@ -3,7 +3,7 @@ import {
   Secondary,
   White,
   VenetianRed,
-} from "@/public/constants/color.constant";
+} from "@/models/constants/color.constant";
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({

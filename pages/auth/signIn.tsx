@@ -28,6 +28,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import jsonwebtoken from "jsonwebtoken";
 import Cookies from "universal-cookie";
+import { Authorization, UserID } from "@/models/constants/key.constant";
 //#endregion
 
 const SignInPage: NextPage = () => {
@@ -61,15 +62,23 @@ const SignInPage: NextPage = () => {
           setIsLoading(false);
           return;
         }
+        console.log(JSON.stringify(res.data));
         const cookies = new Cookies();
-        cookies.set("authorization", res.data.userToken, {
+        cookies.set(Authorization, res.data.userToken, {
           path: "/",
           maxAge: 60 * 60 * 24 * 7,
           sameSite: "strict",
         });
+        cookies.set(UserID, res.data.user.userId, {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+          sameSite: "strict",
+        });
+        console.log(`get ALL ${JSON.stringify(cookies.getAll())}`);
+
         setRequestSuccess(true);
         setIsLoading(false);
-        router.push("/user/profile");
+        router.push("/");
         return;
       })
       .catch((err: any) => {
@@ -110,7 +119,7 @@ const SignInPage: NextPage = () => {
       >
         <Grid item alignSelf="center" sx={{ mb: "50px" }}>
           <Image
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             alt="credinity logo"
             width={100}
             height={100}

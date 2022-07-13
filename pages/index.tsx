@@ -1,7 +1,6 @@
 import CredinityFullFooter from "@/components/layouts/CredinityFullFooter";
 import AppBarHeader from "@/components/layouts/AppBarHeader";
 import PageContainer from "@/components/layouts/PageContainer";
-import { setRequestSuccess, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import {
   Box,
@@ -15,55 +14,45 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import type { GetServerSideProps } from "next";
 import jsonwebtoken from "jsonwebtoken";
-import { useSelector } from "react-redux";
 import Image from "next/image";
 import ImgDetailCard from "@/components/layouts/ImgDetailCard";
-import { Black } from "@/public/constants/color.constant";
+import { Black } from "@/models/constants/color.constant";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
-import MainPageImg from "../public/img/contents/mainpageImg.png";
-import Auction from "../public/img/features/Auction.png";
-import AuctionHover from "../public/img/features/AuctionHover.png";
-import Auto from "../public/img/features/Auto.png";
-import AutoHover from "../public/img/features/AutoHover.png";
-import Anyone from "../public/img/features/Anyone.png";
-import AnyoneHover from "../public/img/features/AnyoneHover.png";
-import ArticleCard from "@/components/displays/Carousel/ArticleCard";
-import { ArticleItem, FeatureItem } from "@/models/content.model";
+import MainPageImg from "@/public/img/contents/mainpageImg.png";
+import Auction from "@/public/img/features/Auction.png";
+import AuctionHover from "@/public/img/features/AuctionHover.png";
+import Auto from "@/public/img/features/Auto.png";
+import AutoHover from "@/public/img/features/AutoHover.png";
+import Anyone from "@/public/img/features/Anyone.png";
+import AnyoneHover from "@/public/img/features/AnyoneHover.png";
+import { FeatureItem } from "@/models/content.model";
 import ArticleCarouselView from "@/components/displays/Carousel/ArticleCarouselView";
+import { useSelector } from "react-redux";
+import {
+  pageSelector,
+  setIsContainTokenCookie,
+} from "@/store/slices/pageSlice";
+import { useEffect } from "react";
 
 type Props = {
   initialCheckToken: boolean;
 };
 
 export default function Index({ initialCheckToken }: Props) {
-  const user = useSelector(userSelector);
-  const [isSignUp, setSignUp]: [boolean, Function] = useState(false);
-  const [isContainToken] = useState(initialCheckToken);
   const dispatch = useAppDispatch();
+  const page = useSelector(pageSelector);
+  useEffect(() => {
+    dispatch(setIsContainTokenCookie(initialCheckToken));
+  }, []);
+
+  const [isPageLoading, setisPageLoading]: [boolean, Function] =
+    useState(false);
   const router = useRouter();
   const routePage = (path: string) => {
-    dispatch(setRequestSuccess(true));
+    setisPageLoading(true);
     router.push(path);
-    dispatch(setRequestSuccess(false));
+    setisPageLoading(false);
   };
-
-  const menuArray = isContainToken
-    ? [
-        { name: "LOG IN", path: "/auth/signIn" },
-        { name: "REGISTER", path: "/auth/signUp" },
-        { name: "INVESTOR", path: "" },
-        { name: "LOAN", path: "" },
-        { name: "NEWS", path: "" },
-        { name: "ABOUT US", path: "" },
-        { name: "PROFILE", path: "" },
-      ]
-    : [
-        { name: "INVESTOR", path: "" },
-        { name: "LOAN", path: "" },
-        { name: "NEWS", path: "" },
-        { name: "ABOUT US", path: "" },
-        { name: "PROFILE", path: "" },
-      ];
 
   const featureArray: FeatureItem[] = [
     {
@@ -98,15 +87,15 @@ export default function Index({ initialCheckToken }: Props) {
   return (
     <PageContainer
       pageName="Index"
-      loading={user.isRequestSuccess}
+      loading={isPageLoading}
       loadingMessage="Redirecting..."
     >
-      <AppBarHeader menuList={menuArray} />
+      <AppBarHeader />
       <Stack
         direction="column"
         justifyContent="center"
         spacing={1}
-        sx={{ px: "20px" }}
+        sx={{ mx: "5vw" }}
       >
         <Box sx={{ mb: 2 }}>
           <Typography variant="h1" fontWeight="bold" textAlign="center">
@@ -124,22 +113,22 @@ export default function Index({ initialCheckToken }: Props) {
             สนใจร่วมเป็นส่วนหนึ่งของเรา
           </Typography>
         </Box>
-        {isContainToken ? (
+        {page && page.isContainTokenCookie ? (
           <Grid item container>
-            {isSignUp ? (
+            {isPageLoading ? (
               <Stack alignItems="center">
                 <CircularProgress />
               </Stack>
             ) : (
+              // todo: แสดงปุ่มเมื่อผ่านการ login และยังไม่ ekyc
               <PrimaryButton
-                disabled={isSignUp}
+                fullWidth
+                disabled={isPageLoading}
                 onClick={() => {
-                  setSignUp(true);
-                  routePage("/auth/signUp");
-                  setSignUp(false);
+                  routePage("/ekyc/stepIntro");
                 }}
               >
-                สมัครสมาชิกที่นี่
+                ยืนยันตัวตน
               </PrimaryButton>
             )}
           </Grid>
@@ -169,13 +158,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   if (jwt) {
     return {
       props: {
-        initialCheckToken: [true],
+        initialCheckToken: true,
       },
     };
   } else {
     return {
       props: {
-        initialCheckToken: [false],
+        initialCheckToken: false,
       },
     };
   }

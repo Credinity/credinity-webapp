@@ -33,7 +33,6 @@ const ProfilePage: NextPage = (props: any) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   var jwt = jsonwebtoken.decode(req.cookies.authorization);
-  console.log("profile", { authorization: req.cookies.authorization, jwt });
   if (!jwt) {
     return {
       redirect: {

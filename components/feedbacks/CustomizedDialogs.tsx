@@ -8,10 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
-import {
-  pageSelector,
-  setIsOpenPrivacyConterm,
-} from "@/store/slices/pageSlice";
+import { pageSelector, setIsOpenDialog } from "@/store/slices/pageSlice";
 import { Slide } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 
@@ -70,14 +67,15 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   title: string;
-  htmlDetail: string;
+  htmlDetail?: string;
+  message?: string;
 };
 
-export default function CustomizedDialogs({ title, htmlDetail }: Props) {
+export default function CustomizedDialogs(props: Props) {
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
   const handleClose = () => {
-    dispatch(setIsOpenPrivacyConterm(false));
+    dispatch(setIsOpenDialog(false));
   };
 
   return (
@@ -88,16 +86,25 @@ export default function CustomizedDialogs({ title, htmlDetail }: Props) {
         scroll="paper"
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={page.isOpenPrivacyConterm}
+        open={page.isOpenDialog}
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          {title}
+          {props.title}
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <Typography dangerouslySetInnerHTML={{ __html: htmlDetail }} />
+          {props.htmlDetail ? (
+            <Typography
+              dangerouslySetInnerHTML={{ __html: props.htmlDetail }}
+            />
+          ) : null}
+          {props.message ? (
+            <Typography variant="body1" sx={{ wordWrap: "break-word" }}>
+              {props.message}
+            </Typography>
+          ) : null}
         </DialogContent>
       </BootstrapDialog>
     </>

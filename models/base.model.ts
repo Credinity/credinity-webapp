@@ -5,12 +5,12 @@ export interface Error {
 }
 
 export interface BaseApiResponse {
-  successMessage: null;
+  successMessage?: string;
   requestId: string;
   isSuccess: boolean;
   errors: Error[];
 }
 
 export interface BaseApiRequest {
-  requestId: string;
+  requestId?: string;
 }

@@ -13,7 +13,7 @@ import {
   AntiFlashWhite,
   DarkCharcoal,
   Gray,
-} from "@/public/constants/color.constant";
+} from "@/models/constants/color.constant";
 import DarkTypography from "@/components/displays/DarkTypography";
 
 export default function CredinityFullFooter() {
@@ -27,7 +27,7 @@ export default function CredinityFullFooter() {
         <Grid container item xs={3} justifyContent="center">
           <Image
             alt="logo"
-            src="/img/credinity-tr-logo.png"
+            src="/img/logo/credinity-tr-logo.png"
             width={40}
             height={40}
             objectFit="contain"

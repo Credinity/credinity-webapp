@@ -1,4 +1,4 @@
-import { White } from "@/public/constants/color.constant";
+import { White } from "@/models/constants/color.constant";
 import { alpha, styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 
