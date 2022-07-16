@@ -27,9 +27,10 @@ export default function faceRecognition() {
   const media = useSelector(mediaSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
-  const videoRef = useRef(null);
+  const videoRef = useRef<Webcam>(null);
   const capture = React.useCallback(() => {
     if (videoRef) {
+      if(!videoRef.current) return;
       const imageSrc = videoRef.current.getScreenshot();
       if (imageSrc) {
         dispatch(setSelfieImgb64(imageSrc));

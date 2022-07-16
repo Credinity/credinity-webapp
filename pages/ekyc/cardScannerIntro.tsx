@@ -119,7 +119,7 @@ export default function cardScannerIntro() {
           </Stack>
         </Box>
         <Stack width="100%" sx={{ mt: "4vh" }}>
-          {isAllowCamera == false ? (
+          {!isAllowCamera ? (
             <Grid
               item
               xs={12}
