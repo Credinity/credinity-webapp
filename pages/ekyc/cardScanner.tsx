@@ -24,6 +24,7 @@ const videoConstraints = {
 
 const CardScannerPage = () => {
   const media = useSelector(mediaSelector);
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const dispatch = useAppDispatch();
   const videoRef = useRef<Webcam>(null);
   const capture = React.useCallback(() => {
@@ -34,10 +35,7 @@ const CardScannerPage = () => {
         dispatch(setKycIdImgB64(imageSrc));
       }
     }
-  }, []);
-
-  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
-    useState(false);
+  }, [videoRef]);
 
   return (
     <PageContainer

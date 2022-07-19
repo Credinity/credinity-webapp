@@ -1,7 +1,7 @@
 import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import { Box, Grid, Link, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,17 +19,20 @@ import { useAppDispatch } from "@/store/store";
 import { setIsOpenDialog } from "@/store/slices/pageSlice";
 
 export default function EkycStepIntroPage() {
-  const [isPageLoading, setisPageLoading]: [boolean, Function] =
-    useState(false);
   const router = useRouter();
   const user = useSelector(userSelector);
   const dispatch = useAppDispatch();
-  useEffect(() => {
+  const [isPageLoading, setisPageLoading] = useState(false);
+
+  const fetchPrivacyPolicy = useCallback(() => {
     dispatch(getPrivacyPolicyAsync());
   }, []);
+  useEffect(() => {
+    fetchPrivacyPolicy();
+  }, [fetchPrivacyPolicy]);
   return (
     <PageContainer
-      pageName="Ekyc intro"
+      pageName="E-KYC intro"
       loading={isPageLoading}
       loadingMessage="Redirecting..."
     >
@@ -167,7 +170,9 @@ export default function EkycStepIntroPage() {
               color="primary"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(setIsOpenDialog(true));
+                if (user.privacyVersion != "") {
+                  dispatch(setIsOpenDialog(true));
+                }
               }}
             >
               รายละเอียดที่นี้

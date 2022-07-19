@@ -45,23 +45,19 @@ export default function Index({ initialCheckToken }: Props) {
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
   const user = useSelector(userSelector);
+  const [isPageLoading, setisPageLoading] = useState(false);
 
   useEffect(() => {
     dispatch(setIsContainTokenCookie(initialCheckToken));
-  }, []);
-
-  useEffect(() => {
-    if (page.isContainTokenCookie) {
+    if (initialCheckToken == true) {
       const cookies = new Cookies();
       let id = cookies.get(UserID);
       if (id != "") {
         dispatch(getProfileAsync({ userId: id }));
       }
     }
-  }, [page.isContainTokenCookie]);
+  }, [initialCheckToken]);
 
-  const [isPageLoading, setisPageLoading]: [boolean, Function] =
-    useState(false);
   const router = useRouter();
   const routePage = (path: string) => {
     setisPageLoading(true);
@@ -136,7 +132,7 @@ export default function Index({ initialCheckToken }: Props) {
               </Stack>
             ) : (
               <>
-                {user.ekycStatus && user.ekycStatus == 0 ? (
+                {user.ekycStatus == 0 ? (
                   <PrimaryButton
                     fullWidth
                     disabled={isPageLoading}
