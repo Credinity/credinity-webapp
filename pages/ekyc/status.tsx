@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Cookies from "universal-cookie";
 import Logo from "@/public/img/logo/credinity-tr-txt.png";
@@ -25,25 +25,27 @@ import PrimaryButton from "@/components/inputs/PrimaryButton";
 import CredinityFooter from "@/components/layouts/CredinityFooter";
 import CreadinityLoader from "@/components/displays/CreadinityLoader";
 
-type Props = {};
-
-export default function WaitingApprovePage({}: Props) {
+export default function StatusPage() {
   const cookies = new Cookies();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
 
-  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
-    useState(false);
-  useEffect(() => {
+  const [isPageLoading, setIsPageLoading] = useState(false);
+
+  const fetchUserProfile = useCallback(() => {
     let id = cookies.get(UserID);
     if (id != "") {
       dispatch(getProfileAsync({ userId: id }));
     }
   }, []);
+  useEffect(() => {
+    fetchUserProfile();
+  }, [fetchUserProfile]);
+
   return (
     <PageContainer
-      pageName="Status"
+      pageName="E-KYC Status"
       loading={isPageLoading}
       loadingMessage="Redirecting..."
       backgroundColor={Gainsboro}

@@ -25,8 +25,7 @@ const videoConstraints = {
 export default function FaceRecognitionPage() {
   const dispatch = useAppDispatch();
   const media = useSelector(mediaSelector);
-  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
-    useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const videoRef = useRef<Webcam>(null);
   const capture = React.useCallback(() => {
     if (videoRef) {
@@ -36,10 +35,10 @@ export default function FaceRecognitionPage() {
         dispatch(setSelfieImgb64(imageSrc));
       }
     }
-  }, []);
+  }, [videoRef]);
   return (
     <PageContainer
-      pageName="Intro Face Recognition"
+      pageName="Face Recognition"
       loading={isPageLoading}
       loadingMessage="Redirecting..."
     >

@@ -2,7 +2,7 @@ import BackButton from "@/components/inputs/BackButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import { EkycFormReq } from "@/models/user.model";
 import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { Formik, Form, FormikProps } from "formik";
@@ -242,8 +242,9 @@ const ekycForm = (
 export default function InfoFormPage() {
   const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
-  const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
-  const [lovNationality, setLovNationality] = useState<Array<LovItem>>([]);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const [lovNationality, setLovNationality]: [Array<LovItem>, Function] =
+    useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -260,13 +261,15 @@ export default function InfoFormPage() {
       : null;
   }, [user.errorList]);
 
-  useEffect(() => {
-    GetLovByType("nationality")
-      .then((res) => {
-        setLovNationality(res.lovList);
-      })
-      .catch((err) => {});
+  const fetchLovByType = useCallback(() => {
+    GetLovByType("nationality").then((res) => {
+      setLovNationality(res.lovList);
+    });
   }, []);
+
+  useEffect(() => {
+    fetchLovByType();
+  }, [fetchLovByType]);
 
   useEffect(() => {
     if (user.isRequestSuccess) {

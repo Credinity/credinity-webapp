@@ -197,7 +197,9 @@ export default function SignUpPage() {
               color="primary"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(setIsOpenDialog(true));
+                if (user.privacyVersion != "") {
+                  dispatch(setIsOpenDialog(true));
+                }
               }}
             >
               Privacy policy

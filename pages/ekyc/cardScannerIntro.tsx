@@ -17,11 +17,11 @@ import CardImg from "@/public/img/person/id-card.png";
 import Image from "next/image";
 
 export default function CardScannerIntroPage() {
-  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
-    useState(false);
   const router = useRouter();
   const [cardType, setCardType] = React.useState<string | null>("ThaiCard");
-  const [isAllowCamera, setIsAllowCamera]: [boolean, Function] = useState(true);
+  const [isAllowCamera, setIsAllowCamera] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+
   const handleCardType = (
     event: React.MouseEvent<HTMLElement>,
     newCardType: string | null
@@ -31,7 +31,7 @@ export default function CardScannerIntroPage() {
 
   return (
     <PageContainer
-      pageName="Ekyc intro"
+      pageName="Card Capture"
       loading={isPageLoading}
       loadingMessage="Redirecting..."
     >

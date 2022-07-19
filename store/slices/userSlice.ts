@@ -292,7 +292,7 @@ const userSlice = createSlice({
       var res = action.payload;
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
-        Router.push("/status/waitingApprove");
+        Router.push("/ekyc/status");
       } else if (res?.isSuccess == false) {
         state.isRequestSuccess = false;
         let errors = mapErrorListToStringArr(res?.errors);

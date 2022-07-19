@@ -9,9 +9,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useRouter } from "next/router";
 
 export default function FaceRecognitionPage() {
-  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
-    useState(false);
   const router = useRouter();
+  const [isPageLoading, setIsPageLoading] = useState(false);
+
   return (
     <PageContainer
       pageName="Face Recognition"
