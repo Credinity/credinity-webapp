@@ -22,20 +22,23 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-export default function cardScanner() {
-  const dispatch = useAppDispatch();
+const CardScannerPage = () => {
   const media = useSelector(mediaSelector);
-  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
-    useState(false);
-  const videoRef = useRef(null);
+  const dispatch = useAppDispatch();
+  const videoRef = useRef<Webcam>(null);
   const capture = React.useCallback(() => {
     if (videoRef) {
+      if (!videoRef.current) return;
       const imageSrc = videoRef.current.getScreenshot();
       if (imageSrc) {
         dispatch(setKycIdImgB64(imageSrc));
       }
     }
   }, []);
+
+  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
+    useState(false);
+
   return (
     <PageContainer
       pageName="Card Capture"
@@ -128,4 +131,6 @@ export default function cardScanner() {
       </Grid>
     </PageContainer>
   );
-}
+};
+
+export default CardScannerPage;

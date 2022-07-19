@@ -16,7 +16,7 @@ import { Ladybug } from "@/models/constants/color.constant";
 import CardImg from "@/public/img/person/id-card.png";
 import Image from "next/image";
 
-export default function cardScannerIntro() {
+export default function CardScannerIntroPage() {
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
   const router = useRouter();
@@ -119,7 +119,7 @@ export default function cardScannerIntro() {
           </Stack>
         </Box>
         <Stack width="100%" sx={{ mt: "4vh" }}>
-          {isAllowCamera == false ? (
+          {!isAllowCamera ? (
             <Grid
               item
               xs={12}

@@ -8,7 +8,7 @@ import PrimaryButton from "@/components/inputs/PrimaryButton";
 import CheckIcon from "@mui/icons-material/Check";
 import { useRouter } from "next/router";
 
-export default function faceRecognition() {
+export default function FaceRecognitionPage() {
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
     useState(false);
   const router = useRouter();

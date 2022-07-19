@@ -27,7 +27,7 @@ import CreadinityLoader from "@/components/displays/CreadinityLoader";
 
 type Props = {};
 
-export default function EkycStatusPage({}: Props) {
+export default function WaitingApprovePage({}: Props) {
   const cookies = new Cookies();
   const router = useRouter();
   const dispatch = useAppDispatch();

@@ -239,13 +239,11 @@ const ekycForm = (
   );
 };
 
-export default function infoForm() {
+export default function InfoFormPage() {
   const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
-  const [isPageLoading, setIsPageLoading]: [boolean, Function] =
-    useState(false);
-  const [lovNationality, setLovNationality]: [Array<LovItem>, Function] =
-    useState([]);
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
+  const [lovNationality, setLovNationality] = useState<Array<LovItem>>([]);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
