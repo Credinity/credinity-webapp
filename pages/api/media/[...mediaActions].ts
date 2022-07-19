@@ -25,7 +25,6 @@ const uploadBase64File = async (
     let endpoint = MapEndpointApi(action);
     let token = req.headers.authorization?.replace("Bearer ", "");
     const url = `/User/${endpoint}`;
-    console.log("Test", url);
 
     const response = await ApiCaller({
       method: HTTP_METHOD_POST,

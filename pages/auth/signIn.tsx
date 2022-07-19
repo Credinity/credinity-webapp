@@ -54,7 +54,6 @@ const SignInPage: NextPage = () => {
         password,
       })
       .then((res: any) => {
-        console.log("login:", res);
         if (res.data.isSuccess == false) {
           let errorMessage =
             res.data.errors[0]?.message ?? "Unknown error, Please try again.";
@@ -62,7 +61,6 @@ const SignInPage: NextPage = () => {
           setIsLoading(false);
           return;
         }
-        console.log(JSON.stringify(res.data));
         const cookies = new Cookies();
         cookies.set(Authorization, res.data.userToken, {
           path: "/",
@@ -74,15 +72,12 @@ const SignInPage: NextPage = () => {
           maxAge: 60 * 60 * 24 * 7,
           sameSite: "strict",
         });
-        console.log(`get ALL ${JSON.stringify(cookies.getAll())}`);
-
         setRequestSuccess(true);
         setIsLoading(false);
         router.push("/");
         return;
       })
       .catch((err: any) => {
-        console.error("login:", err);
         setError(err.message);
         setIsLoading(false);
       });
@@ -239,7 +234,6 @@ const SignInPage: NextPage = () => {
 };
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   var jwt = jsonwebtoken.decode(req.cookies.authorization);
-  console.log("signIn", { authorization: req.cookies.authorization, jwt });
   if (jwt) {
     return {
       redirect: {
