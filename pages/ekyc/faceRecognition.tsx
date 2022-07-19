@@ -22,7 +22,7 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-export default function faceRecognition() {
+export default function FaceRecognitionPage() {
   const dispatch = useAppDispatch();
   const media = useSelector(mediaSelector);
   const [isPageLoading, setIsPageLoading]: [boolean, Function] =
@@ -30,7 +30,7 @@ export default function faceRecognition() {
   const videoRef = useRef<Webcam>(null);
   const capture = React.useCallback(() => {
     if (videoRef) {
-      if(!videoRef.current) return;
+      if (!videoRef.current) return;
       const imageSrc = videoRef.current.getScreenshot();
       if (imageSrc) {
         dispatch(setSelfieImgb64(imageSrc));

@@ -141,7 +141,7 @@ export default function Index({ initialCheckToken }: Props) {
                     fullWidth
                     disabled={isPageLoading}
                     onClick={() => {
-                      routePage("/ekyc/stepIntro");
+                      routePage("/ekyc/ekycStepIntro");
                     }}
                   >
                     ยืนยันตัวตน

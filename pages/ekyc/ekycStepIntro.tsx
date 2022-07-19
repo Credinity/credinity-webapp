@@ -18,7 +18,7 @@ import { getPrivacyPolicyAsync, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import { setIsOpenDialog } from "@/store/slices/pageSlice";
 
-export default function ekycStepIntroPage() {
+export default function EkycStepIntroPage() {
   const [isPageLoading, setisPageLoading]: [boolean, Function] =
     useState(false);
   const router = useRouter();
