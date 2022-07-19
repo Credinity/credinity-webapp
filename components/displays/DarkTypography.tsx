@@ -1,4 +1,3 @@
-import * as React from "react";
 import { AntiFlashWhite, Gray } from "@/models/constants/color.constant";
 import { styled, Typography, TypographyProps } from "@mui/material";
 

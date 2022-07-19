@@ -1,20 +1,20 @@
-import React, { useRef, useState } from "react";
-import Webcam from "react-webcam";
-import Image from "next/image";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import BackButton from "@/components/inputs/BackButton";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import FrameCover from "@/public/img/cameracover/id-card-cover-camera.svg";
-import PrimaryButton from "@/components/inputs/PrimaryButton";
-import { PhotoCamera } from "@mui/icons-material";
 import {
   mediaSelector,
   setKycIdImgB64,
   uploadIdKycImgAsync,
 } from "@/store/slices/mediaSlice";
-import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/store/store";
-import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
+import { PhotoCamera } from "@mui/icons-material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
+import Image from "next/image";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import Webcam from "react-webcam";
 
 const videoConstraints = {
   width: 280,

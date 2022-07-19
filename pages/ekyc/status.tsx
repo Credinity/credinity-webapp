@@ -1,29 +1,21 @@
-import PageContainer from "@/components/layouts/PageContainer";
-import { Gainsboro, Gray, Primary } from "@/models/constants/color.constant";
-import { UserID } from "@/models/constants/key.constant";
-import { getProfileAsync, userSelector } from "@/store/slices/userSlice";
-import { useAppDispatch } from "@/store/store";
-import {
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import Cookies from "universal-cookie";
-import Logo from "@/public/img/logo/credinity-tr-txt.png";
-import Image from "next/image";
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CreadinityLoader from "@/components/displays/CreadinityLoader";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import CredinityFooter from "@/components/layouts/CredinityFooter";
-import CreadinityLoader from "@/components/displays/CreadinityLoader";
+import PageContainer from "@/components/layouts/PageContainer";
+import { Gainsboro, Primary } from "@/models/constants/color.constant";
+import { UserID } from "@/models/constants/key.constant";
+import Logo from "@/public/img/logo/credinity-tr-txt.png";
+import { getProfileAsync, userSelector } from "@/store/slices/userSlice";
+import { useAppDispatch } from "@/store/store";
+import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Card, CardContent, Stack, Typography } from "@mui/material";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import Cookies from "universal-cookie";
 
 export default function StatusPage() {
   const cookies = new Cookies();

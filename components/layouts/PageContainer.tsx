@@ -1,14 +1,7 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CircularProgress,
-  Grid,
-  Typography,
-} from "@mui/material";
+import CreadinityLoader from "@/components/displays/CreadinityLoader";
+import { Box, Grid } from "@mui/material";
 import Head from "next/head";
 import { FunctionComponent } from "react";
-import CreadinityLoader from "@/components/displays/CreadinityLoader";
 
 const PageContainer: FunctionComponent<any> = (props: any) => {
   return (

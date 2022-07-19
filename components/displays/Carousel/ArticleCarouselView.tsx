@@ -1,7 +1,5 @@
 import ArticleCardGroupView from "@/components/displays/Carousel/ArticleCardGroupView";
 import { ArticleItem } from "@/models/content.model";
-import { Box } from "@mui/material";
-import React from "react";
 import Carousel from "react-material-ui-carousel";
 
 const articleArray: ArticleItem[] = [

@@ -1,9 +1,8 @@
-import React from "react";
-import IconButton from "@mui/material/IconButton";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Box, Button, Typography, styled } from "@mui/material";
-import { SxProps, Theme } from "@mui/material/styles";
 import { Black } from "@/models/constants/color.constant";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { Button, Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { SxProps, Theme } from "@mui/material/styles";
 import { useRouter } from "next/router";
 
 type Props = {
