@@ -18,10 +18,7 @@ class CredinityDoc extends Document {
       <Html>
         <Head>
           <meta charSet="utf-8" />
-          <link
-            rel="shortcut icon"
-            href="/../public/img/logo/credinity-tr-logo.png"
-          />
+          <link rel="shortcut icon" href="/img/logo/credinity-tr-logo.png" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

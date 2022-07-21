@@ -1,20 +1,20 @@
-import React, { useRef, useState } from "react";
-import Webcam from "react-webcam";
-import Image from "next/image";
-import { Box, Stack, Typography } from "@mui/material";
 import BackButton from "@/components/inputs/BackButton";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import CameraCover from "@/public/img/cameracover/profile-cover-camera.svg";
-import PrimaryButton from "@/components/inputs/PrimaryButton";
-import CheckIcon from "@mui/icons-material/Check";
-import { PhotoCamera } from "@mui/icons-material";
-import { useAppDispatch } from "@/store/store";
-import { useSelector } from "react-redux";
 import {
   mediaSelector,
   setSelfieImgb64,
   uploadPortraitEkycImgAsync,
 } from "@/store/slices/mediaSlice";
+import { useAppDispatch } from "@/store/store";
+import { PhotoCamera } from "@mui/icons-material";
+import CheckIcon from "@mui/icons-material/Check";
+import { Box, Stack, Typography } from "@mui/material";
+import Image from "next/image";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import Webcam from "react-webcam";
 
 const videoConstraints = {
   width: 300,

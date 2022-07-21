@@ -1,20 +1,20 @@
 import BackButton from "@/components/inputs/BackButton";
-import PageContainer from "@/components/layouts/PageContainer";
-import { EkycFormReq } from "@/models/user.model";
-import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
-import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { Formik, Form, FormikProps } from "formik";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "@/store/store";
+import PageContainer from "@/components/layouts/PageContainer";
+import { LovItem } from "@/models/content.model";
+import { EkycFormReq } from "@/models/user.model";
+import { GetLovByType } from "@/services/commonService";
 import { setDetailPage, setTitlePage } from "@/store/slices/pageSlice";
 import { submitKycFormAsync, userSelector } from "@/store/slices/userSlice";
-import { LovItem } from "@/models/content.model";
-import { GetLovByType } from "@/services/commonService";
-import { useSnackbar } from "notistack";
+import { useAppDispatch } from "@/store/store";
+import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { Form, Formik, FormikProps } from "formik";
 import { citizenFormat, phoneNumberFormat } from "helpers/client/stringFormat";
+import { useSnackbar } from "notistack";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const initialValues: EkycFormReq = {
   username: "",

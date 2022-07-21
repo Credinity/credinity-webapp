@@ -1,22 +1,22 @@
+import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import BackButton from "@/components/inputs/BackButton";
-import PageContainer from "@/components/layouts/PageContainer";
-import { Box, Grid, Link, Stack, Typography } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
-import { useRouter } from "next/router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PageContainer from "@/components/layouts/PageContainer";
+import { Gray } from "@/models/constants/color.constant";
+import { setIsOpenDialog } from "@/store/slices/pageSlice";
+import { getPrivacyPolicyAsync, userSelector } from "@/store/slices/userSlice";
+import { useAppDispatch } from "@/store/store";
 import {
-  faUser,
   faAddressCard,
   faImage,
   faSquarePen,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { Gray } from "@/models/constants/color.constant";
-import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Grid, Link, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getPrivacyPolicyAsync, userSelector } from "@/store/slices/userSlice";
-import { useAppDispatch } from "@/store/store";
-import { setIsOpenDialog } from "@/store/slices/pageSlice";
 
 export default function EkycStepIntroPage() {
   const router = useRouter();
@@ -183,7 +183,9 @@ export default function EkycStepIntroPage() {
             fullWidth
             onClick={() => {
               setisPageLoading(true);
-              router.push("/ekyc/cardScannerIntro");
+              router.push("/ekyc/cardScannerIntro").finally(() => {
+                setisPageLoading(false);
+              });
             }}
           >
             ยอมรับและเริ่มยืนยันตัวตน

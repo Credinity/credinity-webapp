@@ -10,6 +10,7 @@ import { SignUpFormProps } from "@/models/user.model";
 import {
   getPrivacyPolicyAsync,
   setOtpProcessing,
+  setRequestSuccess,
   setSignUpProcessing,
   signUpAsync,
   userSelector,
@@ -20,6 +21,7 @@ import PageContainer from "@/components/layouts/PageContainer";
 import { setIsOpenDialog } from "@/store/slices/pageSlice";
 import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
+import { useRouter } from "next/router";
 
 const initialValues: SignUpFormProps = {
   email: "",
@@ -35,7 +37,7 @@ export default function SignUpPage() {
   const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
   let submitAction: string | undefined = undefined;
-
+  const router = useRouter();
   const fetchPrivacyPolicy = useCallback(() => {
     dispatch(getPrivacyPolicyAsync());
   }, []);
@@ -233,7 +235,16 @@ export default function SignUpPage() {
         >
           <Typography display="inline" fontWeight="medium" sx={{ mr: 1 }}>
             Already have an account? &nbsp;
-            <Link href="/auth/signIn" color="primary">
+            <Link
+              color="primary"
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(setRequestSuccess(true));
+                router.push("/auth/signIn").finally(() => {
+                  dispatch(setRequestSuccess(false));
+                });
+              }}
+            >
               Sign in
             </Link>
           </Typography>
@@ -260,12 +271,13 @@ export default function SignUpPage() {
         <Grid item xs={12} sx={{ mx: "5vw" }}>
           <Formik
             initialValues={initialValues!}
-            onSubmit={async (values) => {
+            onSubmit={(values) => {
               if (submitAction === "signUpAction") {
                 dispatch(setSignUpProcessing(true));
                 values.privacyPolicyVersion = user.privacyVersion;
-                await dispatch(signUpAsync(values));
-                dispatch(setSignUpProcessing(false));
+                dispatch(signUpAsync(values)).finally(() => {
+                  dispatch(setSignUpProcessing(false));
+                });
               } else if (submitAction === "otpAction") {
                 dispatch(setOtpProcessing(true));
                 //todo OTP Service (Disable OTP)

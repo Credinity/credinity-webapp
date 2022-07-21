@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import { Box, Stack, Typography } from "@mui/material";
 import BackButton from "@/components/inputs/BackButton";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import CameraCover from "@/public/img/cameracover/profile-cover-camera.svg";
-import PrimaryButton from "@/components/inputs/PrimaryButton";
 import CheckIcon from "@mui/icons-material/Check";
+import { Box, Stack, Typography } from "@mui/material";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function FaceRecognitionPage() {
   const router = useRouter();
@@ -69,8 +69,9 @@ export default function FaceRecognitionPage() {
           sx={{ mx: 5, mt: "3vh" }}
           onClick={() => {
             setIsPageLoading(true);
-            router.push("/ekyc/faceRecognition");
-            setIsPageLoading(false);
+            router.push("/ekyc/faceRecognition").finally(() => {
+              setIsPageLoading(false);
+            });
           }}
         >
           เริ่มการเซลฟี่

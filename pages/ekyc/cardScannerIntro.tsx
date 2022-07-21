@@ -1,5 +1,9 @@
 import BackButton from "@/components/inputs/BackButton";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
+import { Ladybug } from "@/models/constants/color.constant";
+import CardImg from "@/public/img/person/id-card.png";
+import CheckIcon from "@mui/icons-material/Check";
 import {
   Box,
   Grid,
@@ -8,13 +12,9 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import CheckIcon from "@mui/icons-material/Check";
-import PrimaryButton from "@/components/inputs/PrimaryButton";
-import { Ladybug } from "@/models/constants/color.constant";
-import CardImg from "@/public/img/person/id-card.png";
-import Image from "next/image";
 
 export default function CardScannerIntroPage() {
   const router = useRouter();
@@ -141,8 +141,9 @@ export default function CardScannerIntroPage() {
                   (stream) => {
                     // camera available
                     setIsPageLoading(true);
-                    router.push("/ekyc/cardScanner");
-                    setIsPageLoading(false);
+                    router.push("/ekyc/cardScanner").finally(() => {
+                      setIsPageLoading(false);
+                    });
                   },
                   (e) => {
                     // camera not available
