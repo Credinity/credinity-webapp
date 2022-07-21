@@ -1,7 +1,14 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import List from "@mui/material/List";
+import CreadinityLoader from "@/components/displays/CreadinityLoader";
+import CredinityFooter from "@/components/layouts/CredinityFooter";
+import { Gainsboro, White } from "@/models/constants/color.constant";
+import {
+  AuthorizedMenu,
+  UnAuthorizedMenu,
+} from "@/models/constants/menu.constant";
+import { pageSelector, setIsLoading } from "@/store/slices/pageSlice";
+import { useAppDispatch } from "@/store/store";
+import CloseIcon from "@mui/icons-material/Close";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Divider,
@@ -11,21 +18,15 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import CredinityFooter from "@/components/layouts/CredinityFooter";
-import { Gainsboro, White } from "@/models/constants/color.constant";
+import List from "@mui/material/List";
+import { styled } from "@mui/material/styles";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { styled } from "@mui/material/styles";
+import * as React from "react";
 import { useSelector } from "react-redux";
-import { pageSelector } from "@/store/slices/pageSlice";
-import {
-  AuthorizedMenu,
-  UnAuthorizedMenu,
-} from "@/models/constants/menu.constant";
-import { useEffect } from "react";
 
 const anchor = "right";
 const HeaderBar = styled("div")(({ theme }) => ({
@@ -37,9 +38,9 @@ const HeaderBar = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const MenuList = () => {
+const MenuList = (page: any) => {
   const router = useRouter();
-  const page = useSelector(pageSelector);
+  const dispatch = useAppDispatch();
 
   return page.isContainTokenCookie ? (
     <Box
@@ -53,7 +54,12 @@ const MenuList = () => {
             <ListItem
               sx={{ mb: 1 }}
               onClick={() => {
-                path ? router.push(path) : null;
+                if (path != "") {
+                  dispatch(setIsLoading(true));
+                  router.push(path).finally(() => {
+                    dispatch(setIsLoading(false));
+                  });
+                }
               }}
             >
               <ListItemButton>
@@ -84,7 +90,12 @@ const MenuList = () => {
             <ListItem
               sx={{ mb: 1 }}
               onClick={() => {
-                path ? router.push(path) : null;
+                if (path != "") {
+                  dispatch(setIsLoading(true));
+                  router.push(path).finally(() => {
+                    dispatch(setIsLoading(false));
+                  });
+                }
               }}
             >
               <ListItemButton>
@@ -122,11 +133,14 @@ export default function DrawerMenu() {
       ) {
         return;
       }
-
       setState({ ...state, [anchor]: open });
     };
 
-  return (
+  const page = useSelector(pageSelector);
+
+  return page.isLoading ? (
+    <CreadinityLoader loadingMessage="Redirecting..." />
+  ) : (
     <Box key={anchor} sx={{ backgroundColor: White }}>
       <IconButton
         onClick={toggleDrawer(anchor, true)}
@@ -170,7 +184,7 @@ export default function DrawerMenu() {
             </Toolbar>
           </AppBar>
         </HeaderBar>
-        {MenuList()}
+        {MenuList(page)}
       </SwipeableDrawer>
     </Box>
   );

@@ -7,6 +7,7 @@ interface PageState {
   detailPage: string;
   isOpenAlert: boolean;
   isOpenDialog: boolean;
+  isLoading: boolean;
   isContainTokenCookie: boolean;
 }
 
@@ -16,6 +17,7 @@ const initialState: PageState = {
   detailPage: "",
   isOpenAlert: false,
   isOpenDialog: false,
+  isLoading: false,
   isContainTokenCookie: false,
 };
 
@@ -38,6 +40,9 @@ const pageSlice = createSlice({
     setIsOpenDialog: (state, action: PayloadAction<boolean>) => {
       state.isOpenDialog = action.payload;
     },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
     setIsContainTokenCookie: (state, action: PayloadAction<boolean>) => {
       state.isContainTokenCookie = action.payload;
     },
@@ -51,6 +56,7 @@ export const {
   setDetailPage,
   setIsOpenAlert,
   setIsOpenDialog,
+  setIsLoading,
   setIsContainTokenCookie,
 } = pageSlice.actions;
 

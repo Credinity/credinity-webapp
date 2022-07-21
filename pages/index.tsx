@@ -45,7 +45,7 @@ export default function Index({ initialCheckToken }: Props) {
   const dispatch = useAppDispatch();
   const page = useSelector(pageSelector);
   const user = useSelector(userSelector);
-  const [isPageLoading, setisPageLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
 
   useEffect(() => {
     dispatch(setIsContainTokenCookie(initialCheckToken));
@@ -60,9 +60,10 @@ export default function Index({ initialCheckToken }: Props) {
 
   const router = useRouter();
   const routePage = (path: string) => {
-    setisPageLoading(true);
-    router.push(path);
-    setisPageLoading(false);
+    setIsPageLoading(true);
+    router.push(path).finally(() => {
+      setIsPageLoading(false);
+    });
   };
 
   const featureArray: FeatureItem[] = [
@@ -126,27 +127,29 @@ export default function Index({ initialCheckToken }: Props) {
         </Box>
         {page && page.isContainTokenCookie ? (
           <Grid item container>
-            {isPageLoading ? (
-              <Stack alignItems="center">
-                <CircularProgress />
-              </Stack>
-            ) : (
-              <>
-                {user.ekycStatus == 0 ? (
-                  <PrimaryButton
-                    fullWidth
-                    disabled={isPageLoading}
-                    onClick={() => {
-                      routePage("/ekyc/ekycStepIntro");
-                    }}
-                  >
-                    ยืนยันตัวตน
-                  </PrimaryButton>
-                ) : null}
-              </>
-            )}
+            {user.ekycStatus == 0 ? (
+              <PrimaryButton
+                fullWidth
+                disabled={isPageLoading}
+                onClick={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  routePage("/ekyc/ekycStepIntro");
+                }}
+              >
+                ยืนยันตัวตน
+              </PrimaryButton>
+            ) : null}
           </Grid>
-        ) : null}
+        ) : (
+          <PrimaryButton
+            fullWidth
+            onClick={() => {
+              routePage("/auth/signUp");
+            }}
+          >
+            สมัครสมาชิกที่นี่
+          </PrimaryButton>
+        )}
         <Box minHeight="15px" />
         <Typography variant="h2">การบริการของเรา</Typography>
         <Divider sx={{ backgroundColor: Black, my: 2 }} />

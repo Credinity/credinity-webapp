@@ -183,7 +183,9 @@ export default function EkycStepIntroPage() {
             fullWidth
             onClick={() => {
               setisPageLoading(true);
-              router.push("/ekyc/cardScannerIntro");
+              router.push("/ekyc/cardScannerIntro").finally(() => {
+                setisPageLoading(false);
+              });
             }}
           >
             ยอมรับและเริ่มยืนยันตัวตน

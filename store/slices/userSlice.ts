@@ -201,6 +201,7 @@ export const submitKycFormAsync = createAsyncThunk(
   "user/submitKycForm",
   async (values: EkycFormReq) => {
     var _result = KycFormValidation(values);
+
     if (_result[0] == "Correct") {
       let req = { ...values };
       req.idNo = req.idNo.replace(/[^\d]/g, "");
@@ -253,8 +254,9 @@ const userSlice = createSlice({
       var res = action.payload;
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
-        Router.push("/auth/signUpComplete");
-        state.isRequestSuccess = false;
+        Router.push("/auth/signUpComplete").finally(() => {
+          state.isRequestSuccess = false;
+        });
       } else if (res?.isSuccess == false) {
         var _msg = res?.errors[0]?.message ?? "";
         if (_msg == "CheckboxFail") {
@@ -292,7 +294,7 @@ const userSlice = createSlice({
       var res = action.payload;
       if (res?.isSuccess) {
         state.isRequestSuccess = true;
-        Router.push("/ekyc/status");
+        Router.push("/status/waiting");
       } else if (res?.isSuccess == false) {
         state.isRequestSuccess = false;
         let errors = mapErrorListToStringArr(res?.errors);

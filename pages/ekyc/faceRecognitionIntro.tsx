@@ -69,8 +69,9 @@ export default function FaceRecognitionPage() {
           sx={{ mx: 5, mt: "3vh" }}
           onClick={() => {
             setIsPageLoading(true);
-            router.push("/ekyc/faceRecognition");
-            setIsPageLoading(false);
+            router.push("/ekyc/faceRecognition").finally(() => {
+              setIsPageLoading(false);
+            });
           }}
         >
           เริ่มการเซลฟี่

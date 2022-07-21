@@ -141,8 +141,9 @@ export default function CardScannerIntroPage() {
                   (stream) => {
                     // camera available
                     setIsPageLoading(true);
-                    router.push("/ekyc/cardScanner");
-                    setIsPageLoading(false);
+                    router.push("/ekyc/cardScanner").finally(() => {
+                      setIsPageLoading(false);
+                    });
                   },
                   (e) => {
                     // camera not available
