@@ -25,7 +25,7 @@ export const LaserIDReg = (txt: string): boolean => {
 };
 
 export const PhoneNoReg = (txt: string): boolean => {
-  const regex = /(^[0]{1}[0-9]{9})|(^66|^\+66)[0-9]{9}/;
+  const regex = /(^06|^08|^09)[0-9]{8}/;
   return regex.test(String(txt));
 };
 

@@ -107,7 +107,7 @@ function KycFormValidation(values: EkycFormReq): string[] {
     isRequiredInvalid = true;
   } else {
     let checkSt = values.phoneNumber.replace(/[^\d]/g, "");
-    if (!PhoneNoReg(checkSt)) {
+    if (!PhoneNoReg(checkSt) && checkSt.length != 10) {
       result.push("เบอร์โทรศัพท์ไม่ถูกต้อง");
     }
   }

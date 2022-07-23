@@ -1,15 +1,15 @@
 import PageContainer from "@/components/layouts/PageContainer";
-import { userSelector } from "@/store/slices/userSlice";
 import { Button, Grid, Link, Paper, Typography } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function SignUpComplete() {
-  const user = useSelector(userSelector);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const router = useRouter();
   return (
     <PageContainer
       pageName="Sign Up"
-      loading={user.isRequestSuccess}
+      loading={isPageLoading}
       loadingMessage="Redirecting..."
     >
       <Grid
@@ -36,8 +36,14 @@ export default function SignUpComplete() {
               color="primary"
               fullWidth
               disabled
+              onClick={() => {
+                setIsPageLoading(true);
+                router.push("/").finally(() => {
+                  setIsPageLoading(false);
+                });
+              }}
             >
-              <Typography>VERIFY EMAIL</Typography>
+              <Typography>กลับสู่หน้าหลัก</Typography>
             </Button>
           </Grid>
           <Grid
@@ -53,6 +59,7 @@ export default function SignUpComplete() {
                 href=""
                 color="primary"
                 onClick={(e) => {
+                  //todo: need design
                   e.preventDefault();
                 }}
               >
