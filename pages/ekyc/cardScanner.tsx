@@ -22,7 +22,7 @@ const height = 440;
 const videoConstraints = {
   height: height,
   width: width,
-  // facingMode: { exact: "environment" },
+  facingMode: { exact: "environment" },
 };
 
 const CardScannerPage = () => {
