@@ -63,6 +63,9 @@ export default function FaceRecognitionPage() {
               forceScreenshotSourceSize={true}
               screenshotFormat="image/png"
               videoConstraints={videoConstraints}
+              style={{
+                objectFit: "cover",
+              }}
             />
           ) : (
             <Image
