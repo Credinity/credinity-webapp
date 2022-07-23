@@ -60,6 +60,7 @@ export default function FaceRecognitionPage() {
               height={300}
               width={300}
               ref={videoRef}
+              forceScreenshotSourceSize={true}
               screenshotFormat="image/png"
               videoConstraints={videoConstraints}
             />

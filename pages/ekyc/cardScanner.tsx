@@ -62,7 +62,10 @@ const CardScannerPage = () => {
             <Webcam
               audio={false}
               width={280}
+              forceScreenshotSourceSize={true}
+              //minScreenshotHeight={280}
               height={439}
+              //minScreenshotWidth={439}
               ref={videoRef}
               screenshotFormat="image/png"
               videoConstraints={videoConstraints}
