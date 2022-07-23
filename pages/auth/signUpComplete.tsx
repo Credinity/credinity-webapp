@@ -1,11 +1,9 @@
 import PageContainer from "@/components/layouts/PageContainer";
 import { Button, Grid, Link, Paper, Typography } from "@mui/material";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function SignUpComplete() {
+export default function SignUpCompletePage() {
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const router = useRouter();
   return (
     <PageContainer
       pageName="Sign Up"
@@ -36,14 +34,8 @@ export default function SignUpComplete() {
               color="primary"
               fullWidth
               disabled
-              onClick={() => {
-                setIsPageLoading(true);
-                router.push("/").finally(() => {
-                  setIsPageLoading(false);
-                });
-              }}
             >
-              <Typography>กลับสู่หน้าหลัก</Typography>
+              <Typography>VERIFY EMAIL</Typography>
             </Button>
           </Grid>
           <Grid
