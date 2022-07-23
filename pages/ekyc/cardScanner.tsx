@@ -19,7 +19,7 @@ import Webcam from "react-webcam";
 const videoConstraints = {
   width: 280,
   height: 439,
-  facingMode: "user",
+  facingMode: { exact: "environment" },
 };
 
 const CardScannerPage = () => {
