@@ -17,8 +17,8 @@ import { useSelector } from "react-redux";
 import Webcam from "react-webcam";
 
 const videoConstraints = {
-  width: 280,
   height: 439,
+  width: 280,
   facingMode: { exact: "environment" },
 };
 
@@ -61,14 +61,15 @@ const CardScannerPage = () => {
           {media.kycIdImgB64 == "" ? (
             <Webcam
               audio={false}
-              width={280}
-              forceScreenshotSourceSize={true}
-              //minScreenshotHeight={280}
               height={439}
-              //minScreenshotWidth={439}
-              ref={videoRef}
+              width={280}
               screenshotFormat="image/png"
+              forceScreenshotSourceSize={true}
+              ref={videoRef}
               videoConstraints={videoConstraints}
+              style={{
+                objectFit: "cover",
+              }}
             />
           ) : (
             <Image
