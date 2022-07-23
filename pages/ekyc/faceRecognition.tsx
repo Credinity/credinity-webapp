@@ -73,6 +73,9 @@ export default function FaceRecognitionPage() {
               alt="Selfie Photo"
               height={300}
               width={300}
+              style={{
+                objectFit: "cover",
+              }}
             />
           )}
           <Box

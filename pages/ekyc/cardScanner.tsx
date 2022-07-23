@@ -16,10 +16,13 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Webcam from "react-webcam";
 
+const width = 280;
+const height = 440;
+
 const videoConstraints = {
-  height: 439,
-  width: 280,
-  facingMode: { exact: "environment" },
+  height: height,
+  width: width,
+  // facingMode: { exact: "environment" },
 };
 
 const CardScannerPage = () => {
@@ -61,8 +64,8 @@ const CardScannerPage = () => {
           {media.kycIdImgB64 == "" ? (
             <Webcam
               audio={false}
-              height={439}
-              width={280}
+              height={height}
+              width={width}
               screenshotFormat="image/png"
               forceScreenshotSourceSize={true}
               ref={videoRef}
@@ -75,8 +78,11 @@ const CardScannerPage = () => {
             <Image
               src={media.kycIdImgB64}
               alt="ID Card Photo"
-              width={280}
-              height={439}
+              width={width}
+              height={height}
+              style={{
+                objectFit: "cover",
+              }}
             />
           )}
           <Box
@@ -89,7 +95,12 @@ const CardScannerPage = () => {
               backgroundColor: "transparent",
             }}
           >
-            <Image src={FrameCover} alt="Card Frame" width={280} height={439} />
+            <Image
+              src={FrameCover}
+              alt="Card Frame"
+              width={width}
+              height={height}
+            />
           </Box>
         </Box>
         <Stack spacing={2} width="100%">
