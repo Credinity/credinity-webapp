@@ -22,7 +22,7 @@ const height = 440;
 const videoConstraints = {
   height: height,
   width: width,
-  //facingMode: { exact: "environment" },
+  facingMode: { exact: "environment" },
 };
 
 const CardScannerPage = () => {
@@ -41,7 +41,7 @@ const CardScannerPage = () => {
         dispatch(setKycIdImgB64(imageSrc));
       }
     }
-  }, [videoRef]);
+  }, [videoRef, media.kycIdImgB64]);
 
   return (
     <PageContainer
@@ -67,23 +67,15 @@ const CardScannerPage = () => {
           {media.kycIdImgB64 == "" ? (
             <Webcam
               audio={false}
-              height={height}
-              width={width}
-              screenshotFormat="image/png"
-              forceScreenshotSourceSize={true}
               ref={videoRef}
+              forceScreenshotSourceSize={true}
               videoConstraints={videoConstraints}
-              style={{
-                objectFit: "cover",
-              }}
+              height="440"
+              width="280"
+              screenshotFormat="image/png"
             />
           ) : (
-            <Image
-              src={media.kycIdImgB64}
-              alt="ID Card Photo"
-              width={width}
-              height={height}
-            />
+            <img src={media.kycIdImgB64} alt="ID Card Photo" />
           )}
           <Box
             position="absolute"
