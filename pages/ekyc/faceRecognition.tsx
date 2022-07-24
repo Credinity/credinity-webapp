@@ -16,9 +16,12 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Webcam from "react-webcam";
 
+const width = 300;
+const height = 300;
+
 const videoConstraints = {
-  width: 300,
-  height: 300,
+  width: 800,
+  height: 800,
   facingMode: "user",
 };
 
@@ -30,7 +33,10 @@ export default function FaceRecognitionPage() {
   const capture = React.useCallback(() => {
     if (videoRef) {
       if (!videoRef.current) return;
-      const imageSrc = videoRef.current.getScreenshot();
+      const imageSrc = videoRef.current.getScreenshot({
+        width,
+        height,
+      });
       if (imageSrc) {
         dispatch(setSelfieImgb64(imageSrc));
       }
@@ -57,8 +63,8 @@ export default function FaceRecognitionPage() {
           {media.selfieImgb64 == "" ? (
             <Webcam
               audio={false}
-              height={300}
-              width={300}
+              height={height}
+              width={width}
               ref={videoRef}
               forceScreenshotSourceSize={true}
               screenshotFormat="image/png"
@@ -71,8 +77,8 @@ export default function FaceRecognitionPage() {
             <Image
               src={media.selfieImgb64}
               alt="Selfie Photo"
-              height={300}
-              width={300}
+              height={height}
+              width={width}
             />
           )}
           <Box
@@ -89,7 +95,7 @@ export default function FaceRecognitionPage() {
               src={CameraCover}
               alt="Circle camera"
               height={301}
-              width={300}
+              width={width}
             />
           </Box>
           <Box

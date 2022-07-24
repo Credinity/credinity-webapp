@@ -44,7 +44,6 @@ const SignOutPage: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   var jwt = jsonwebtoken.decode(req.cookies.authorization);
-  console.log("signOut", { jwt });
   if (!jwt) {
     res.setHeader("location", "/");
     res.statusCode = 302;

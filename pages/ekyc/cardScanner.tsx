@@ -16,9 +16,12 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Webcam from "react-webcam";
 
+const width = 300;
+const height = 300;
+
 const videoConstraints = {
-  height: 439,
-  width: 280,
+  height: 800,
+  width: 800,
   facingMode: { exact: "environment" },
 };
 
@@ -30,12 +33,15 @@ const CardScannerPage = () => {
   const capture = React.useCallback(() => {
     if (videoRef) {
       if (!videoRef.current) return;
-      const imageSrc = videoRef.current.getScreenshot();
+      const imageSrc = videoRef.current.getScreenshot({
+        width,
+        height,
+      });
       if (imageSrc) {
         dispatch(setKycIdImgB64(imageSrc));
       }
     }
-  }, [videoRef]);
+  }, [videoRef, media.kycIdImgB64]);
 
   return (
     <PageContainer
@@ -61,36 +67,21 @@ const CardScannerPage = () => {
           {media.kycIdImgB64 == "" ? (
             <Webcam
               audio={false}
-              height={439}
-              width={280}
-              screenshotFormat="image/png"
-              forceScreenshotSourceSize={true}
               ref={videoRef}
+              forceScreenshotSourceSize={true}
               videoConstraints={videoConstraints}
-              style={{
-                objectFit: "cover",
-              }}
+              height={height}
+              width={width}
+              screenshotFormat="image/png"
             />
           ) : (
             <Image
               src={media.kycIdImgB64}
               alt="ID Card Photo"
-              width={280}
-              height={439}
+              width={width}
+              height={height}
             />
           )}
-          <Box
-            position="absolute"
-            sx={{
-              mx: "auto",
-              left: 0,
-              right: 0,
-              top: 0,
-              backgroundColor: "transparent",
-            }}
-          >
-            <Image src={FrameCover} alt="Card Frame" width={280} height={439} />
-          </Box>
         </Box>
         <Stack spacing={2} width="100%">
           {media && media.kycIdImgB64 != "" ? (
