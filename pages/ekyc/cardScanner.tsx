@@ -22,7 +22,7 @@ const height = 440;
 const videoConstraints = {
   height: height,
   width: width,
-  facingMode: { exact: "environment" },
+  //facingMode: { exact: "environment" },
 };
 
 const CardScannerPage = () => {
@@ -33,7 +33,10 @@ const CardScannerPage = () => {
   const capture = React.useCallback(() => {
     if (videoRef) {
       if (!videoRef.current) return;
-      const imageSrc = videoRef.current.getScreenshot();
+      const imageSrc = videoRef.current.getScreenshot({
+        width,
+        height,
+      });
       if (imageSrc) {
         dispatch(setKycIdImgB64(imageSrc));
       }
@@ -80,9 +83,6 @@ const CardScannerPage = () => {
               alt="ID Card Photo"
               width={width}
               height={height}
-              style={{
-                objectFit: "cover",
-              }}
             />
           )}
           <Box
