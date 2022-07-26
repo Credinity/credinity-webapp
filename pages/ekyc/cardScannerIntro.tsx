@@ -3,7 +3,6 @@ import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import { Ladybug } from "@/models/constants/color.constant";
 import CardImg from "@/public/img/person/id-card.png";
-import { rearCameraChecking } from "@/store/slices/mediaSlice";
 import { useAppDispatch } from "@/store/store";
 import CheckIcon from "@mui/icons-material/Check";
 import {
@@ -51,7 +50,7 @@ export default function CardScannerIntroPage() {
           fontWeight="bold"
           textAlign="center"
           variant="h1"
-          sx={{ mx: "5vw", mt: "3vh" }}
+          sx={{ mx: "5vw", mt: "1vh" }}
         >
           สแกนบัตรประชาชน
         </Typography>
@@ -144,7 +143,10 @@ export default function CardScannerIntroPage() {
                   (stream) => {
                     // camera available
                     setIsPageLoading(true);
-                    dispatch(rearCameraChecking(stream));
+                    const tracks = stream.getTracks();
+                    tracks.forEach(function (track) {
+                      track.stop();
+                    });
                     router.push("/ekyc/cardScanner").finally(() => {
                       setIsPageLoading(false);
                     });
