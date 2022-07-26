@@ -20,8 +20,9 @@ const width = 300;
 const height = 300;
 
 const videoConstraints = {
-  width: 800,
-  height: 800,
+  width: { min: 300, ideal: 800 },
+  height: { min: 300, ideal: 800 },
+  aspectRatio: { ideal: 1 },
   facingMode: "user",
 };
 

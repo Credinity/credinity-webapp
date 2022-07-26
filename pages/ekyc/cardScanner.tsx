@@ -2,7 +2,6 @@ import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import BackButton from "@/components/inputs/BackButton";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
-import FrameCover from "@/public/img/cameracover/id-card-cover-camera.svg";
 import {
   mediaSelector,
   setKycIdImgB64,
@@ -18,12 +17,6 @@ import Webcam from "react-webcam";
 
 const width = 300;
 const height = 300;
-
-const videoConstraints = {
-  height: 800,
-  width: 800,
-  facingMode: { exact: "environment" },
-};
 
 const CardScannerPage = () => {
   const media = useSelector(mediaSelector);
@@ -42,6 +35,13 @@ const CardScannerPage = () => {
       }
     }
   }, [videoRef, media.kycIdImgB64]);
+
+  const videoConstraints = {
+    width: { min: 300, ideal: 800 },
+    height: { min: 300, ideal: 800 },
+    aspectRatio: { ideal: 1 },
+    facingMode: media.isRearCameraActive ? { exact: "environment" } : "user",
+  };
 
   return (
     <PageContainer
