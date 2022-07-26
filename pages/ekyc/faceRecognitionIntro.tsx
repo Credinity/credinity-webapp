@@ -26,7 +26,11 @@ export default function FaceRecognitionPage() {
         alignItems="center"
         sx={{ mx: "5vw" }}
       >
-        <Typography fontWeight="bold" variant="h1" sx={{ my: "3vh" }}>
+        <Typography
+          fontWeight="bold"
+          variant="h1"
+          sx={{ mt: "1vh", mb: "3vh" }}
+        >
           ถ่ายใบหน้าของคุณ
         </Typography>
         <Image src={CameraCover} alt="Circle camera" height={301} width={300} />

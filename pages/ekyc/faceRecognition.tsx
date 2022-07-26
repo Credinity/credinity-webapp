@@ -57,7 +57,11 @@ export default function FaceRecognitionPage() {
         alignItems="center"
         sx={{ mx: "5vw" }}
       >
-        <Typography fontWeight="bold" variant="h1" sx={{ my: "3vh" }}>
+        <Typography
+          fontWeight="bold"
+          variant="h1"
+          sx={{ mt: "1vh", mb: "3vh" }}
+        >
           ถ่ายใบหน้าของคุณ
         </Typography>
         <Box position="relative" sx={{ mb: 5 }}>
@@ -155,6 +159,7 @@ export default function FaceRecognitionPage() {
           )}
           <PrimaryButton
             sx={{ mx: 5 }}
+            disabled={media && media.selfieImgb64 == ""}
             onClick={async () => {
               setIsPageLoading(true);
               dispatch(uploadPortraitEkycImgAsync(media.selfieImgb64)).finally(

@@ -2,6 +2,7 @@ import CustomizedDialogs from "@/components/feedbacks/CustomizedDialogs";
 import BackButton from "@/components/inputs/BackButton";
 import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
+import FlipCameraAndroidIcon from "@mui/icons-material/FlipCameraAndroid";
 import {
   mediaSelector,
   setKycIdImgB64,
@@ -9,7 +10,7 @@ import {
 } from "@/store/slices/mediaSlice";
 import { useAppDispatch } from "@/store/store";
 import { PhotoCamera } from "@mui/icons-material";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -17,12 +18,24 @@ import Webcam from "react-webcam";
 
 const width = 300;
 const height = 300;
+const FACING_MODE_USER = "user";
+const FACING_MODE_ENVIRONMENT = "environment";
+
+const videoConstraints = {
+  width: { min: width, ideal: 800 },
+  height: { min: height, ideal: 800 },
+  aspectRatio: { ideal: 1 },
+  facingMode: FACING_MODE_ENVIRONMENT,
+};
 
 const CardScannerPage = () => {
   const media = useSelector(mediaSelector);
-  const [isPageLoading, setIsPageLoading] = useState(false);
   const dispatch = useAppDispatch();
   const videoRef = useRef<Webcam>(null);
+
+  const [facingMode, setFacingMode] = React.useState(FACING_MODE_ENVIRONMENT);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+
   const capture = React.useCallback(() => {
     if (videoRef) {
       if (!videoRef.current) return;
@@ -36,12 +49,13 @@ const CardScannerPage = () => {
     }
   }, [videoRef, media.kycIdImgB64]);
 
-  const videoConstraints = {
-    width: { min: 300, ideal: 800 },
-    height: { min: 300, ideal: 800 },
-    aspectRatio: { ideal: 1 },
-    facingMode: media.isRearCameraActive ? { exact: "environment" } : "user",
-  };
+  const switchCameraClick = React.useCallback(() => {
+    setFacingMode((prevState) =>
+      prevState === FACING_MODE_USER
+        ? FACING_MODE_ENVIRONMENT
+        : FACING_MODE_USER
+    );
+  }, []);
 
   return (
     <PageContainer
@@ -57,19 +71,33 @@ const CardScannerPage = () => {
         alignItems="center"
         sx={{ mx: "5vw" }}
       >
-        <Typography fontWeight="bold" variant="h1" sx={{ mt: "3vh" }}>
+        <Typography fontWeight="bold" variant="h1" sx={{ mt: "1vh" }}>
           ถ่ายรูปบัตรของคุณ
         </Typography>
-        <Typography variant="body2" sx={{ mb: "3vh" }}>
+        <Typography variant="body2" sx={{ mb: "1vh" }}>
           วางบัตรประชาชนในกรอบ
         </Typography>
+        <PrimaryButton sx={{ mb: "2vh" }}>
+          <FlipCameraAndroidIcon />
+          <Typography
+            onClick={switchCameraClick}
+            variant="body1"
+            fontWeight="medium"
+            sx={{ mr: 1 }}
+          >
+            &nbsp; สลับกล้อง
+          </Typography>
+        </PrimaryButton>
         <Box position="relative" sx={{ mb: 5 }}>
           {media.kycIdImgB64 == "" ? (
             <Webcam
               audio={false}
               ref={videoRef}
               forceScreenshotSourceSize={true}
-              videoConstraints={videoConstraints}
+              videoConstraints={{
+                ...videoConstraints,
+                facingMode,
+              }}
               height={height}
               width={width}
               screenshotFormat="image/png"
@@ -103,9 +131,9 @@ const CardScannerPage = () => {
               &nbsp; ถ่ายรูป
             </PrimaryButton>
           )}
-
           <PrimaryButton
             sx={{ mx: 5 }}
+            disabled={media && media.kycIdImgB64 == ""}
             onClick={async () => {
               setIsPageLoading(true);
               dispatch(uploadIdKycImgAsync(media.kycIdImgB64)).finally(() => {

@@ -42,7 +42,7 @@ export default function EkycStepIntroPage() {
         fontWeight="bold"
         textAlign="center"
         variant="h1"
-        sx={{ mx: "5vw", my: "3vh" }}
+        sx={{ mx: "5vw", my: "1vh" }}
       >
         ยืนยันตัวตนง่ายๆใน 4 ขั้นตอน
       </Typography>
