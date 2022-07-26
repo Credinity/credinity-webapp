@@ -1,19 +1,20 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "@/store/store";
 import * as mediaService from "@/services/mediaService";
+import { RootState } from "@/store/store";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Router from "next/router";
-import { imgB64toFormData } from "@/utils/commonUtil";
 
 interface MediaState {
   error: string;
   kycIdImgB64: string;
   selfieImgb64: string;
+  isRearCameraActive: boolean;
 }
 
 const initialState: MediaState = {
   error: "",
   kycIdImgB64: "",
   selfieImgb64: "",
+  isRearCameraActive: false,
 };
 
 export const uploadIdKycImgAsync = createAsyncThunk(
@@ -35,6 +36,39 @@ export const uploadPortraitEkycImgAsync = createAsyncThunk(
       "/media/uploadPortraitImg"
     );
     return response;
+  }
+);
+export const rearCameraChecking = createAsyncThunk(
+  "media/rearCameraChecking",
+  async (stream: MediaStream) => {
+    let isRearCameraActive = false;
+    try {
+      let devices = await navigator.mediaDevices.enumerateDevices();
+      devices.filter((device) => {
+        if (device.kind === "videoinput") {
+          if (device.label && device.label.length > 0) {
+            if (device.label.toLowerCase().indexOf("back") >= 0) {
+              isRearCameraActive = true;
+            } else if (device.label.toLowerCase().indexOf("front") >= 0) {
+              //result.hasFront = true;
+            } else {
+              /* some other device label ... desktop browser? */
+              // result.hasFront = true;
+            }
+          }
+          return true;
+        }
+        return false;
+      });
+      /* drop stream */
+      const tracks = stream.getTracks();
+      if (tracks) {
+        for (let t = 0; t < tracks.length; t++) tracks[t].stop();
+      }
+      return isRearCameraActive;
+    } catch (ex) {
+      return isRearCameraActive;
+    }
   }
 );
 
@@ -71,6 +105,14 @@ const mediaSlice = createSlice({
         var _msg = res?.errors[0]?.message ?? "";
         state.error = _msg;
       }
+    });
+
+    builder.addCase(rearCameraChecking.fulfilled, (state, action) => {
+      state.isRearCameraActive = action.payload;
+    });
+
+    builder.addCase(rearCameraChecking.rejected, (state, action) => {
+      state.isRearCameraActive = false;
     });
   },
 });

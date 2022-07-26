@@ -3,6 +3,8 @@ import PrimaryButton from "@/components/inputs/PrimaryButton";
 import PageContainer from "@/components/layouts/PageContainer";
 import { Ladybug } from "@/models/constants/color.constant";
 import CardImg from "@/public/img/person/id-card.png";
+import { rearCameraChecking } from "@/store/slices/mediaSlice";
+import { useAppDispatch } from "@/store/store";
 import CheckIcon from "@mui/icons-material/Check";
 import {
   Box,
@@ -18,6 +20,7 @@ import React, { useState } from "react";
 
 export default function CardScannerIntroPage() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [cardType, setCardType] = React.useState<string | null>("ThaiCard");
   const [isAllowCamera, setIsAllowCamera] = useState(true);
   const [isPageLoading, setIsPageLoading] = useState(false);
@@ -141,6 +144,7 @@ export default function CardScannerIntroPage() {
                   (stream) => {
                     // camera available
                     setIsPageLoading(true);
+                    dispatch(rearCameraChecking(stream));
                     router.push("/ekyc/cardScanner").finally(() => {
                       setIsPageLoading(false);
                     });
