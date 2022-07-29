@@ -1,41 +1,29 @@
-import CredinityFullFooter from "@/components/layouts/CredinityFullFooter";
+import PrimaryButton from "@/components/inputs/PrimaryButton";
 import AppBarHeader from "@/components/layouts/AppBarHeader";
+import CredinityFullFooter from "@/components/layouts/CredinityFullFooter";
+import ImgDetailCard from "@/components/layouts/ImgDetailCard";
 import PageContainer from "@/components/layouts/PageContainer";
+import { Black } from "@/models/constants/color.constant";
+import MainPageImg from "@/public/img/contents/mainpageImg.png";
 import { useAppDispatch } from "@/store/store";
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
+import jsonwebtoken from "jsonwebtoken";
+import type { GetServerSideProps } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import type { GetServerSideProps } from "next";
-import jsonwebtoken from "jsonwebtoken";
-import Image from "next/image";
-import ImgDetailCard from "@/components/layouts/ImgDetailCard";
-import { Black } from "@/models/constants/color.constant";
-import PrimaryButton from "@/components/inputs/PrimaryButton";
-import MainPageImg from "@/public/img/contents/mainpageImg.png";
-import Auction from "@/public/img/features/Auction.png";
-import AuctionHover from "@/public/img/features/AuctionHover.png";
-import Auto from "@/public/img/features/Auto.png";
-import AutoHover from "@/public/img/features/AutoHover.png";
-import Anyone from "@/public/img/features/Anyone.png";
-import AnyoneHover from "@/public/img/features/AnyoneHover.png";
-import { FeatureItem } from "@/models/content.model";
+
 import ArticleCarouselView from "@/components/displays/Carousel/ArticleCarouselView";
-import { useSelector } from "react-redux";
+import { UserID } from "@/models/constants/key.constant";
 import {
   pageSelector,
   setIsContainTokenCookie,
 } from "@/store/slices/pageSlice";
-import { useEffect } from "react";
-import Cookies from "universal-cookie";
-import { UserID } from "@/models/constants/key.constant";
 import { getProfileAsync, userSelector } from "@/store/slices/userSlice";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import Cookies from "universal-cookie";
+import { featureArray } from "@/models/constants/content.constant";
 
 type Props = {
   initialCheckToken: boolean;
@@ -65,36 +53,6 @@ export default function Index({ initialCheckToken }: Props) {
       setIsPageLoading(false);
     });
   };
-
-  const featureArray: FeatureItem[] = [
-    {
-      contentId: 1,
-      pathHoverImg: AuctionHover,
-      pathImg: Auction,
-      altImg: "auction",
-      title: "Auction",
-      detail:
-        "บริการประมูลทรัพย์สิน สมาชิกมีสิทธิในการประมูลอสังหาริมทรัพย์โดยเสนอจำนวนเงิน ดอกเบี้ย และค่าธรรมเนียมปากถุง",
-    },
-    {
-      contentId: 2,
-      pathHoverImg: AutoHover,
-      pathImg: Auto,
-      altImg: "auto exchange",
-      title: "Auto",
-      detail:
-        "บริการอัติโนมัติ สมาชิกสามารถโอนเงินเข้าลงทุนที่บริษัท โดยทางบริษัท Credinity จะทำการขอสินเชื่อกับสมาชิกที่ต้องการปล่อนสินเชื่อ และจะทำการนำเงินไปปล่อยสินเชื่อต่อให้สมาชิก โดยสมาชิกจะได้รับดอกเบี้ย อัติโนมัติ โดยทาง Credinity จะเป็นผู้รับความเสี่ยงให้สมาชิก ในกรณีทรัพย์สินถูกยึด",
-    },
-    {
-      contentId: 3,
-      pathHoverImg: AnyoneHover,
-      pathImg: Anyone,
-      altImg: "Asset Allocation and Diversification",
-      title: "Anyone",
-      detail:
-        "บริการกระจายความเสี่ยงการปล่อยสินเชื่อ ทางผู้ปล่อยสินเชื่อ กรณีที่มีเงินไม่เพียงพอในการปล่อยสินเชื่อขนาดใหญ่ แต่ต้องการเลือกทรัพย์สินในการค้ำประกันเอง สามารถเลือกสินทรัพย์ที่บริษัทประกาศได้ว่าสินทรัพย์นี้ สามารถร่วมกระจายความเสี่ยงได้ ซึ่งสัญญาจะถูกทำในนามบริษัท เมื่อจำนวนเงินครบตามจำนวน และหากทรัพย์สินถูกยึดจะได้รับเงินคืนเมื่อขายได้เท่านั้น",
-    },
-  ];
 
   return (
     <PageContainer
