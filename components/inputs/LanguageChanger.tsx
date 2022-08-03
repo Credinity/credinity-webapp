@@ -34,28 +34,28 @@ const LanguageChanger: FunctionComponent<any> = (props: any) => {
     return (
         <Grid
             container
-            style={{
-                position: "absolute",
-                bottom: "30px",
-                left: 0,
-            }}
+            sx={{ mt: 2 }}
             justifyContent="center"
             alignContent="center"
             alignItems="center"
         >
             <Grid item xs="auto">
-                <Typography display="inline" fontWeight="medium">
+                <Typography display="inline" fontWeight="medium" sx={{ mt: 4 }}>
                     Choose Language:
                 </Typography>
                 <Button
                     onClick={handleClick}
+                    sx={{ py: 0 }}
                     style={{
                         textTransform: "none",
                         color: "black",
                         fontWeight: "medium",
                     }}
                 >
-                    {getFullLang(lang)} <ArrowDropDown />
+                    <Typography display="inline" fontWeight="medium">
+                        {getFullLang(lang)}
+                    </Typography>
+                    <ArrowDropDown />
                 </Button>
                 <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
                     <MenuItem onClick={(e: any) => handleChangeLang("EN")}>

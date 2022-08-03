@@ -159,7 +159,7 @@ const ResetPasswordPage: NextPage<{
         container
         direction="column"
         justifyContent="center"
-        minHeight="100vh"
+        minHeight="90vh"
         sx={{ px: "40px" }}
       >
         <Grid item alignSelf="center" sx={{ mb: 0 }}>
@@ -272,7 +272,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (key == undefined || key.length == 0)
     return {
       props: {
-        resetPassKey: key,
+        resetPassKey: "",
         keyValidationError:
           "Cannot validate reset password token. Please try again later.",
       },
