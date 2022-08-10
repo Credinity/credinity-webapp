@@ -108,7 +108,7 @@ const SignInPage: NextPage = () => {
       <Grid
         container
         direction="column"
-        minHeight="100vh"
+        minHeight="90vh"
         spacing={0}
         sx={{ pt: "18vh", px: "40px" }}
       >

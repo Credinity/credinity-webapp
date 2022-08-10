@@ -68,7 +68,7 @@ const VerifyEmailPage: NextPage = () => {
         container
         direction="column"
         justifyContent="center"
-        minHeight="100vh"
+        minHeight="90vh"
         sx={{ px: "40px" }}
       >
         <Grid item alignSelf="center" sx={{ mb: 0 }}>
